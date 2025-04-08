@@ -19,6 +19,7 @@ var _param_types: PackedByteArray = []
 # var _param_names: Array[StringName] = []
 var _numeric_count: int = 0
 
+
 func _init(params: Array, param_names: Array = []) -> void:
 	var bool_count: int = params.reduce(_count_bools, 0)
 	var bool_offset: int = 64 * (params.size() - bool_count)
@@ -143,6 +144,7 @@ func set_bit(index: int, value: int) -> void:
 	var bit_index_in_byte: int = index % 8
 	_params[index / 8] = Numeric.set_bit_in_int(byte, bit_index_in_byte, value)
 
+
 ## Возвращает список из всех текущих параметров этого генома.
 func get_all_params() -> Array:
 	var res := Array()
@@ -151,9 +153,11 @@ func get_all_params() -> Array:
 		res[i] = self.get_param(i)
 	return res
 
+
 ## Возвращает все текущие параметры в виде [PackedByteArray].
 func get_all_bytes() -> PackedByteArray:
 	return _params
+
 
 ## Проверяет массив параметров на использование только поддерживаемых типов
 ## даных класом [Genome]. Все поддерживаемые типы перечислены в
@@ -163,6 +167,7 @@ func _check_supported_data_types(params: Array) -> bool:
 		if typeof(param) not in PARAMS_TYPES:
 			return false
 	return true
+
 
 ## Функция подсчёта булевых переменных для метода [method Array.reduce].
 func _count_bools(count: int, x: Variant) -> int:
