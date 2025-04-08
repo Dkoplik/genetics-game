@@ -8,3 +8,26 @@ const FLOAT_MIN: float = -1.79769e308
 
 ## Для приблизительного сравнения вещественных чисел.
 const EPS: float = 1e-8
+
+
+## Из указанного целого числа [param num] извлекает бит по индексу
+## [param index]. Биты расположенны в little-endian порядке, соответственно,
+## индекс 0 отвечает за самый младший бит.
+static func get_bit_from_int(num: int, index: int) -> int:
+	assert(index >= 0, "Отрицательный индекс")
+	assert(index < 64, "Индекс выходит за границы 64-битного int")
+
+	return (num >> index) & 1
+
+
+## Заменяет в указанном целом числе [param num] бит по индексу [param index] на
+## значение [param value]. Биты расположенны в little-endian порядке,
+## соответственно, индекс 0 отвечает за самый младший бит.
+static func set_bit_in_int(num: int, index: int, value: int) -> int:
+	assert(index >= 0, "Отрицательный индекс")
+	assert(index < 64, "Индекс выходит за границы 64-битного int")
+	assert((value == 0) or (value == 1), "Бит может принимать только значение 0 и 1")
+
+	if ((num >> index) & 1) == value:
+		return num
+	return num ^ (1 << index)
