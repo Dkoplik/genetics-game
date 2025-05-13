@@ -145,8 +145,8 @@ func set_bit(index: int, value: int) -> void:
 	_params[index / 8] = Numeric.set_bit_in_int(byte, bit_index_in_byte, value)
 
 
-## Возвращает список из всех текущих параметров этого генома.
-func get_all_params() -> Array:
+## Возвращает список из всех текущих параметров этого генома в виде [Array].
+func get_param_array() -> Array:
 	var res := Array()
 	res.resize(_param_types.size())
 	for i in range(_param_types.size()):
@@ -155,7 +155,7 @@ func get_all_params() -> Array:
 
 
 ## Возвращает все текущие параметры в виде [PackedByteArray].
-func get_all_bytes() -> PackedByteArray:
+func get_byte_array() -> PackedByteArray:
 	return _params
 
 

@@ -7,64 +7,64 @@ class TestInitAndGetAllParams:
 	func test_one_false_boolean_init() -> void:
 		var params: Array[bool] = [false]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_true_boolean_init() -> void:
 		var params: Array[bool] = [true]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_multiple_boolean_init() -> void:
 		var params: Array[bool] = [true, false, false, true, false, true]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_min_int_init() -> void:
 		var params: Array[int] = [Numeric.INT_MIN]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_max_int_init() -> void:
 		var params: Array[int] = [Numeric.INT_MAX]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_zero_int_init() -> void:
 		var params: Array[int] = [0]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_multiple_int_init() -> void:
 		var params: Array[int] = [Numeric.INT_MIN, -1, 0, 1, Numeric.INT_MAX]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_min_float_init() -> void:
 		var params: Array[float] = [Numeric.FLOAT_MIN]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_max_float_init() -> void:
 		var params: Array[float] = [Numeric.FLOAT_MAX]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_one_zero_float_init() -> void:
 		var params: Array[float] = [0.0]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_multiple_float_init() -> void:
 		var params: Array[float] = [Numeric.FLOAT_MIN, -1., 0., 1., Numeric.FLOAT_MAX]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), params)
+		assert_eq_deep(genome.get_param_array(), params)
 
 	func test_multiple_mixed_types_init() -> void:
 		var params: Array = [3.14, false, 5, -3.5, true, -42]
 		# Все булевы переменные перемещаются в конец в неизменном порядке.
 		var res_params: Array = [3.14, 5, -3.5, -42, false, true]
 		var genome := Genome.new(params)
-		assert_eq_deep(genome.get_all_params(), res_params)
+		assert_eq_deep(genome.get_param_array(), res_params)
 
 
 class TestInitAndGetAllBytes:
@@ -75,42 +75,42 @@ class TestInitAndGetAllBytes:
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([1])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 	func test_multiple_boolean_init() -> void:
 		var params: Array[bool] = [true, false, false, true, false, true]
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([41])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 	func test_one_min_int_init() -> void:
 		var params: Array[int] = [Numeric.INT_MIN]
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([0, 0, 0, 0, 0, 0, 0, 128])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 	func test_one_max_int_init() -> void:
 		var params: Array[int] = [Numeric.INT_MAX]
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([255, 255, 255, 255, 255, 255, 255, 127])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 	func test_one_min_float_init() -> void:
 		var params: Array[float] = [Numeric.FLOAT_MIN]
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([174, 130, 202, 87, 252, 255, 239, 255])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 	func test_one_max_float_init() -> void:
 		var params: Array[float] = [Numeric.FLOAT_MAX]
 		var genome := Genome.new(params)
 
 		var bytes := PackedByteArray([174, 130, 202, 87, 252, 255, 239, 127])
-		assert_eq_deep(genome.get_all_bytes(), bytes)
+		assert_eq_deep(genome.get_byte_array(), bytes)
 
 
 class TestSetGetParam:
@@ -220,7 +220,7 @@ class TestSetGetByte:
 		assert_eq(genome.get_byte(0), 90, err_msg)
 
 		var res: Array[bool] = [false, true, false, true, true, false, true, false]
-		assert_eq_deep(genome.get_all_params(), res)
+		assert_eq_deep(genome.get_param_array(), res)
 
 	func test_set_get_byte_nine_bools() -> void:
 		var genome := Genome.new([true, false, true, true, false, false, true, true, true])
@@ -244,14 +244,14 @@ class TestSetGetByte:
 		# 0        1        2        3        4        5        6        7
 		# 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001
 		var byte_vals := PackedByteArray([0, 0, 0, 0, 0, 0, 0, 128])
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		genome.set_byte(7, 0)
 		err_msg = "Байт изменился некорректно или не изменился"
 		assert_eq(genome.get_byte(7), 0, err_msg)
 
 		byte_vals[7] = 0
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		err_msg = "Байтовое изменение целого числа не совпало с реальным значением"
 		assert_eq(genome.get_param(0), 0, err_msg)
@@ -261,14 +261,14 @@ class TestSetGetByte:
 		# 0        1        2        3        4        5        6        7
 		# 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111110
 		var byte_vals := PackedByteArray([255, 255, 255, 255, 255, 255, 255, 127])
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		genome.set_byte(0, 254)  # 0111_1111
 		err_msg = "Байт изменился некорректно или не изменился"
 		assert_eq(genome.get_byte(0), 254, err_msg)
 
 		byte_vals[0] = 254
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		err_msg = "Байтовое изменение целого числа не совпало с реальным значением"
 		assert_eq(genome.get_param(0), Numeric.INT_MAX - 1, err_msg)
@@ -278,7 +278,7 @@ class TestSetGetByte:
 		# 0        1        2        3        4        5        6        7
 		# 01110101 01000001 01010011 11101010 00111111 11111111 11110111 11111111
 		var byte_vals := PackedByteArray([174, 130, 202, 87, 252, 255, 239, 255])
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		for i in range(8):
 			genome.set_byte(i, 0)
@@ -293,7 +293,7 @@ class TestSetGetByte:
 		# 0        1        2        3        4        5        6        7
 		# 01110101 01000001 01010011 11101010 00111111 11111111 11110111 11111110
 		var byte_vals := PackedByteArray([174, 130, 202, 87, 252, 255, 239, 127])
-		assert_eq_deep(genome.get_all_bytes(), byte_vals)
+		assert_eq_deep(genome.get_byte_array(), byte_vals)
 
 		for i in range(8):
 			genome.set_byte(i, 0)
@@ -363,7 +363,7 @@ class TestSetGetBit:
 		assert_eq(genome.get_bit(7), 0, err_msg)
 
 		var res: Array[bool] = [true, false, true, true, false, false, true, false]
-		assert_eq_deep(genome.get_all_params(), res)
+		assert_eq_deep(genome.get_param_array(), res)
 
 	func test_set_get_bit_nine_bools() -> void:
 		var genome := Genome.new([true, false, true, true, false, false, true, true, true])
