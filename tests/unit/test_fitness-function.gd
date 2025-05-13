@@ -1,5 +1,6 @@
 extends GutTest
 
+
 class TestAddSummand:
 	extends GutTest
 
