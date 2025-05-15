@@ -2,8 +2,14 @@ extends Node2D
 
 
 func _ready() -> void:
-	print(TYPE_BOOL)
-	print(typeof(false))
+	var d = {}
+
+	for i in range(-10, 10):
+		d.set('key{0}'.format([i]), i)
+
+	for val in d.values():
+		print(val)
+	print('---')
 
 
 func bytes_to_binary(bytes: PackedByteArray) -> String:

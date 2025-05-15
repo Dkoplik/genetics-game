@@ -14,86 +14,42 @@ class_name Genome extends RefCounted
 ## Поддерживаемые типы данных для использования в качестве параметров решения.
 const PARAMS_TYPES: Array[Variant.Type] = [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]
 
-var _params: PackedByteArray = []
-var _param_types: PackedByteArray = []
-# var _param_names: Array[StringName] = []
-var _numeric_count: int = 0
+var _params: Dictionary[String, Variant] = {}
 
-
-func _init(params: Array, param_names: Array = []) -> void:
-	var bool_count: int = params.reduce(_count_bools, 0)
-	var bool_offset: int = 64 * (params.size() - bool_count)
-	var byte_amount: int = (bool_offset / 8) + ceili(bool_count / 8.0)
-	_params.resize(byte_amount)
-	_param_types.resize(params.size())
-
-	bool_count = 0
-	_numeric_count = 0
-	for param: Variant in params:
-		if typeof(param) == TYPE_BOOL:
-			self.set_bit(bool_offset + bool_count, int(param as bool))
-			_param_types[(bool_offset / 64) + bool_count] = TYPE_BOOL
-			bool_count += 1
-		elif typeof(param) == TYPE_INT:
-			_params.encode_s64(8 * _numeric_count, param as int)
-			_param_types[_numeric_count] = TYPE_INT
-			_numeric_count += 1
-		elif typeof(param) == TYPE_FLOAT:
-			_params.encode_double(8 * _numeric_count, param as float)
-			_param_types[_numeric_count] = TYPE_FLOAT
-			_numeric_count += 1
-		else:
-			var err_msg := "Неподдерживаемый тип данных {0}"
-			push_error(err_msg.format([type_string(typeof(param))]))
+## params - dictionary or array TODO desc
+func _init(params: Variant) -> void:
+	if params is Dictionary:
+		_params = params
+	else:
+		assert(params is Array)
+		for i in range(params.size()):
+			var key := 'param_{0}'.format([i])
+			_params.set(key, params[i])
+	assert(_params.size() == params.size())
+	assert(params.all(_is_supported_type))
 
 
 ## Возвращает [Variant] параметра по индексу [param index]. Для отрицательных
-## значений индекса элементы берутся с конца.
-func get_param(index: int) -> Variant:
-	if index < 0:
-		index += _param_types.size()
-	assert((index >= 0) and (index < _param_types.size()), "Индекс выходит за границы генома")
+## значений индекса элементы берутся с конца. TODO update desc
+func get_param(key: Variant) -> Variant:
+	if key is int:
+		key = _int_key_to_string(key)
 
-	var dtype: int = _param_types[index]
-	if dtype == TYPE_BOOL:
-		return bool(self.get_bit(64 * _numeric_count + (index - _numeric_count)))
-	if dtype == TYPE_INT:
-		return _params.decode_s64(8 * index)
-	if dtype == TYPE_FLOAT:
-		return _params.decode_double(8 * index)
-
-	assert(false, "Неизвестный тип данных среди инициализированных переменных")
-	return 0
+	assert(key is String)
+	return _params.get(key)
 
 
 ## Заменяет значение [Variant] параметра по индексу [param index] на значение
-## [param value]. Ожидается тот же тип, что и оригинальный [Variant].
-func set_param(index: int, value: Variant) -> void:
-	if index < 0:
-		index += _param_types.size()
-	assert((index >= 0) and (index < _param_types.size()), "Индекс выходит за границы генома")
+## [param value]. Ожидается тот же тип, что и оригинальный [Variant]. TODO update desc
+func set_param(key: Variant, value: Variant) -> void:
+	if key is int:
+		key = _int_key_to_string(key)
 
-	var dtype: int = _param_types[index]
-	if dtype == TYPE_BOOL:
-		if typeof(value) != TYPE_BOOL:
-			var err_msg := "Попытка изменить TYPE_BOOL на {0}"
-			push_error(err_msg.format([type_string(typeof(value))]))
-			return
-		self.set_bit(64 * _numeric_count + (index - _numeric_count), value as int)
-	elif dtype == TYPE_INT:
-		if typeof(value) != TYPE_INT:
-			var err_msg := "Попытка изменить TYPE_INT на {0}"
-			push_error(err_msg.format([type_string(typeof(value))]))
-			return
-		_params.encode_s64(8 * index, value as int)
-	elif dtype == TYPE_FLOAT:
-		if typeof(value) != TYPE_FLOAT:
-			var err_msg := "Попытка изменить TYPE_FLOAT на {0}"
-			push_error(err_msg.format([type_string(typeof(value))]))
-			return
-		_params.encode_double(8 * index, value as float)
-	else:
-		assert(false, "Неизвестный тип данных среди инициализированных переменных")
+	assert(key is String)
+	if typeof(value) != typeof(_params.get(key)):
+		push_warning('Change of type for {0}'.format([key]))
+		assert(_is_supported_type(value))
+	_params.set(key, value)
 
 
 ## Возвращает байт по индексу [param index].
@@ -102,7 +58,11 @@ func get_byte(index: int) -> int:
 		index += _params.size()
 	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы генома")
 
-	return _params[index]
+	for i in range(_params.size()):
+		var len: int = 0
+		var param: Variant = self.get_param(i)
+		if
+	return self.get_byte_array()[index]
 
 
 ## Заменяет байт по индексу [param index] на значение [param value].
@@ -173,34 +133,41 @@ func set_byte_array(array: PackedByteArray) -> void:
 
 ## Возвращает отрезок из битов с номерами от [param from] до [param to] (не
 ## включительно).
-func get_bit_slice(from: int, to: int) -> Array:
-	return Array()
+func get_bit_slice(from: int, to: int) -> Array[int]:
+	var res: Array[int] = []
+	res.resize(to - from)
+	for i in range(from, to):
+		res[i] = self.get_bit(i)
+	return res
 
 
 ## Возвращает отрезок из байтов с номерами от [param from] до [param to] (не
 ## включительно).
 func get_byte_slice(from: int, to: int) -> PackedByteArray:
-	return Array()
+	var res: Array[int] = []
+	res.resize(to - from)
+	for i in range(from, to):
+		res[i] = self.get_byte(i)
+	return res
 
 
 ## Возвращает отрезок параметров с номерами от [param from] до [param to] (не
 ## включительно).
 func get_param_slice(from: int, to: int) -> Array:
-	return Array()
+	var res: Array[int] = []
+	res.resize(to - from)
+	for i in range(from, to):
+		res[i] = self.get_param(i)
+	return res
 
 
-## Проверяет массив параметров на использование только поддерживаемых типов
-## даных класом [Genome]. Все поддерживаемые типы перечислены в
-## [member Genome.PARAMS_TYPES].
-func _check_supported_data_types(params: Array) -> bool:
-	for param: Variant in params:
-		if typeof(param) not in PARAMS_TYPES:
-			return false
-	return true
+## TODO desc
+func _is_supported_type(val: Variant) -> bool:
+	return typeof(val) in PARAMS_TYPES
 
-
-## Функция подсчёта булевых переменных для метода [method Array.reduce].
-func _count_bools(count: int, x: Variant) -> int:
-	if typeof(x) == TYPE_BOOL:
-		return count + 1
-	return count
+## TODO desc
+func _int_key_to_string(index: int) -> String:
+	if index < 0:
+		index += _params.size()
+	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы")
+	return _params.keys()[index]
