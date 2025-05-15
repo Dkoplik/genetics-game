@@ -154,9 +154,39 @@ func get_param_array() -> Array:
 	return res
 
 
+## Установить все значения параметров через массив параметров [param array].
+func set_param_array(array: Array) -> void:
+	for i in range(_param_types.size()):
+		self.set_param(i, array[i])
+
+
 ## Возвращает все текущие параметры в виде [PackedByteArray].
 func get_byte_array() -> PackedByteArray:
 	return _params
+
+
+## Установить все значения параметров через массив байтов [param array].
+func set_byte_array(array: PackedByteArray) -> void:
+	for i in range(_params.size()):
+		self.set_byte(i, array[i])
+
+
+## Возвращает отрезок из битов с номерами от [param from] до [param to] (не
+## включительно).
+func get_bit_slice(from: int, to: int) -> Array:
+	return Array()
+
+
+## Возвращает отрезок из байтов с номерами от [param from] до [param to] (не
+## включительно).
+func get_byte_slice(from: int, to: int) -> PackedByteArray:
+	return Array()
+
+
+## Возвращает отрезок параметров с номерами от [param from] до [param to] (не
+## включительно).
+func get_param_slice(from: int, to: int) -> Array:
+	return Array()
 
 
 ## Проверяет массив параметров на использование только поддерживаемых типов
