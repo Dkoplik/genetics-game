@@ -10,18 +10,32 @@ class_name Organism extends Node
 var genome: Genome
 ## Функция приспособленности данного организма.
 var fitness_function: FitnessFunction
-## Функция мутации данного организма.
+## Функция мутации данного организма. TODO desc Genome -> Void
 var mutate_function: Callable
+## TODO desc
+var behaviour: Node2D
+
+
+func _init(
+	genome: Genome,
+	fitness_function: FitnessFunction,
+	mutate_function: Callable,
+	behaviour: Node2D
+	) -> void:
+	self.genome = genome
+	self.fitness_function = fitness_function
+	self.mutate_function = mutate_function
+	self.behaviour = behaviour
 
 
 ## Получить текущее значение приспособленности организма.
 func get_fitness() -> float:
-	return 0.0
+	return fitness_function.calculate(genome.get_param_dict())
 
 
 ## Произвести мутацию организма по алгоритму [member mutate_function].
 func mutate() -> void:
-	pass
+	mutate_function.call(genome)
 
 
 ## Запустить вымирание особи. После вызова этого метода организм должен
