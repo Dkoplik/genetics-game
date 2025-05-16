@@ -37,11 +37,8 @@ func _init(params: Variant) -> void:
 ## либо целочисленным индексом, либо именем параметра. Для отрицательных
 ## значений индекса элементы берутся с конца.
 func get_param(key: Variant) -> Variant:
-	if key is int:
-		key = _int_key_to_string(key)
-
-	assert(key is String)
-	return _params.get(key)
+	var str_key: String = _param_key_to_string(key)
+	return _params.get(str_key)
 
 
 ## Заменяет значение [Variant] параметра по ключу [param key] на значение
@@ -49,27 +46,30 @@ func get_param(key: Variant) -> Variant:
 ## [param key] может быть либо целочисленным индексом, либо именем параметра.
 ## Для отрицательных значений индекса элементы берутся с конца.
 func set_param(key: Variant, value: Variant) -> void:
-	if key is int:
-		key = _int_key_to_string(key)
+	assert(_is_supported_type(value))
+	var str_key: String = _param_key_to_string(key)
 
-	assert(key is String)
-	if typeof(value) != typeof(_params.get(key)):
-		push_warning('Change of type for {0}'.format([key]))
-		assert(_is_supported_type(value))
+	if typeof(value) != typeof(_params.get(str_key)):
+		push_warning('Change of type for {0}'.format([str_key]))
 	_params.set(key, value)
 
 
 ## Возвращает байт по целочисленному индексу [param index].
 func get_byte(index: int) -> int:
 	if index < 0:
-		index += _params.size()
-	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы генома")
+		index += byte_array_size()
+	assert((index >= 0) and (index < byte_array_size()), "Индекс выходит за границы генома")
 
-	for i in range(_params.size()):
-		var len: int = 0
-		var param: Variant = self.get_param(i)
-		if
-	return self.get_byte_array()[index]
+	var target_param = get_param(index / TYPE_SIZE)
+	var bytes := PackedByteArray()
+	bytes.resize(TYPE_SIZE)
+	if target_param is int:
+		bytes.encode_s64(0, target_param)
+	elif target_param is float:
+		bytes.encode_double(0, target_param)
+	else:
+		assert(false, 'Unsupported type')
+	return bytes.get(index % TYPE_SIZE)
 
 
 ## Заменяет байт по целочисленному индексу [param index] на значение
@@ -78,26 +78,30 @@ func set_byte(index: int, value: int) -> void:
 	if index < 0:
 		index += _params.size()
 	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы генома")
+	assert((value >= 0) and (value < 256), "incorrect value")
 
-	if value < 0:
-		var err_msg := "Попытка установить отрицательный байт {0}"
-		push_error(err_msg.format([value]))
-		return
-	if value > 255:
-		var err_msg := "Значение {0} выходит за границы байта"
-		push_error(err_msg.format([value]))
-		return
-
-	_params[index] = value
+	var target_param = get_param(index / TYPE_SIZE)
+	var bytes := PackedByteArray()
+	bytes.resize(TYPE_SIZE)
+	if target_param is int:
+		bytes.encode_s64(0, target_param)
+		bytes.set(index % TYPE_SIZE, value)
+		set_param(index / TYPE_SIZE, bytes.decode_s64(0))
+	elif target_param is float:
+		bytes.encode_double(0, target_param)
+		bytes.set(index % TYPE_SIZE, value)
+		set_param(index / TYPE_SIZE, bytes.decode_double(0))
+	else:
+		assert(false, 'Unsupported type')
 
 
 ## Возвращает бит по целочисленному индексу [param index].
 func get_bit(index: int) -> int:
 	if index < 0:
-		index += 8 * _params.size()
-	assert((index >= 0) and (index < 8 * _params.size()), "Индекс выходит за границы генома")
+		index += bit_array_size()
+	assert((index >= 0) and (index < bit_array_size()), "Индекс выходит за границы генома")
 
-	var byte: int = _params[index / 8]
+	var byte: int = get_byte(index / 8)
 	var bit_index_in_byte: int = index % 8
 	return Numeric.get_bit_from_int(byte, bit_index_in_byte)
 
@@ -106,47 +110,54 @@ func get_bit(index: int) -> int:
 ## [param value].
 func set_bit(index: int, value: int) -> void:
 	if index < 0:
-		index += 8 * _params.size()
-	assert((index >= 0) and (index < 8 * _params.size()), "Индекс выходит за границы генома")
+		index += bit_array_size()
+	assert((index >= 0) and (index < bit_array_size()), "Индекс выходит за границы генома")
+	assert((value == 0) or (value == 1))
 
-	var byte: int = _params[index / 8]
+	var byte: int = get_byte(index / 8)
 	var bit_index_in_byte: int = index % 8
-	_params[index / 8] = Numeric.set_bit_in_int(byte, bit_index_in_byte, value)
+	set_byte(index / 8, Numeric.set_bit_in_int(byte, bit_index_in_byte, value))
+
+
+func get_param_dict() -> Dictionary[String, Variant]:
+	return _params
 
 
 ## Возвращает список из всех текущих параметров этого генома в виде [Array].
 func get_param_array() -> Array:
-	var res := Array()
-	res.resize(_param_types.size())
-	for i in range(_param_types.size()):
-		res[i] = self.get_param(i)
-	return res
+	return _params.values()
 
 
 ## Установить все значения параметров через массив параметров [param array].
 func set_param_array(array: Array) -> void:
-	for i in range(_param_types.size()):
+	assert(array.size() == param_array_size())
+	for i in range(array.size()):
 		self.set_param(i, array[i])
 
 
 ## Возвращает все текущие параметры в виде [PackedByteArray].
 func get_byte_array() -> PackedByteArray:
-	return _params
+	var bytes := PackedByteArray()
+	bytes.resize(byte_array_size())
+	for i in range(bytes.size()):
+		bytes.set(i, get_byte(i))
+	return bytes
 
 
 ## Установить все значения параметров через массив байтов [param array].
 func set_byte_array(array: PackedByteArray) -> void:
-	for i in range(_params.size()):
-		self.set_byte(i, array[i])
+	assert(array.size() == byte_array_size())
+	for i in range(array.size()):
+		set_byte(i, array[i])
 
 
-## Возвращает отрезок из битов с номерами от [param from] до [param to] (не
+## Возвращает отрезок параметров с номерами от [param from] до [param to] (не
 ## включительно).
-func get_bit_slice(from: int, to: int) -> Array[int]:
+func get_param_slice(from: int, to: int) -> Array:
 	var res: Array[int] = []
 	res.resize(to - from)
 	for i in range(from, to):
-		res[i] = self.get_bit(i)
+		res[i] = get_param(i)
 	return res
 
 
@@ -156,33 +167,33 @@ func get_byte_slice(from: int, to: int) -> PackedByteArray:
 	var res: Array[int] = []
 	res.resize(to - from)
 	for i in range(from, to):
-		res[i] = self.get_byte(i)
+		res[i] = get_byte(i)
 	return res
 
 
-## Возвращает отрезок параметров с номерами от [param from] до [param to] (не
+## Возвращает отрезок из битов с номерами от [param from] до [param to] (не
 ## включительно).
-func get_param_slice(from: int, to: int) -> Array:
+func get_bit_slice(from: int, to: int) -> Array[int]:
 	var res: Array[int] = []
 	res.resize(to - from)
 	for i in range(from, to):
-		res[i] = self.get_param(i)
+		res[i] = get_bit(i)
 	return res
 
 
 ## Количество параметров в [Genome].
-func params_size() -> int:
+func param_array_size() -> int:
 	return _params.size()
 
 
 ## Количество байтов в [Genome].
-func byte_size() -> int:
-	return 0
+func byte_array_size() -> int:
+	return TYPE_SIZE * param_array_size()
 
 
 ## Количество битов в [Genome].
-func bit_size() -> int:
-	return 0
+func bit_array_size() -> int:
+	return 8 * byte_array_size()
 
 
 ## TODO desc
@@ -190,8 +201,12 @@ func _is_supported_type(val: Variant) -> bool:
 	return typeof(val) in PARAMS_TYPES
 
 ## TODO desc
-func _int_key_to_string(index: int) -> String:
-	if index < 0:
-		index += _params.size()
-	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы")
-	return _params.keys()[index]
+func _param_key_to_string(key: Variant) -> String:
+	if key is int:
+		if key < 0:
+			key += param_array_size()
+		assert((key >= 0) and (key < param_array_size()), "Индекс выходит за границы")
+		return _params.keys()[key]
+
+	assert(key is String)
+	return key
