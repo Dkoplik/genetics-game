@@ -12,11 +12,15 @@ class_name Genome extends RefCounted
 ## за самый младший байт или бит.
 
 ## Поддерживаемые типы данных для использования в качестве параметров решения.
-const PARAMS_TYPES: Array[Variant.Type] = [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]
+const PARAMS_TYPES: Array[Variant.Type] = [TYPE_INT, TYPE_FLOAT]
+## Размер всех типов в байтах.
+const TYPE_SIZE: int = 8
 
 var _params: Dictionary[String, Variant] = {}
 
-## params - dictionary or array TODO desc
+## Инициализация начальными значениями. [param params] является либо [Array],
+## либо [Dictionary]. В первом случае имена параметрам будут выданы
+## автоматически в формате 'param_{i}'.
 func _init(params: Variant) -> void:
 	if params is Dictionary:
 		_params = params
@@ -29,8 +33,9 @@ func _init(params: Variant) -> void:
 	assert(params.all(_is_supported_type))
 
 
-## Возвращает [Variant] параметра по индексу [param index]. Для отрицательных
-## значений индекса элементы берутся с конца. TODO update desc
+## Возвращает [Variant] параметра по ключу [param key]. [param key] может быть
+## либо целочисленным индексом, либо именем параметра. Для отрицательных
+## значений индекса элементы берутся с конца.
 func get_param(key: Variant) -> Variant:
 	if key is int:
 		key = _int_key_to_string(key)
@@ -39,8 +44,10 @@ func get_param(key: Variant) -> Variant:
 	return _params.get(key)
 
 
-## Заменяет значение [Variant] параметра по индексу [param index] на значение
-## [param value]. Ожидается тот же тип, что и оригинальный [Variant]. TODO update desc
+## Заменяет значение [Variant] параметра по ключу [param key] на значение
+## [param value]. Ожидается тот же тип, что и оригинальный [Variant].
+## [param key] может быть либо целочисленным индексом, либо именем параметра.
+## Для отрицательных значений индекса элементы берутся с конца.
 func set_param(key: Variant, value: Variant) -> void:
 	if key is int:
 		key = _int_key_to_string(key)
@@ -52,7 +59,7 @@ func set_param(key: Variant, value: Variant) -> void:
 	_params.set(key, value)
 
 
-## Возвращает байт по индексу [param index].
+## Возвращает байт по целочисленному индексу [param index].
 func get_byte(index: int) -> int:
 	if index < 0:
 		index += _params.size()
@@ -65,7 +72,8 @@ func get_byte(index: int) -> int:
 	return self.get_byte_array()[index]
 
 
-## Заменяет байт по индексу [param index] на значение [param value].
+## Заменяет байт по целочисленному индексу [param index] на значение
+## [param value].
 func set_byte(index: int, value: int) -> void:
 	if index < 0:
 		index += _params.size()
@@ -83,7 +91,7 @@ func set_byte(index: int, value: int) -> void:
 	_params[index] = value
 
 
-## Возвращает бит по индексу [param index].
+## Возвращает бит по целочисленному индексу [param index].
 func get_bit(index: int) -> int:
 	if index < 0:
 		index += 8 * _params.size()
@@ -94,7 +102,8 @@ func get_bit(index: int) -> int:
 	return Numeric.get_bit_from_int(byte, bit_index_in_byte)
 
 
-## Заменяет бит по индексу [param index] на значение [param value].
+## Заменяет бит по целочисленному индексу [param index] на значение
+## [param value].
 func set_bit(index: int, value: int) -> void:
 	if index < 0:
 		index += 8 * _params.size()
@@ -159,6 +168,21 @@ func get_param_slice(from: int, to: int) -> Array:
 	for i in range(from, to):
 		res[i] = self.get_param(i)
 	return res
+
+
+## Количество параметров в [Genome].
+func params_size() -> int:
+	return _params.size()
+
+
+## Количество байтов в [Genome].
+func byte_size() -> int:
+	return 0
+
+
+## Количество битов в [Genome].
+func bit_size() -> int:
+	return 0
 
 
 ## TODO desc
