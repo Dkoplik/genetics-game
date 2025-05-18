@@ -19,17 +19,6 @@ var hp: float
 ## Узел (класс) с поведением организма в игровом мире.
 @onready var behaviour: Organism2D = $Organism2D
 
-func _init(
-	genome: Genome = Genome.new([]),
-	mutate_function: Callable = Callable(),
-	partner_chooser: Callable = Callable(),
-	fitness_function: FitnessFunction = FitnessFunction.new(),
-	) -> void:
-	self.genome = genome
-	self.mutate_function = mutate_function
-	self.partner_chooser = partner_chooser
-	self.fitness_function = fitness_function
-
 
 ## Получить текущее значение приспособленности организма.
 func get_fitness() -> float:
