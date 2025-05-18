@@ -10,22 +10,25 @@ class_name Organism extends Node
 var genome: Genome
 ## Функция приспособленности данного организма.
 var fitness_function: FitnessFunction
-## Функция мутации данного организма. TODO desc Genome -> Void
+## Функция мутации данного организма. Genome -> Void.
 var mutate_function: Callable
-## TODO desc
-var behaviour: Node2D
-
+## Функция выбора патнёра. Массив из [Organism] -> [Organism]
+var partner_chooser: Callable
+var generation: int
+var hp: float
+## Узел (класс) с поведением организма в игровом мире.
+@onready var behaviour: Organism2D = $Organism2D
 
 func _init(
-	genome: Genome,
-	fitness_function: FitnessFunction,
-	mutate_function: Callable,
-	behaviour: Node2D
+	genome: Genome = Genome.new([]),
+	mutate_function: Callable = Callable(),
+	partner_chooser: Callable = Callable(),
+	fitness_function: FitnessFunction = FitnessFunction.new(),
 	) -> void:
 	self.genome = genome
-	self.fitness_function = fitness_function
 	self.mutate_function = mutate_function
-	self.behaviour = behaviour
+	self.partner_chooser = partner_chooser
+	self.fitness_function = fitness_function
 
 
 ## Получить текущее значение приспособленности организма.
@@ -41,4 +44,4 @@ func mutate() -> void:
 ## Запустить вымирание особи. После вызова этого метода организм должен
 ## осободить все занимаемые ресурсы и исчезнуть.
 func die() -> void:
-	pass
+	self.queue_free()
