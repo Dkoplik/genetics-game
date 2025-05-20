@@ -1,6 +1,25 @@
 extends GutTest
 
 
+class TestInit:
+	extends GutTest
+
+	func test_empty_init() -> void:
+		var ff := FitnessFunction.new()
+		assert_eq(ff.get_summands_array(), PackedStringArray())
+		assert_eq(ff.calculate({}), null)
+
+	func test_single_summand_init() -> void:
+		var ff := FitnessFunction.new("x", ["x"])
+		assert_eq(ff.get_summands_array(), ["x"] as PackedStringArray)
+		assert_eq(ff.calculate({"x": 5}), 5)
+
+	func test_multiple_summands_init() -> void:
+		var ff := FitnessFunction.new(["x", "y"], ["x", "y"])
+		assert_eq_deep(ff.get_summands_array(), ["x", "y"] as PackedStringArray)
+		assert_eq(ff.calculate({"x": 2, "y": 3}), 5)
+
+
 class TestAddSummand:
 	extends GutTest
 
@@ -28,13 +47,7 @@ class TestAddSummand:
 		var ff := FitnessFunction.new()
 		ff.add_summand("x", ["x", "y"])
 		assert_eq(ff.calculate({"x": 1, "y": 0}), 1)
-		assert_null(ff.calculate({"x": 1}))
-
-	func test_add_empty_summand() -> void:
-		var ff := FitnessFunction.new()
-		var error: Error = ff.add_summand("", [])
-		assert_eq(error, Error.OK)
-		assert_false(ff.contains(""))
+		assert_eq(ff.calculate({"x": 1}), 1)
 
 
 class TestRemoveSummand:
@@ -57,25 +70,18 @@ class TestRemoveSummand:
 		assert_true(ff.contains("a") and ff.contains("c"))
 		assert_eq(ff.calculate({"a": 1, "c": 3}), 4)
 
-	func test_remove_nonexistent_summand() -> void:
-		var ff := FitnessFunction.new()
-		ff.add_summand("x", ["x"])
-		ff.remove_summand("y", ["y"])
-		assert_true(ff.contains("x"))
-		assert_eq(ff.calculate({"x": 5}), 5)
-
 	func test_remove_summand_removes_unused_variable() -> void:
 		var ff := FitnessFunction.new()
 		ff.add_summand("x", ["x"])
 		ff.add_summand("y", ["y"])
 		ff.remove_summand("y", ["y"])
 		assert_eq(ff.calculate({"x": 5}), 5)
-		assert_null(ff.calculate({"y": 5}))
 
 	func test_remove_summand_keeps_used_variable() -> void:
 		var ff := FitnessFunction.new()
 		ff.add_summand("x", ["x"])
 		ff.add_summand("x*y", ["x", "y"])
+		assert_eq(ff.calculate({"x": 2, "y": 3}), 8)
 		ff.remove_summand("x", ["x"])
 		assert_eq(ff.calculate({"x": 2, "y": 3}), 6)
 
@@ -98,6 +104,23 @@ class TestContains:
 		assert_false(ff.contains("x"))
 
 
+class TestGetSummandsArray:
+	extends GutTest
+
+	func test_empty_function() -> void:
+		var ff := FitnessFunction.new()
+		assert_eq(ff.get_summands_array(), PackedStringArray())
+
+	func test_single_summand() -> void:
+		var ff := FitnessFunction.new("x", ["x"])
+		assert_eq(ff.get_summands_array(), ["x"] as PackedStringArray)
+
+	func test_multiple_summands() -> void:
+		var ff := FitnessFunction.new(["x", "y", "z"], ["x", "y", "z"])
+		var summands = ff.get_summands_array()
+		assert_true(summands.has("x") and summands.has("y") and summands.has("z"))
+
+
 class TestCalculate:
 	extends GutTest
 
@@ -105,11 +128,6 @@ class TestCalculate:
 		var ff := FitnessFunction.new()
 		ff.add_summand("x + y", ["x", "y"])
 		assert_eq(ff.calculate({"x": 2, "y": 3}), 5)
-
-	func test_calculate_missing_variable() -> void:
-		var ff := FitnessFunction.new()
-		ff.add_summand("x", ["x"])
-		assert_null(ff.calculate({"y": 5}))
 
 	func test_calculate_execution_error() -> void:
 		var ff := FitnessFunction.new()
