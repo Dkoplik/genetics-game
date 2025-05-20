@@ -198,11 +198,13 @@ func bit_array_size() -> int:
 	return 8 * byte_array_size()
 
 
-## TODO desc
+## Проверяет, поддерживает ли [Genome] данный тип данных.
 func _is_supported_type(val: Variant) -> bool:
 	return typeof(val) in PARAMS_TYPES
 
-## TODO desc
+
+## Проверяет индекс на выход за границы и переводит его в соответсвующий
+## строковый ключ.
 func _param_key_to_string(key: Variant) -> String:
 	if key is int:
 		if key < 0:
