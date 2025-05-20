@@ -60,7 +60,7 @@ func stop_random_movement() -> void:
 func move_to_organism2d(organism: Organism2D) -> void:
 	if _is_randomly_moving:
 		stop_random_movement()
-	if _is_moving_to_organism: # До этого двигался к другому организму
+	if _is_moving_to_organism:  # До этого двигался к другому организму
 		canceled_moving_to_organism.emit(_target_organism)
 	_is_moving_to_organism = true
 	_target_organism = organism
@@ -75,7 +75,7 @@ func move_to_point(point: Vector2, save_target_organism := false) -> void:
 	# До этого двигался к другому организму
 	if _is_moving_to_organism and not save_target_organism:
 		canceled_moving_to_organism.emit(_target_organism)
-	if _is_moving_to_point: # До этого двигался к другой точке
+	if _is_moving_to_point:  # До этого двигался к другой точке
 		canceled_moving_to_point.emit(_target_point)
 	_is_moving_to_organism = false
 	_is_moving_to_point = true
@@ -108,7 +108,7 @@ func _moving_to_point(delta: float) -> void:
 	if not _is_moving_to_point:
 		return
 
-	var diff : Vector2 = _target_point - global_position
+	var diff: Vector2 = _target_point - global_position
 	var direction: Vector2 = diff.normalized()
 	velocity = params.speed * direction
 	if (velocity * delta).length() > diff.length():

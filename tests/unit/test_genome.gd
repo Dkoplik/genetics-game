@@ -1,5 +1,6 @@
 extends GutTest
 
+
 class TestInitAndGetAllParams:
 	extends GutTest
 
@@ -20,7 +21,7 @@ class TestInitAndGetAllParams:
 				assert_almost_eq(genome.get_param(i), params[i], Numeric.EPS)
 
 	func test_init_with_dictionary() -> void:
-		var params = { "a": 123, "b": 456.789 }
+		var params = {"a": 123, "b": 456.789}
 		var genome = Genome.new(params)
 		assert_eq(genome.param_array_size(), params.size())
 		assert_eq_deep(genome.get_param_array(), [123, 456.789])
@@ -44,7 +45,7 @@ class TestSetGetParam:
 		assert_almost_eq(genome.get_param(1), 300.75, Numeric.EPS)
 
 	func test_set_get_param_by_string_key() -> void:
-		var genome = Genome.new({ "x": 10, "y": 20.5 })
+		var genome = Genome.new({"x": 10, "y": 20.5})
 		genome.set_param("x", 20)
 		assert_eq(genome.get_param("x"), 20)
 		genome.set_param("y", 30.5)

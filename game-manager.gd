@@ -2,6 +2,7 @@ extends Node
 
 @onready var population: Population = $Population
 
+
 func _ready() -> void:
 	var p_params := PopulationParams.new()
 	p_params.mutate_functions = [GACallables.random_binary_mutation]

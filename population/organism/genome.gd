@@ -18,6 +18,7 @@ const TYPE_SIZE: int = 8
 
 var _params: Dictionary[String, Variant] = {}
 
+
 ## Инициализация начальными значениями. [param params] является либо [Array],
 ## либо [Dictionary]. В первом случае имена параметрам будут выданы
 ## автоматически в формате 'param_{i}'.
@@ -25,7 +26,7 @@ func _init(params: Variant) -> void:
 	if params is Dictionary:
 		assert(params.values().all(_is_supported_type))
 		var params_dict: Dictionary[String, Variant] = {}
-		for key in params.keys(): # Костыль для типизированного словаря
+		for key in params.keys():  # Костыль для типизированного словаря
 			assert(key is String)
 			assert(params.get(key) is Variant)
 			params_dict.set(key, params.get(key))
@@ -35,7 +36,7 @@ func _init(params: Variant) -> void:
 		var params_arr := params as Array
 		assert(params_arr.all(_is_supported_type))
 		for i in range(params_arr.size()):
-			var key := 'param_{0}'.format([i])
+			var key := "param_{0}".format([i])
 			_params.set(key, params_arr[i])
 
 
@@ -56,7 +57,7 @@ func set_param(key: Variant, value: Variant) -> void:
 	var str_key: String = _param_key_to_string(key)
 
 	if typeof(value) != typeof(_params.get(str_key)):
-		push_warning('Change of type for {0}'.format([str_key]))
+		push_warning("Change of type for {0}".format([str_key]))
 	_params.set(str_key, value)
 
 
@@ -74,7 +75,7 @@ func get_byte(index: int) -> int:
 	elif target_param is float:
 		bytes.encode_double(0, target_param as float)
 	else:
-		assert(false, 'Unsupported type')
+		assert(false, "Unsupported type")
 	return bytes.get(index % TYPE_SIZE)
 
 
@@ -98,7 +99,7 @@ func set_byte(index: int, value: int) -> void:
 		bytes.set(index % TYPE_SIZE, value)
 		set_param(index / TYPE_SIZE, bytes.decode_double(0))
 	else:
-		assert(false, 'Unsupported type')
+		assert(false, "Unsupported type")
 
 
 ## Возвращает бит по целочисленному индексу [param index].

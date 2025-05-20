@@ -19,7 +19,8 @@ var fitness_function: FitnessFunction
 var params: OrganismParams = preload("./organism-default-params.tres")
 
 ## Текущие жизни особи.
-var _hp: float: set = set_hp
+var _hp: float:
+	set = set_hp
 
 ## Узел (класс) с поведением организма в игровом мире.
 @onready var behaviour: Organism2D = $Organism2D

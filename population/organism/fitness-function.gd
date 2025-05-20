@@ -5,7 +5,7 @@ class_name FitnessFunction extends Expression
 ## какое-то конкретное выражение, но и менять его, добавляя/удаляя слагаемые.
 
 ## Текущие слагаемые в функции приспособленности.
-var _summands: Dictionary[String, bool] = {} # Вместо Set
+var _summands: Dictionary[String, bool] = {}  # Вместо Set
 ## Количество вхождений каждой переменной в выражение.
 var _variables_uses: Dictionary[String, int] = {}
 ## Порядок указания переменных для дальнейшего использования в

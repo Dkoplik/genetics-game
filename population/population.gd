@@ -4,10 +4,11 @@ class_name Population extends Node
 ## Содержит методы для создания новых организмов и для нанесения глобальных
 ## эффектов или глобального урона.
 
-
 var params: PopulationParams = preload("./population-default-params.tres")
 var organism_params: OrganismParams = preload("./organism/organism-default-params.tres")
-var organism2d_params: Organism2DParams = preload("./organism/organism2d/organism2d-default-params.tres")
+var organism2d_params: Organism2DParams = preload(
+	"./organism/organism2d/organism2d-default-params.tres"
+)
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
 
 

@@ -42,7 +42,7 @@ static func roll_dice(chance: float) -> bool:
 static func random_value(type: Variant.Type) -> Variant:
 	if type == TYPE_INT:
 		return randi()
-	elif type == TYPE_FLOAT:
+	if type == TYPE_FLOAT:
 		return 1000 * randf()
 	assert(false, "Неподдерживаемый тип")
 	return null

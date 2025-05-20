@@ -4,6 +4,7 @@ class_name OrganismDetector extends Area2D
 signal organism_entered(organism: Organism)
 signal organism_exited(organism: Organism)
 
+
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
