@@ -15,6 +15,6 @@ static func discrete_recombination(parent1: Genome, parent2: Genome) -> Genome:
 
 
 static func random_binary_mutation(genome: Genome) -> void:
-	var bit_index = randi_range(0, genome.bit_array_size())
-	var bit = 0 if genome.get_bit(bit_index) else 1
+	var bit_index: int = randi_range(0, genome.bit_array_size() - 1)
+	var bit: int = 0 if genome.get_bit(bit_index) else 1
 	genome.set_bit(bit_index, bit)

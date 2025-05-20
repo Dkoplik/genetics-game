@@ -23,14 +23,16 @@ var _params: Dictionary[String, Variant] = {}
 ## автоматически в формате 'param_{i}'.
 func _init(params: Variant) -> void:
 	if params is Dictionary:
-		_params = params
+		var params_dict := params as Dictionary
+		assert(params_dict.values().all(_is_supported_type))
+		_params = params_dict
 	else:
 		assert(params is Array)
-		for i in range(params.size()):
+		var params_arr := params as Array
+		assert(params_arr.all(_is_supported_type))
+		for i in range(params_arr.size()):
 			var key := 'param_{0}'.format([i])
-			_params.set(key, params[i])
-	assert(_params.size() == params.size())
-	assert(params.all(_is_supported_type))
+			_params.set(key, params_arr[i])
 
 
 ## Возвращает [Variant] параметра по ключу [param key]. [param key] может быть
@@ -51,7 +53,7 @@ func set_param(key: Variant, value: Variant) -> void:
 
 	if typeof(value) != typeof(_params.get(str_key)):
 		push_warning('Change of type for {0}'.format([str_key]))
-	_params.set(key, value)
+	_params.set(str_key, value)
 
 
 ## Возвращает байт по целочисленному индексу [param index].
@@ -60,13 +62,13 @@ func get_byte(index: int) -> int:
 		index += byte_array_size()
 	assert((index >= 0) and (index < byte_array_size()), "Индекс выходит за границы генома")
 
-	var target_param = get_param(index / TYPE_SIZE)
+	var target_param: Variant = get_param(index / TYPE_SIZE)
 	var bytes := PackedByteArray()
 	bytes.resize(TYPE_SIZE)
 	if target_param is int:
-		bytes.encode_s64(0, target_param)
+		bytes.encode_s64(0, target_param as int)
 	elif target_param is float:
-		bytes.encode_double(0, target_param)
+		bytes.encode_double(0, target_param as float)
 	else:
 		assert(false, 'Unsupported type')
 	return bytes.get(index % TYPE_SIZE)
@@ -76,19 +78,19 @@ func get_byte(index: int) -> int:
 ## [param value].
 func set_byte(index: int, value: int) -> void:
 	if index < 0:
-		index += _params.size()
-	assert((index >= 0) and (index < _params.size()), "Индекс выходит за границы генома")
+		index += byte_array_size()
+	assert((index >= 0) and (index < byte_array_size()), "Индекс выходит за границы генома")
 	assert((value >= 0) and (value < 256), "incorrect value")
 
-	var target_param = get_param(index / TYPE_SIZE)
+	var target_param: Variant = get_param(index / TYPE_SIZE)
 	var bytes := PackedByteArray()
 	bytes.resize(TYPE_SIZE)
 	if target_param is int:
-		bytes.encode_s64(0, target_param)
+		bytes.encode_s64(0, target_param as int)
 		bytes.set(index % TYPE_SIZE, value)
 		set_param(index / TYPE_SIZE, bytes.decode_s64(0))
 	elif target_param is float:
-		bytes.encode_double(0, target_param)
+		bytes.encode_double(0, target_param as float)
 		bytes.set(index % TYPE_SIZE, value)
 		set_param(index / TYPE_SIZE, bytes.decode_double(0))
 	else:

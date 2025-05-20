@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://q6pd1ry2ex32"]
+
+[ext_resource type="Script" uid="uid://b6q6r8sx83cxm" path="res://local-effect/local-effect.gd" id="1_54pwn"]
+[ext_resource type="Script" uid="uid://dmx6ns1nswspf" path="res://local-effect/organism-detector.gd" id="1_gkm6r"]
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="2_2i1qv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_54pwn"]
+radius = 150.0
+
+[node name="LocalEffect" type="Node2D"]
+script = ExtResource("1_54pwn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.392157)
+scale = Vector2(0.595, 0.595)
+texture = ExtResource("2_2i1qv")
+
+[node name="OrganismDetector" type="Area2D" parent="."]
+collision_layer = 0
+script = ExtResource("1_gkm6r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrganismDetector"]
+shape = SubResource("CircleShape2D_54pwn")
+
+[connection signal="organism_entered" from="OrganismDetector" to="." method="_on_organism_detector_organism_entered"]
+[connection signal="organism_exited" from="OrganismDetector" to="." method="_on_organism_detector_organism_exited"]

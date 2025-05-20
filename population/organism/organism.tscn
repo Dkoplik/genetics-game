@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://crsp6x20ucej0"]
+
+[ext_resource type="Script" uid="uid://0qjyfy38g348" path="res://population/organism/organism.gd" id="1_f7sj4"]
+[ext_resource type="Script" uid="uid://cgujb86ocsr13" path="res://population/organism/organism2d/organism2d.gd" id="2_cvviw"]
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="3_wpyi7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
+radius = 12.0
+
+[node name="Organism" type="Node"]
+script = ExtResource("1_f7sj4")
+
+[node name="Organism2D" type="CharacterBody2D" parent="."]
+collision_mask = 0
+script = ExtResource("2_cvviw")
+metadata/_custom_type_script = "uid://cgujb86ocsr13"
+
+[node name="Sprite2D" type="Sprite2D" parent="Organism2D"]
+scale = Vector2(0.048, 0.048)
+texture = ExtResource("3_wpyi7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Organism2D"]
+shape = SubResource("CircleShape2D_cvviw")
+
+[node name="ProgressBar" type="ProgressBar" parent="Organism2D"]
+offset_left = -13.0
+offset_top = 13.0
+offset_right = 127.0
+offset_bottom = 40.0
+scale = Vector2(0.2, 0.2)
+
+[connection signal="hp_changed" from="." to="Organism2D/ProgressBar" method="set_value"]
