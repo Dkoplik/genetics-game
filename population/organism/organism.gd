@@ -1,10 +1,9 @@
 class_name Organism extends Node
 ## Логика организма для генетического алгоритма.
 ##
-## Организм содержит свой геном, свою функцию приспособленности и даже свою
-## функцию мутации, поскольку мутация не зависит от других организмов. Этот
-## класс отвечает только за представление организма в ГА и не имеет отношения
-## к его поведению в игровом мире.
+## Отвечает только за реализацию логики генетического алгоритма. Этот класс
+## не затрагивает поведение и положение организма в мире. Где это необходимо,
+## изменения в поведении передаются по ссылке классу, отвечающему за поведение.
 
 signal died
 signal mutated
@@ -57,10 +56,10 @@ func try_choose_partner() -> void:
 	if not Numeric.roll_dice(params.mutate_chance):
 		return
 	if get_parent() is not Population:
-		push_warning("Отсутствует родительская популяция, выбор партнёра невозможен")
+		push_error("Отсутствует родительская популяция, выбор партнёра невозможен")
 		return
-	var population: Population = get_parent()
-	var partner: Organism = params.partner_chooser.call(population.get_organisms())
+	var population := get_parent() as Population
+	var partner := params.partner_chooser.call(population.get_organisms()) as Organism
 	chose_partner.emit(partner)
 
 
@@ -71,13 +70,24 @@ func die() -> void:
 	self.queue_free()
 
 
+## Нанести урон в размере [param damage].
+func deal_damage(damage: float) -> void:
+	if damage <= 0.0:
+		push_error("урон = {0}".format([damage]))
+		return
+	_hp -= damage
+
+
+## Увеличить здоровье на [param heal_amount].
+func heal(heal_amount: float) -> void:
+	if heal_amount <= 0.0:
+		push_error("восстановление жизней = {0}".format([heal_amount]))
+		return
+	_hp += heal_amount
+
+
 func set_hp(new_hp: float) -> void:
-	if new_hp > params.max_hp:
-		push_warning("Попытка превысить максимальные жизни")
-		new_hp = params.max_hp
-	if new_hp < 0.0:
-		new_hp = 0.0
-	_hp = new_hp
+	_hp = clampf(new_hp, 0.0, params.max_hp)
 	hp_changed.emit(_hp)
 
 
@@ -91,13 +101,13 @@ func _ready_for_mating(partner: Organism2D) -> void:
 	if partner.get_parent() is not Organism:
 		push_warning("У найденного Organism2D отсутствует родительский Organism")
 		return
-	ready_for_mating.emit(self, partner.get_parent())
+	ready_for_mating.emit(self, partner.get_parent() as Organism)
 	behaviour.moved_to_organism2d.disconnect(_ready_for_mating)
 
 
 func _calc_damage() -> float:
 	var fitness: float = get_fitness()
 	if fitness < 0.0:
-		push_warning("Отрицательная приспособленность")
+		push_error("Отрицательная приспособленность")
 		fitness = 0.0
 	return min(params.damage_coef * fitness, params.max_damage)

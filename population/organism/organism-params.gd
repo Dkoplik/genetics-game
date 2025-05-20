@@ -12,10 +12,10 @@ class_name OrganismParams extends Resource
 ## Функция мутации данного организма. [Genome] -> Void
 @export var mutate_function: Callable = GACallables.random_binary_mutation
 ## Шанс срабатывания [member mutate_function] на каждой итерации.
-@export var mutate_chance := 0.01
+@export var mutate_chance := 0.0001
 
 @export_category("Выбор партнёра")
 ## Функция выбора патнёра. Array[Organism] -> [Organism]
 @export var partner_chooser: Callable = GACallables.random_partner
 ## Шанс срабатывания [member partner_chooser] на каждой итерации.
-@export var reproduction_chance := 0.2
+@export var reproduction_chance := 0.002
