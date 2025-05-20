@@ -1,4 +1,9 @@
 class_name Population extends Node
+## Отвечает за популяцию из [Organism].
+##
+## Содержит методы для создания новых организмов и для нанесения глобальных
+## эффектов или глобального урона.
+
 
 var params: PopulationParams = preload("./population-default-params.tres")
 var organism_params: OrganismParams = preload("./organism/organism-default-params.tres")
@@ -6,14 +11,11 @@ var organism2d_params: Organism2DParams = preload("./organism/organism2d/organis
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
 
 
-func _ready() -> void:
-	params.default_fitness_function.add_summand("0.0", [])
-
-
 func _physics_process(_delta: float) -> void:
 	deal_global_damage(_calc_population_damage())
 
 
+## Получить массив всех организмов в этой популяции.
 func get_organisms() -> Array[Organism]:
 	var res: Array[Organism] = []
 	for node: Node in get_children():
@@ -22,6 +24,7 @@ func get_organisms() -> Array[Organism]:
 	return res
 
 
+## Создать новый организм с геномом [param genome] в позиции [param position].
 func create_organism(genome: Genome, position: Vector2) -> void:
 	var new_organism_params: OrganismParams = organism_params.duplicate()
 	new_organism_params.mutate_function = params.mutate_functions.pick_random()
@@ -38,6 +41,7 @@ func create_organism(genome: Genome, position: Vector2) -> void:
 	organism.behaviour.position = position
 
 
+## Создать организм со случайным геномом в случайной позиции.
 func create_random_organism() -> void:
 	var random_params: Dictionary[String, Variant] = {}
 	for param_name: String in params.genome_param_types.keys():
@@ -46,6 +50,7 @@ func create_random_organism() -> void:
 	create_organism(Genome.new(random_params), _get_random_point())
 
 
+## Получить размер популяции.
 func get_population_size() -> int:
 	return get_organisms().size()
 
@@ -70,6 +75,7 @@ func remove_global_summand(summand: String, variables: PackedStringArray) -> voi
 		assert(err == Error.OK)
 
 
+## Нанести урон в размере [param damage] всем организмам этой популяции.
 func deal_global_damage(damage: float) -> void:
 	if damage < 0.0:
 		push_warning("Отрицательный глобальный урон")
@@ -77,8 +83,9 @@ func deal_global_damage(damage: float) -> void:
 		organism._hp -= damage
 
 
+## Рассчитать урон из-за размера популяции.
 func _calc_population_damage() -> float:
-	return 0.01 * sqrt(get_population_size())
+	return 0.001 * get_population_size() ** 2
 
 
 func _on_organism_ready_for_mating(parent1: Organism, parent2: Organism) -> void:
@@ -88,6 +95,7 @@ func _on_organism_ready_for_mating(parent1: Organism, parent2: Organism) -> void
 	create_organism(new_genome, position)
 
 
+## Случайная точка в игровом мире.
 func _get_random_point() -> Vector2:
 	return Vector2(
 		randf_range(organism2d_params.world_left_border, organism2d_params.world_right_border),

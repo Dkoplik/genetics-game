@@ -13,4 +13,4 @@ class_name PopulationParams extends Resource
 }
 
 ## Начальная функция приспособленности.
-var default_fitness_function := FitnessFunction.new()
+var default_fitness_function := FitnessFunction.new("0.0", [])
