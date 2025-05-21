@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccvwkpmg0u50s"]
+
+[ext_resource type="Script" uid="uid://3wmmmk0071lm" path="res://ui/info-panel/info-panel.gd" id="1_wbh2n"]
+
+[node name="Info-panel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wbh2n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+alignment = 2
+
+[node name="HP" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "HP:"
+
+[node name="TimeAlive" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Time alive:"
+
+[node name="Genome" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Genome:"
+
+[node name="Mutations" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Mutations:"
+
+[node name="Children" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Children:"
+
+[node name="FitnessFunction" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Fitness function:"
