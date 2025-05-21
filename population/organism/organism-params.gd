@@ -14,8 +14,10 @@ class_name OrganismParams extends Resource
 ## Шанс срабатывания [member mutate_function] на каждой итерации.
 @export var mutate_chance := 0.0001
 
-@export_category("Выбор партнёра")
+@export_category("Размножение")
 ## Функция выбора патнёра. Array[Organism] -> [Organism]
 @export var partner_chooser: Callable = GACallables.random_partner
 ## Шанс срабатывания [member partner_chooser] на каждой итерации.
 @export var reproduction_chance := 0.002
+## Алгоритм формирования дочернего [Genome]. ([Genome], [Genome]) -> [Genome].
+@export var crossover_function: Callable = GACallables.discrete_recombination

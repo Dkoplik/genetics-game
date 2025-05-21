@@ -9,6 +9,7 @@ signal died
 signal mutated
 signal chose_partner(partner: Organism)
 signal ready_for_mating(parent1: Organism, parent2: Organism)
+signal reproduced(parent1: Organism, parent2: Organism, genome: Genome)
 signal hp_changed(new_hp: float)
 
 ## Хормосома (геном) данного организма.
@@ -102,8 +103,11 @@ func _ready_for_mating(partner: Organism2D) -> void:
 	if partner.get_parent() is not Organism:
 		push_warning("У найденного Organism2D отсутствует родительский Organism")
 		return
-	ready_for_mating.emit(self, partner.get_parent() as Organism)
+	var partner_org := partner.get_parent() as Organism
+	ready_for_mating.emit(self, partner_org)
 	behaviour.moved_to_organism2d.disconnect(_ready_for_mating)
+	var new_genome := params.crossover_function.call(genome, partner_org.genome) as Genome
+	reproduced.emit(self, partner_org, new_genome)
 
 
 func _calc_damage() -> float:

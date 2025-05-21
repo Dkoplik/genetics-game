@@ -36,7 +36,7 @@ func create_organism(genome: Genome, position: Vector2) -> void:
 
 	organism.genome = genome
 	organism.fitness_function = params.default_fitness_function.duplicate()
-	organism.ready_for_mating.connect(_on_organism_ready_for_mating)
+	organism.reproduced.connect(_on_organism_reproduced)
 	add_child(organism)
 	organism.behaviour.params = organism2d_params
 	organism.behaviour.position = position
@@ -89,9 +89,7 @@ func _calc_population_damage() -> float:
 	return 0.001 * get_population_size() ** 2
 
 
-func _on_organism_ready_for_mating(parent1: Organism, parent2: Organism) -> void:
-	var crossover: Callable = params.crossover_functions.pick_random()
-	var new_genome: Genome = crossover.call(parent1.genome, parent2.genome)
+func _on_organism_reproduced(parent1: Organism, parent2: Organism, new_genome: Genome) -> void:
 	var position: Vector2 = (parent1.behaviour.position + parent2.behaviour.position) / 2
 	create_organism(new_genome, position)
 
