@@ -58,7 +58,7 @@ func add_summand(summand: String, variables: PackedStringArray) -> Error:
 			_variables_uses.set(variable, 1)
 			_variables_order.append(variable)
 
-	return self.parse(_join_summands(), _variables_order)
+	return self.parse(get_string_function(), _variables_order)
 
 
 ## Удаляет слагаемое из выражения. [param summand] содержит удаляемое
@@ -80,7 +80,7 @@ func remove_summand(summand: String, variables: PackedStringArray) -> Error:
 			_variables_uses.erase(variable)
 			_variables_order.remove_at(_variables_order.find(variable))
 
-	return self.parse(_join_summands(), _variables_order)
+	return self.parse(get_string_function(), _variables_order)
 
 
 ## Проверяет, содержится ли слагаемое [param summand] в выражении.
@@ -113,8 +113,8 @@ func duplicate() -> FitnessFunction:
 	return FitnessFunction.new(_summands.keys(), _variables_order)
 
 
-## Объединяет слагаемые [member _summands] в единое выражение.
-func _join_summands() -> String:
+## Возвращает всю функцию в строковом виде.
+func get_string_function() -> String:
 	if _summands.is_empty():
 		return "null"
 
