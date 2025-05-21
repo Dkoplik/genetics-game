@@ -20,8 +20,8 @@ func _init(summands: Variant = null, variables: Variant = null) -> void:
 	if summands == null:
 		self.parse("null")
 		return
-	assert((summands is String) or (summands is Array))
-	assert(variables is Array)
+	assert((summands is String) or (summands is Array) or (summands is PackedStringArray))
+	assert((variables is Array) or (variables is PackedStringArray))
 	if summands is String:
 		var err: Error = add_summand(summands as String, variables)
 		assert(err == Error.OK)
@@ -106,6 +106,11 @@ func calculate(params: Dictionary[String, Variant]) -> Variant:
 	if self.has_execute_failed():
 		return null
 	return res
+
+
+## Создать копию текущей [FitnessFunction].
+func duplicate() -> FitnessFunction:
+	return FitnessFunction.new(_summands.keys(), _variables_order)
 
 
 ## Объединяет слагаемые [member _summands] в единое выражение.

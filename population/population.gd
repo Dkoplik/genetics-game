@@ -35,7 +35,7 @@ func create_organism(genome: Genome, position: Vector2) -> void:
 	organism.params = new_organism_params
 
 	organism.genome = genome
-	organism.fitness_function = params.default_fitness_function
+	organism.fitness_function = params.default_fitness_function.duplicate()
 	organism.ready_for_mating.connect(_on_organism_ready_for_mating)
 	add_child(organism)
 	organism.behaviour.params = organism2d_params

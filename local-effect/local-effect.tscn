@@ -17,10 +17,18 @@ texture = ExtResource("2_2i1qv")
 
 [node name="OrganismDetector" type="Area2D" parent="."]
 collision_layer = 0
+monitorable = false
 script = ExtResource("1_gkm6r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OrganismDetector"]
 shape = SubResource("CircleShape2D_54pwn")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -66.0
+offset_top = -10.0
+offset_right = 134.0
+offset_bottom = 17.0
+scale = Vector2(0.7, 0.7)
 
 [connection signal="organism_entered" from="OrganismDetector" to="." method="_on_organism_detector_organism_entered"]
 [connection signal="organism_exited" from="OrganismDetector" to="." method="_on_organism_detector_organism_exited"]

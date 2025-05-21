@@ -9,7 +9,6 @@ func _ready() -> void:
 	p_params.partner_choosers = [GACallables.random_partner]
 	p_params.crossover_functions = [GACallables.discrete_recombination]
 	p_params.genome_param_types = {"Ice": TYPE_FLOAT, "Fire": TYPE_FLOAT}
-	p_params.default_fitness_function = FitnessFunction.new()
 	population.params = p_params
 	for i in range(4):
 		population.create_random_organism()
