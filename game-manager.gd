@@ -44,3 +44,16 @@ func _on_selection_changed(selection: SelectableArea) -> void:
 			#effect.variables = ["Fire"]
 			#effect.position = event.position
 			#add_child(effect)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	#print("got event " + str(event))
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			#print(str(self) + "was clicked")
+			SelectManager.clear_selection()
+	elif event is InputEventScreenTouch:
+		var touch_event := event as InputEventScreenTouch
+		if touch_event.pressed:
+			SelectManager.clear_selection()

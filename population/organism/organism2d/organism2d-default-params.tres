@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_pq08r")
+speed = 80.0
+move_to_organism_dist_coef = 1.5
 world_upper_border = 0.0
 world_lower_border = 1000.0
 world_left_border = 0.0
 world_right_border = 500.0
-move_to_organism_distance = 15.0
-speed = 200.0
 metadata/_custom_type_script = "uid://dellynipy21ck"
