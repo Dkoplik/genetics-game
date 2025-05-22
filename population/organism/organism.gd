@@ -13,9 +13,9 @@ signal reproduced(parent1: Organism, parent2: Organism, genome: Genome)
 signal hp_changed(new_hp: float)
 
 ## Хормосома (геном) данного организма.
-var genome: Genome
+var genome: Genome = null
 ## Функция приспособленности данного организма.
-var fitness_function: FitnessFunction
+var fitness_function: FitnessFunction = null
 ## Остальные параметры особи.
 var params: OrganismParams = preload("./organism-default-params.tres")
 
@@ -50,12 +50,21 @@ func _physics_process(delta: float) -> void:
 
 ## Получить текущее значение приспособленности организма.
 func get_fitness() -> float:
+	if genome == null:
+		push_warning("genome == null")
+		return 0.0
+	if fitness_function == null:
+		push_warning("fitness function == null")
+		return 0.0
 	return fitness_function.calculate(genome.get_param_dict())
 
 
 ## Произвести мутацию организма по алгоритму [member mutate_function].
 func try_mutate() -> void:
 	if not Numeric.roll_dice(params.mutate_chance):
+		return
+	if genome == null:
+		push_warning("genome == null")
 		return
 	params.mutate_function.call(genome)
 	mutated.emit()
@@ -67,7 +76,7 @@ func try_choose_partner() -> void:
 	if not Numeric.roll_dice(params.mutate_chance):
 		return
 	if get_parent() is not Population:
-		push_error("Отсутствует родительская популяция, выбор партнёра невозможен")
+		push_error("No Population parent")
 		return
 	var population := get_parent() as Population
 	var partner := params.partner_chooser.call(population.get_organisms()) as Organism
@@ -128,6 +137,9 @@ func _move_to_partner(partner: Organism) -> void:
 func _ready_for_mating(partner: Organism2D) -> void:
 	if partner.get_parent() is not Organism:
 		push_warning("У найденного Organism2D отсутствует родительский Organism")
+		return
+	if genome == null:
+		push_warning("genome == null")
 		return
 	var partner_org := partner.get_parent() as Organism
 	ready_for_mating.emit(self, partner_org)

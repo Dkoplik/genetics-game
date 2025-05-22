@@ -90,6 +90,14 @@ func get_random_point() -> Vector2:
 	)
 
 
+func get_current_target() -> Variant:
+	if _is_moving_to_organism:
+		return _target_organism
+	if _is_moving_to_point:
+		return _target_point
+	return null
+
+
 ## Обработать движение до организма. Завязано на движении к точке, поэтому
 ## должно вызываться до [member _moving_to_point].
 func _moving_to_organism() -> void:
@@ -118,6 +126,6 @@ func _moving_to_point(delta: float) -> void:
 
 
 ## Назначить движение к случайной точке.
-func _move_to_random_point(previous_point := Vector2.ZERO) -> void:
+func _move_to_random_point(_previous_point := Vector2.ZERO) -> void:
 	_target_point = get_random_point()
 	_is_moving_to_point = true

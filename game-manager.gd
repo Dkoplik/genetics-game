@@ -8,8 +8,11 @@ var p_params := PopulationParams.new()
 #var org_params := OrganismParams.new()
 #var org2d_params := Organism2DParams.new()
 
+@onready var info_panel: InfoPanel = $'Info-panel'
 
 func _ready() -> void:
+	SelectManager.selection_changed.connect(_on_selection_changed)
+
 	# Population Params
 	p_params.mutate_functions = [GACallables.random_binary_mutation]
 	p_params.partner_choosers = [GACallables.random_partner]
@@ -20,6 +23,15 @@ func _ready() -> void:
 	# Start Population
 	for i in range(start_population_size):
 		population.create_random_organism()
+
+
+func _on_selection_changed(selection: SelectableArea) -> void:
+	if selection == null:
+		info_panel.hide()
+		return
+	info_panel.show()
+	var organism := selection.get_parent().get_parent() as Organism
+	info_panel.update_info(organism)
 
 
 ## Костыль для спавна эффектов.

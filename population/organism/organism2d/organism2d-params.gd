@@ -3,7 +3,7 @@ class_name Organism2DParams extends Resource
 @export var speed: float = 200.0
 ## Дистанция, при которой движение к целевому организму можно считать
 ## законченным. Указывается в долях от радиуса организма.
-@export var move_to_organism_dist_coef: float = 1.2
+@export var move_to_organism_dist_coef: float = 1.5
 
 @export_category("Границы мира")
 @export var world_upper_border: float = 0
