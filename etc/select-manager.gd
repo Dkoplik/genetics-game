@@ -8,6 +8,7 @@ var new_selection: SelectableArea = null
 
 
 func _on_selectable_area_selected() -> void:
+	#print("got click")
 	assert(current_selection != new_selection)
 	if current_selection:
 		current_selection.deselect()

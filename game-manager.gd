@@ -28,10 +28,11 @@ func _ready() -> void:
 func _on_selection_changed(selection: SelectableArea) -> void:
 	if selection == null:
 		info_panel.hide()
+		info_panel.target_organism = null
 		return
 	info_panel.show()
 	var organism := selection.get_parent().get_parent() as Organism
-	info_panel.update_info(organism)
+	info_panel.target_organism = organism
 
 
 ## Костыль для спавна эффектов.

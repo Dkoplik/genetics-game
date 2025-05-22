@@ -12,18 +12,19 @@ func _ready() -> void:
 	input_pickable = true
 
 
-func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
+func _input_event(viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
+	#print("got event " + str(event))
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			#print(str(self) + "was clicked")
 			toggle_selection()
 			viewport.set_input_as_handled()
-			#print(str(self) + "was clicked")
 	elif event is InputEventScreenTouch:
 		var touch_event := event as InputEventScreenTouch
 		if touch_event.pressed:
 			toggle_selection()
-			get_viewport().set_input_as_handled()
+			viewport.set_input_as_handled()
 
 
 func toggle_selection() -> void:
@@ -34,17 +35,17 @@ func toggle_selection() -> void:
 
 
 func select() -> void:
+	#print(str(self) + "selected")
 	if is_selected:
 		return
 	is_selected = true
 	SelectManager.new_selection = self
 	selected.emit()
-	#print(str(self) + "selected")
 
 
 func deselect() -> void:
+	#print(str(self) + "deselected")
 	if not is_selected:
 		return
 	is_selected = false
 	deselected.emit()
-	#print(str(self) + "deselected")
