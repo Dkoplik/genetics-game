@@ -24,12 +24,13 @@ var _params: Dictionary[String, Variant] = {}
 ## автоматически в формате 'param_{i}'.
 func _init(params: Variant) -> void:
 	if params is Dictionary:
-		assert(params.values().all(_is_supported_type))
+		var dparams := params as Dictionary
+		assert(dparams.values().all(_is_supported_type))
 		var params_dict: Dictionary[String, Variant] = {}
-		for key in params.keys():  # Костыль для типизированного словаря
+		for key: String in dparams.keys():  # Костыль для типизированного словаря
 			assert(key is String)
-			assert(params.get(key) is Variant)
-			params_dict.set(key, params.get(key))
+			assert(dparams.get(key) is Variant)
+			params_dict.set(key, dparams.get(key))
 		_params = params_dict
 	else:
 		assert(params is Array)

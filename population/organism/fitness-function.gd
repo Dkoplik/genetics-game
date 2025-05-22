@@ -23,7 +23,7 @@ func _init(summands: Variant = null, variables: Variant = null) -> void:
 	assert((summands is String) or (summands is Array) or (summands is PackedStringArray))
 	assert((variables is Array) or (variables is PackedStringArray))
 	if summands is String:
-		var err: Error = add_summand(summands as String, variables)
+		var err: Error = add_summand(summands as String, variables as PackedStringArray)
 		assert(err == Error.OK)
 		return
 	for summand: String in summands as PackedStringArray:
