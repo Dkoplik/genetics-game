@@ -27,8 +27,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	_moving_to_organism()
-	_moving_to_point(delta)
+	#_moving_to_organism()
+	#_moving_to_point(delta)
 	move_and_slide()
 
 

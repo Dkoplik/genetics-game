@@ -22,12 +22,12 @@ func _ready() -> void:
 		population.create_random_organism()
 
 
-# Костыль для спавна эффектов.
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			var effect := preload("res://local-effect/local-effect.tscn").instantiate()
-			effect.summand = "max(100 - sqrt(Fire), 0)"
-			effect.variables = ["Fire"]
-			effect.position = event.position
-			add_child(effect)
+## Костыль для спавна эффектов.
+#func _unhandled_input(event: InputEvent) -> void:
+	#if event is InputEventMouseButton:
+		#if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			#var effect := preload("res://local-effect/local-effect.tscn").instantiate()
+			#effect.summand = "max(100 - sqrt(Fire), 0)"
+			#effect.variables = ["Fire"]
+			#effect.position = event.position
+			#add_child(effect)

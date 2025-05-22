@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://30p7o6ou8hk8"]
+
+[ext_resource type="Script" uid="uid://01w3vxdam3bt" path="res://population/organism/selectable-area/selectable-area.gd" id="1_nhhjr"]
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="2_crpxh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sm6ia"]
+radius = 14.0
+
+[node name="SelectableArea" type="Area2D"]
+script = ExtResource("1_nhhjr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.062, 0.062)
+texture = ExtResource("2_crpxh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_sm6ia")
+debug_color = Color(0.908147, 0.000114166, 0.737694, 0.42)
+
+[connection signal="deselected" from="." to="Sprite2D" method="hide"]
+[connection signal="selected" from="." to="Sprite2D" method="show"]

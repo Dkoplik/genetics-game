@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://crsp6x20ucej0"]
+[gd_scene load_steps=6 format=3 uid="uid://crsp6x20ucej0"]
 
 [ext_resource type="Script" uid="uid://0qjyfy38g348" path="res://population/organism/organism.gd" id="1_f7sj4"]
 [ext_resource type="Script" uid="uid://cgujb86ocsr13" path="res://population/organism/organism2d/organism2d.gd" id="2_cvviw"]
+[ext_resource type="PackedScene" uid="uid://30p7o6ou8hk8" path="res://population/organism/selectable-area/organism-select-area.tscn" id="2_lm0e7"]
 [ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="3_wpyi7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
@@ -14,6 +15,8 @@ script = ExtResource("1_f7sj4")
 collision_mask = 0
 script = ExtResource("2_cvviw")
 metadata/_custom_type_script = "uid://cgujb86ocsr13"
+
+[node name="SelectableArea" parent="Organism2D" instance=ExtResource("2_lm0e7")]
 
 [node name="Sprite2D" type="Sprite2D" parent="Organism2D"]
 scale = Vector2(0.048, 0.048)
