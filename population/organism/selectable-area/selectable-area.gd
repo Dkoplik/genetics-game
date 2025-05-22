@@ -9,15 +9,16 @@ var is_selected := false
 func _ready() -> void:
 	selected.connect(SelectManager._on_selectable_area_selected)
 	deselected.connect(SelectManager._on_selectable_area_deselected)
+	input_pickable = true
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
 			toggle_selection()
-			get_viewport().set_input_as_handled()
-			print(str(self) + "was clicked")
+			viewport.set_input_as_handled()
+			#print(str(self) + "was clicked")
 	elif event is InputEventScreenTouch:
 		var touch_event := event as InputEventScreenTouch
 		if touch_event.pressed:
@@ -38,7 +39,7 @@ func select() -> void:
 	is_selected = true
 	SelectManager.new_selection = self
 	selected.emit()
-	print(str(self) + "selected")
+	#print(str(self) + "selected")
 
 
 func deselect() -> void:
@@ -46,4 +47,4 @@ func deselect() -> void:
 		return
 	is_selected = false
 	deselected.emit()
-	print(str(self) + "deselected")
+	#print(str(self) + "deselected")

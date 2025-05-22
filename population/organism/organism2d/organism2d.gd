@@ -27,8 +27,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	#_moving_to_organism()
-	#_moving_to_point(delta)
+	_moving_to_organism()
+	_moving_to_point(delta)
 	move_and_slide()
 
 
@@ -118,6 +118,6 @@ func _moving_to_point(delta: float) -> void:
 
 
 ## Назначить движение к случайной точке.
-func _move_to_random_point() -> void:
+func _move_to_random_point(previous_point := Vector2.ZERO) -> void:
 	_target_point = get_random_point()
 	_is_moving_to_point = true
