@@ -37,6 +37,12 @@ func start_random_movement() -> void:
 	if _is_randomly_moving:
 		push_warning("Организм уже движется в случайных направлениях")
 		return
+	if _is_moving_to_organism:
+		canceled_moving_to_organism.emit(_target_organism)
+		_is_moving_to_organism = false
+	if _is_moving_to_point:
+		canceled_moving_to_point.emit(_target_point)
+		_is_moving_to_point = false
 	_is_randomly_moving = true
 	_move_to_random_point()
 	moved_to_point.connect(_move_to_random_point)
@@ -75,9 +81,9 @@ func move_to_point(point: Vector2, save_target_organism := false) -> void:
 	# До этого двигался к другому организму
 	if _is_moving_to_organism and not save_target_organism:
 		canceled_moving_to_organism.emit(_target_organism)
+		_is_moving_to_organism = false
 	if _is_moving_to_point:  # До этого двигался к другой точке
 		canceled_moving_to_point.emit(_target_point)
-	_is_moving_to_organism = false
 	_is_moving_to_point = true
 	_target_point = point
 
@@ -104,6 +110,11 @@ func _moving_to_organism() -> void:
 	if not _is_moving_to_organism:
 		return
 
+	# Цели больше не существует.
+	if not _target_organism:
+		start_random_movement()
+		return
+
 	move_to_point(_target_organism.global_position, true)
 	var dist: float = global_position.distance_to(_target_organism.global_position)
 	if dist <= params.move_to_organism_dist_coef * _shape.radius:
@@ -122,7 +133,8 @@ func _moving_to_point(delta: float) -> void:
 	if (velocity * delta).length() > diff.length():
 		velocity = Vector2.ZERO
 		global_position = _target_point
-		moved_to_point.emit(_target_point)
+		if _is_moving_to_point:
+			moved_to_point.emit(_target_point)
 
 
 ## Назначить движение к случайной точке.

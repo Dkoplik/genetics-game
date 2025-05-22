@@ -130,8 +130,13 @@ func get_children_count() -> int:
 
 func _move_to_partner(partner: Organism) -> void:
 	behaviour.move_to_organism2d(partner.behaviour)
-	if not behaviour.moved_to_organism2d.is_connected(_ready_for_mating):
-		behaviour.moved_to_organism2d.connect(_ready_for_mating)
+	behaviour.moved_to_organism2d.connect(_ready_for_mating)
+	behaviour.canceled_moving_to_organism.connect(_move_to_partner_canceled)
+
+
+func _move_to_partner_canceled(_target: Organism2D) -> void:
+	behaviour.moved_to_organism2d.disconnect(_ready_for_mating)
+	behaviour.canceled_moving_to_organism.disconnect(_move_to_partner_canceled)
 
 
 func _ready_for_mating(partner: Organism2D) -> void:
@@ -144,6 +149,7 @@ func _ready_for_mating(partner: Organism2D) -> void:
 	var partner_org := partner.get_parent() as Organism
 	ready_for_mating.emit(self, partner_org)
 	behaviour.moved_to_organism2d.disconnect(_ready_for_mating)
+	behaviour.canceled_moving_to_organism.disconnect(_move_to_partner_canceled)
 	var new_genome := params.crossover_function.call(genome, partner_org.genome) as Genome
 	reproduced.emit(self, partner_org, new_genome)
 	_children_count += 1
