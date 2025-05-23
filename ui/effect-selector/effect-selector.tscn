@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://bchgn7vfjopr0"]
+
+[ext_resource type="Script" uid="uid://dfrq1wqafqpn2" path="res://ui/effect-selector/effect-selector.gd" id="1_fvx4k"]
+
+[node name="EffectSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_fvx4k")
+
+[node name="ItemList" type="ItemList" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -115.0
+offset_top = -40.0
+offset_right = 115.0
+grow_horizontal = 2
+grow_vertical = 0
+allow_reselect = true
+allow_search = false
+auto_width = true
+auto_height = true
+same_column_width = true
+fixed_column_width = 80
+
+[connection signal="item_selected" from="ItemList" to="." method="_on_item_list_item_selected"]

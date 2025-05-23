@@ -1,8 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwfb48b1b6s3y"]
+[gd_scene load_steps=9 format=3 uid="uid://dwfb48b1b6s3y"]
 
 [ext_resource type="Script" uid="uid://x1iqat2wgwpq" path="res://game-manager.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://ik7jjaspmull" path="res://population/population.gd" id="2_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://ccvwkpmg0u50s" path="res://ui/info-panel/info-panel.tscn" id="3_feb5d"]
+[ext_resource type="PackedScene" uid="uid://bchgn7vfjopr0" path="res://ui/effect-selector/effect-selector.tscn" id="4_7jktm"]
+[ext_resource type="Script" uid="uid://myyfp1a41bpw" path="res://ui/effect-selector/effect-data.gd" id="5_ryrav"]
+
+[sub_resource type="Resource" id="Resource_eow3j"]
+script = ExtResource("5_ryrav")
+name = "Ice"
+summand = "1_000_000_000/Ice"
+variables = PackedStringArray("Ice")
+metadata/_custom_type_script = "uid://myyfp1a41bpw"
+
+[sub_resource type="Resource" id="Resource_j5wjh"]
+script = ExtResource("5_ryrav")
+name = "Fire"
+summand = "max(0, 1000000-0.00000001*(Fire**2))"
+variables = PackedStringArray("Fire")
+metadata/_custom_type_script = "uid://myyfp1a41bpw"
+
+[sub_resource type="Resource" id="Resource_vef74"]
+script = ExtResource("5_ryrav")
+name = "Radiation"
+summand = "0.000001*(Radiation**2)-3*Radiation+1000000"
+variables = PackedStringArray("Radiation")
+metadata/_custom_type_script = "uid://myyfp1a41bpw"
 
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
@@ -13,3 +36,9 @@ metadata/_custom_type_script = "uid://ik7jjaspmull"
 
 [node name="Info-panel" parent="." instance=ExtResource("3_feb5d")]
 visible = false
+
+[node name="EffectSelector" parent="." instance=ExtResource("4_7jktm")]
+effects = Array[ExtResource("5_ryrav")]([SubResource("Resource_eow3j"), SubResource("Resource_j5wjh"), SubResource("Resource_vef74")])
+
+[connection signal="effect_deselected" from="EffectSelector" to="." method="_on_effect_selector_effect_deselected"]
+[connection signal="effect_selected" from="EffectSelector" to="." method="_on_effect_selector_effect_selected"]

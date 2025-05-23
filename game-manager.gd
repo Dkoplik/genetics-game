@@ -2,13 +2,16 @@ extends Node
 
 @export var start_population_size: int = 4
 
-@onready var population := $Population as Population
 
 var p_params := PopulationParams.new()
 #var org_params := OrganismParams.new()
 #var org2d_params := Organism2DParams.new()
 
-@onready var info_panel: InfoPanel = $'Info-panel'
+var _cur_effect: EffectData = null
+var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
+
+@onready var population := $Population as Population
+@onready var info_panel := $'Info-panel' as InfoPanel
 
 func _ready() -> void:
 	SelectManager.selection_changed.connect(_on_selection_changed)
@@ -35,25 +38,33 @@ func _on_selection_changed(selection: SelectableArea) -> void:
 	info_panel.target_organism = organism
 
 
-## Костыль для спавна эффектов.
-#func _unhandled_input(event: InputEvent) -> void:
-	#if event is InputEventMouseButton:
-		#if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			#var effect := preload("res://local-effect/local-effect.tscn").instantiate()
-			#effect.summand = "max(100 - sqrt(Fire), 0)"
-			#effect.variables = ["Fire"]
-			#effect.position = event.position
-			#add_child(effect)
-
-
 func _unhandled_input(event: InputEvent) -> void:
-	#print("got event " + str(event))
+	# organism deselection
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
-			#print(str(self) + "was clicked")
 			SelectManager.clear_selection()
 	elif event is InputEventScreenTouch:
 		var touch_event := event as InputEventScreenTouch
 		if touch_event.pressed:
 			SelectManager.clear_selection()
+
+	# effect placement
+	if not _cur_effect:
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			var effect := _effect_scene.instantiate() as LocalEffect
+			effect.summand = _cur_effect.summand
+			effect.variables = _cur_effect.variables
+			effect.position = mouse_event.position
+			add_child(effect)
+
+
+func _on_effect_selector_effect_selected(effect: EffectData) -> void:
+	_cur_effect = effect
+
+
+func _on_effect_selector_effect_deselected() -> void:
+	_cur_effect = null
