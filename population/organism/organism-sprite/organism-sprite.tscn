@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://fygovw58d0cy"]
+
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="1_47m42"]
+[ext_resource type="Script" uid="uid://c36iuaxtldr86" path="res://population/organism/organism-sprite/organism-sprite.gd" id="1_rt1l2"]
+
+[node name="OrganismSprite" type="Node2D"]
+script = ExtResource("1_rt1l2")
+
+[node name="Fire" type="Sprite2D" parent="."]
+modulate = Color(0.85098, 0.192157, 0.101961, 1)
+position = Vector2(-11, 4)
+scale = Vector2(0.045, 0.045)
+texture = ExtResource("1_47m42")
+
+[node name="Ice" type="Sprite2D" parent="."]
+modulate = Color(0.101961, 0.4, 0.85098, 1)
+position = Vector2(11, 4)
+scale = Vector2(0.045, 0.045)
+texture = ExtResource("1_47m42")
+
+[node name="Radiation" type="Sprite2D" parent="."]
+modulate = Color(0.67451, 0.85098, 0.101961, 1)
+position = Vector2(0, -15)
+scale = Vector2(0.045, 0.045)
+texture = ExtResource("1_47m42")

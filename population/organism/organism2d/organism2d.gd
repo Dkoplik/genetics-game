@@ -18,6 +18,8 @@ var _target_point: Vector2
 ## Форма организма (коллизия).
 var _shape: CircleShape2D
 
+@onready var _sprite := $OrganismSprite as OrganismSprite
+
 
 func _ready() -> void:
 	_shape = ($CollisionShape2D as CollisionShape2D).shape as CircleShape2D
@@ -28,6 +30,7 @@ func _physics_process(delta: float) -> void:
 	_moving_to_organism()
 	_moving_to_point(delta)
 	move_and_slide()
+	_sprite.update_data((get_parent() as Organism).genome)
 
 
 ## Начать движение к случайным точкам.
