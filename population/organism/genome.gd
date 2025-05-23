@@ -17,12 +17,15 @@ const PARAMS_TYPES: Array[Variant.Type] = [TYPE_INT, TYPE_FLOAT]
 const TYPE_SIZE: int = 8
 
 var _params: Dictionary[String, Variant] = {}
+var _ranges: Dictionary[String, Array] = {}
 
 
 ## Инициализация начальными значениями. [param params] является либо [Array],
 ## либо [Dictionary]. В первом случае имена параметрам будут выданы
-## автоматически в формате 'param_{i}'.
-func _init(params: Variant) -> void:
+## автоматически в формате 'param_{i}'. [param ranges] sets ranges for parameter
+## values. Ranges could be presented as array of pairs (arrays) or as dictionary
+## with param names keys and pairs as value.
+func _init(params: Variant, ranges: Variant = null) -> void:
 	if params is Dictionary:
 		var dparams := params as Dictionary
 		assert(dparams.values().all(_is_supported_type))
@@ -39,6 +42,30 @@ func _init(params: Variant) -> void:
 		for i in range(params_arr.size()):
 			var key := "param_{0}".format([i])
 			_params.set(key, params_arr[i])
+
+	if not ranges:
+		return
+	if ranges is Array:
+		var ranges_arr := ranges as Array
+		for i in range(ranges_arr.size()):
+			var pair := ranges_arr[i] as Array
+			assert(pair.size() == 2)
+			assert(pair[0] <= pair[1])
+			assert(typeof(pair[0]) == typeof(pair[1]))
+			var key: String = _params.keys().get(i)
+			assert(typeof(_params.get(key)) == typeof(pair[0]))
+			_ranges.set(key, pair)
+	else:
+		assert(ranges is Dictionary)
+		var dranges := ranges as Dictionary
+		for key: String in dranges.keys():
+			var pair := dranges.get(key) as Array
+			assert(pair.size() == 2)
+			assert(pair[0] <= pair[1])
+			assert(typeof(pair[0]) == typeof(pair[1]))
+			assert(key in _params.keys())
+			assert(typeof(_params.get(key)) == typeof(pair[0]))
+			_ranges.set(key, pair)
 
 
 ## Возвращает [Variant] параметра по ключу [param key]. [param key] может быть
@@ -59,6 +86,8 @@ func set_param(key: Variant, value: Variant) -> void:
 
 	if typeof(value) != typeof(_params.get(str_key)):
 		push_warning("Change of type for {0}".format([str_key]))
+	if _ranges.has(str_key):
+		value = clamp(value, _ranges.get(str_key)[0], _ranges.get(str_key)[1])
 	_params.set(str_key, value)
 
 
@@ -127,13 +156,26 @@ func set_bit(index: int, value: int) -> void:
 	set_byte(index / 8, Numeric.set_bit_in_int(byte, bit_index_in_byte, value))
 
 
+func duplicate() -> Genome:
+	return Genome.new(_params, _ranges)
+
+
+func randomize_params() -> void:
+	for key: String in _params.keys():
+		if _params.get(key) is int:
+			set_param(key, randi())
+		elif _params.get(key) is float:
+			set_param(key, randf() * (Numeric.FLOAT_MAX / 2))
+		else:
+			assert(false)
+
+
+func get_ranges_dict() -> Dictionary[String, Array]:
+	return _ranges
+
+
 func get_param_dict() -> Dictionary[String, Variant]:
 	return _params
-
-
-## Возвращает список из всех текущих параметров этого генома в виде [Array].
-func get_param_array() -> Array:
-	return _params.values()
 
 
 ## Установить все значения параметров через массив параметров [param array].

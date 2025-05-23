@@ -8,7 +8,7 @@ class TestInitAndGetAllParams:
 		var params = [42, 3.14, -100, 0.0]
 		var genome = Genome.new(params)
 		assert_eq(genome.param_array_size(), params.size())
-		assert_eq_deep(genome.get_param_array(), params)
+		assert_eq_deep(genome.get_param_dict().values(), params)
 		var keys = genome.get_param_dict().keys()
 		assert_eq(keys.size(), params.size())
 		for i in range(keys.size()):
@@ -24,7 +24,7 @@ class TestInitAndGetAllParams:
 		var params = {"a": 123, "b": 456.789}
 		var genome = Genome.new(params)
 		assert_eq(genome.param_array_size(), params.size())
-		assert_eq_deep(genome.get_param_array(), [123, 456.789])
+		assert_eq_deep(genome.get_param_dict().values(), [123, 456.789])
 		assert_eq_deep(genome.get_param_dict().keys(), ["a", "b"])
 		for i in params.keys():
 			assert_eq(typeof(genome.get_param(i)), typeof(params[i]))
@@ -121,14 +121,14 @@ class TestArrayConversions:
 		var byte_array = original.get_byte_array()
 		var new_genome = Genome.new([0, 0.0, 0, 0.0])
 		new_genome.set_byte_array(byte_array)
-		assert_eq_deep(new_genome.get_param_array(), original.get_param_array())
+		assert_eq_deep(new_genome.get_param_dict().values(), original.get_param_dict().values())
 
 	func test_param_array_roundtrip() -> void:
 		var original = [987654321, 2.71828, -123, 1.414]
 		var genome = Genome.new(original)
 		var new_genome = Genome.new([0, 0.0, 0, 0.0])
-		new_genome.set_param_array(genome.get_param_array())
-		assert_eq_deep(new_genome.get_param_array(), original)
+		new_genome.set_param_array(genome.get_param_dict().values())
+		assert_eq_deep(new_genome.get_param_dict().values(), original)
 
 
 class TestSlices:
@@ -155,3 +155,71 @@ class TestSizeMethods:
 		assert_eq(genome.param_array_size(), 4)
 		assert_eq(genome.byte_array_size(), 32)  # 4 params * 8 bytes
 		assert_eq(genome.bit_array_size(), 256)  # 32 bytes * 8 bits
+
+
+class TestParamRanges:
+	extends GutTest
+
+	func test_initialization_with_ranges_array() -> void:
+		var genome = Genome.new(
+			[50, 150.5],
+			[[0, 100], [100.0, 200.0]]
+		)
+		genome.set_param(0, 120)
+		genome.set_param(1, 250.5)
+		assert_eq(genome.get_param(0), 100)
+		assert_almost_eq(genome.get_param(1), 200.0, 0.001)
+
+	func test_initialization_with_ranges_dict() -> void:
+		var genome = Genome.new(
+			{"p1": 500, "p2": -5.0},
+			{"p1": [-100, 1000], "p2": [0.0, 10.0]}
+		)
+		genome.set_param("p1", 1500)
+		genome.set_param("p2", -1.0)
+		assert_eq(genome.get_param("p1"), 1000)
+		assert_almost_eq(genome.get_param("p2"), 0.0, 0.001)
+
+	func test_byte_manipulation_ranges() -> void:
+		var genome = Genome.new([0], {"param_0": [0, 255]})
+
+		for i in range(7):
+			genome.set_byte(i, 255)
+
+		assert_eq(genome.get_param(0), 255)
+
+	func test_bit_manipulation_ranges() -> void:
+		var genome = Genome.new([0.0], {"param_0": [0.0, 1.0]})
+
+		genome.set_bit(63, 1)
+		assert_almost_eq(genome.get_param(0), 0.0, 0.001)
+
+	func test_mixed_type_ranges() -> void:
+		var genome = Genome.new(
+			[100, 50.0],
+			{"param_0": [0, 200], "param_1": [0.0, 100.0]}
+		)
+
+		genome.set_param(0, 300.5)
+		assert_eq(genome.get_param(0), 200)
+
+	func test_range_persistence_after_modifications() -> void:
+		var genome = Genome.new([10], {"param_0": [0, 20]})
+
+		genome.set_param(0, 15)
+		genome.set_byte(0, 0xFF)
+		assert_eq(genome.get_param(0), 20)
+
+
+class TestDuplicateMethod:
+	extends GutTest
+
+	func test_deep_copy_of_params() -> void:
+		var original = Genome.new(
+			[3],
+			{"param_0": [0, 5]}
+		)
+		var copy = original.duplicate()
+		copy.set_param(0, 6)
+		assert_eq(original.get_param(0), 3)
+		assert_eq(copy.get_param(0), 5)
