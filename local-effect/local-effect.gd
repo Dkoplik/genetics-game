@@ -13,6 +13,7 @@ class_name LocalEffect extends Node2D
 @onready var sprite := $Sprite2D as Sprite2D
 @onready var progress_bar := $ProgressBar as ProgressBar
 
+
 func _ready() -> void:
 	sprite.modulate = color
 	progress_bar.max_value = duration
