@@ -12,6 +12,8 @@ var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
 
 @onready var population := $Population as Population
 @onready var info_panel := $'Info-panel' as InfoPanel
+@onready var _effects_folder := $LocalEffects as Node
+
 
 func _ready() -> void:
 	SelectManager.selection_changed.connect(_on_selection_changed)
@@ -59,7 +61,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			effect.summand = _cur_effect.summand
 			effect.variables = _cur_effect.variables
 			effect.position = mouse_event.position
-			add_child(effect)
+			_effects_folder.add_child(effect)
+			get_viewport().set_input_as_handled()
 
 
 func _on_effect_selector_effect_selected(effect: EffectData) -> void:

@@ -30,15 +30,17 @@ metadata/_custom_type_script = "uid://myyfp1a41bpw"
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
 
+[node name="LocalEffects" type="Node" parent="."]
+
 [node name="Population" type="Node" parent="."]
 script = ExtResource("2_e2o6t")
 metadata/_custom_type_script = "uid://ik7jjaspmull"
 
-[node name="Info-panel" parent="." instance=ExtResource("3_feb5d")]
-visible = false
-
 [node name="EffectSelector" parent="." instance=ExtResource("4_7jktm")]
 effects = Array[ExtResource("5_ryrav")]([SubResource("Resource_eow3j"), SubResource("Resource_j5wjh"), SubResource("Resource_vef74")])
+
+[node name="Info-panel" parent="." instance=ExtResource("3_feb5d")]
+visible = false
 
 [connection signal="effect_deselected" from="EffectSelector" to="." method="_on_effect_selector_effect_deselected"]
 [connection signal="effect_selected" from="EffectSelector" to="." method="_on_effect_selector_effect_selected"]
