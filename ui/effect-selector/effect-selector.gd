@@ -20,6 +20,7 @@ func _on_item_list_item_selected(index: int) -> void:
 	if _cur_selection == index:
 		item_list.deselect(index)
 		effect_deselected.emit()
+		_cur_selection = -1
 		return
 	_cur_selection = index
 	effect_selected.emit(effects.get(index))
