@@ -27,6 +27,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_random_movement_pause()
 	_moving_to_organism()
 	_moving_to_point(delta)
 	move_and_slide()
@@ -114,6 +115,22 @@ func _moving_to_point(delta: float) -> void:
 		global_position = _target_point
 		if _cur_state == STATE.MOVING_TO_POINT or _cur_state == STATE.WANDERING:
 			moved_to_point.emit(_target_point)
+
+
+func _random_movement_pause() -> void:
+	if _cur_state != STATE.WANDERING:
+		return
+	if not Numeric.roll_dice(params.pause_chance):
+		return
+	stop_wandering()
+	var timer: SceneTreeTimer = get_tree().create_timer(params.pause_duration)
+	timer.timeout.connect(_resume_wandering)
+
+
+func _resume_wandering() -> void:
+	if _cur_state != STATE.IDLE:
+		return
+	start_wandering()
 
 
 ## Назначить движение к случайной точке.
