@@ -16,8 +16,14 @@ signal hp_changed(new_hp: float)
 var genome: Genome = null
 ## Функция приспособленности данного организма.
 var fitness_function: FitnessFunction = null
+## Функция мутации [Genome].
+var mutate_function: Callable
+## Функция выбора второго [Organism] в качестве родителя.
+var partner_chooser: Callable
+## Функция формирования нового [Genome].
+var crossover_function: Callable
 ## Остальные параметры особи.
-var params: OrganismParams = preload("./organism-default-params.tres")
+var params: OrganismParams = preload("res://config/organism-default-params.tres")
 
 ## Время жизни организма.
 var _time_alive: float = 0.0
@@ -66,7 +72,7 @@ func try_mutate() -> void:
 	if genome == null:
 		push_warning("genome == null")
 		return
-	params.mutate_function.call(genome)
+	mutate_function.call(genome)
 	mutated.emit()
 	_mutations_count += 1
 
@@ -79,7 +85,7 @@ func try_choose_partner() -> void:
 		push_error("No Population parent")
 		return
 	var population := get_parent() as Population
-	var partner := params.partner_chooser.call(population.get_organisms()) as Organism
+	var partner := partner_chooser.call(self, population.get_organisms()) as Organism
 	chose_partner.emit(partner)
 
 
@@ -150,7 +156,7 @@ func _ready_for_mating(partner: Organism2D) -> void:
 	ready_for_mating.emit(self, partner_org)
 	behaviour.moved_to_organism2d.disconnect(_ready_for_mating)
 	behaviour.canceled_moving_to_organism.disconnect(_move_to_partner_canceled)
-	var new_genome := params.crossover_function.call(genome, partner_org.genome) as Genome
+	var new_genome := crossover_function.call(genome, partner_org.genome) as Genome
 	reproduced.emit(self, partner_org, new_genome)
 	_children_count += 1
 

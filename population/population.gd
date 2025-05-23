@@ -4,16 +4,35 @@ class_name Population extends Node
 ## Содержит методы для создания новых организмов и для нанесения глобальных
 ## эффектов или глобального урона.
 
-var params: PopulationParams = preload("./population-default-params.tres")
-var organism_params: OrganismParams = preload("./organism/organism-default-params.tres")
-var organism2d_params: Organism2DParams = preload(
-	"./organism/organism2d/organism2d-default-params.tres"
-)
+## Параметры популяции.
+var params: PopulationParams = preload("res://config/population-default-params.tres"):
+	set = set_params
+
+## Структура [Genome] для всех [Organism] в этой популяции.
+var _genome: Genome
+var _fitness_function: FitnessFunction
+## Сцена с [Organism].
+## Доступные функции мутации для [Organism].
+var _mutate_functions: Array[Callable]
+## Доступные функции выбора партнёра для [Organism].
+var _partner_choosers: Array[Callable]
+## Доступные функции кроссовера для [Genome].
+var _crossover_functions: Array[Callable]
+## Глобальная [FitnessFunction] этой популяции.
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
+
+
+func _ready() -> void:
+	_process_params()
 
 
 func _physics_process(_delta: float) -> void:
 	deal_global_damage(_calc_population_damage())
+
+
+func set_params(value: PopulationParams) -> void:
+	params = value
+	_process_params()
 
 
 ## Получить массив всех организмов в этой популяции.
@@ -26,29 +45,26 @@ func get_organisms() -> Array[Organism]:
 
 
 ## Создать новый организм с геномом [param genome] в позиции [param position].
-func create_organism(genome: Genome, position: Vector2) -> void:
-	var new_organism_params: OrganismParams = organism_params.duplicate()
-	new_organism_params.mutate_function = params.mutate_functions.pick_random()
-	new_organism_params.partner_chooser = params.partner_choosers.pick_random()
-
-	var organism: Organism = _organism_scene.instantiate()
-	organism.params = new_organism_params
-
+func create_organism(genome: Genome, position: Vector2, random_pos := false) -> void:
+	var organism := _organism_scene.instantiate() as Organism
 	organism.genome = genome
-	organism.fitness_function = params.default_fitness_function.duplicate()
+	organism.fitness_function = _fitness_function.duplicate()
+	organism.mutate_function = _mutate_functions.pick_random()
+	organism.partner_chooser = _partner_choosers.pick_random()
+	organism.crossover_function = _crossover_functions.pick_random()
 	organism.reproduced.connect(_on_organism_reproduced)
 	add_child(organism)
-	organism.behaviour.params = organism2d_params
-	organism.behaviour.position = position
+	if random_pos:
+		organism.behaviour.position = organism.behaviour.get_random_point()
+	else:
+		organism.behaviour.position = position
 
 
 ## Создать организм со случайным геномом в случайной позиции.
 func create_random_organism() -> void:
-	var random_params: Dictionary[String, Variant] = {}
-	for param_name: String in params.genome_param_types.keys():
-		var param_type: Variant.Type = params.genome_param_types.get(param_name)
-		random_params.set(param_name, Numeric.random_value(param_type))
-	create_organism(Genome.new(random_params), _get_random_point())
+	var new_genome := _genome.duplicate() as Genome
+	new_genome.randomize_params()
+	create_organism(new_genome, Vector2.ZERO, true)
 
 
 ## Получить размер популяции.
@@ -59,7 +75,7 @@ func get_population_size() -> int:
 ## Добавляет глобальный эффект для всех [Organism] в этой популяции и для всех
 ## будущих организмов.
 func add_global_summand(summand: String, variables: PackedStringArray) -> void:
-	var err: Error = params.default_fitness_function.add_summand(summand, variables)
+	var err: Error = _fitness_function.add_summand(summand, variables)
 	assert(err == Error.OK)
 	for organism: Organism in get_organisms():
 		err = organism.fitness_function.add_summand(summand, variables)
@@ -69,7 +85,7 @@ func add_global_summand(summand: String, variables: PackedStringArray) -> void:
 ## Удаляет глобальный эффект для всех [Organism] в этой популяции и для всех
 ## будущих организмов.
 func remove_global_summand(summand: String, variables: PackedStringArray) -> void:
-	var err: Error = params.default_fitness_function.remove_summand(summand, variables)
+	var err: Error = _fitness_function.remove_summand(summand, variables)
 	assert(err == Error.OK)
 	for organism: Organism in get_organisms():
 		err = organism.fitness_function.remove_summand(summand, variables)
@@ -94,9 +110,21 @@ func _on_organism_reproduced(parent1: Organism, parent2: Organism, new_genome: G
 	create_organism(new_genome, position)
 
 
-## Случайная точка в игровом мире.
-func _get_random_point() -> Vector2:
-	return Vector2(
-		randf_range(organism2d_params.world_left_border, organism2d_params.world_right_border),
-		randf_range(organism2d_params.world_upper_border, organism2d_params.world_lower_border)
+## Обработать [PopulationParams].
+func _process_params() -> void:
+	_genome = Genome.new(params.genome_params, params.genome_param_ranges)
+	_fitness_function = FitnessFunction.new(
+		params.fitness_function_string,
+		params.fitness_function_vars
 	)
+	_mutate_functions = _get_ga_callables(params.mutate_function_names)
+	_partner_choosers = _get_ga_callables(params.partner_chooser_names)
+	_crossover_functions = _get_ga_callables(params.crossover_function_names)
+
+
+func _get_ga_callables(names: PackedStringArray) -> Array[Callable]:
+	var res: Array[Callable] = []
+	res.resize(names.size())
+	for i in range(names.size()):
+		res[i] = Callable(GACallables, names[i])
+	return res

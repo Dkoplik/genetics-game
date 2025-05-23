@@ -2,11 +2,6 @@ extends Node
 
 @export var start_population_size: int = 4
 
-
-var p_params := PopulationParams.new()
-#var org_params := OrganismParams.new()
-#var org2d_params := Organism2DParams.new()
-
 var _cur_effect: EffectData = null
 var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
 
@@ -17,15 +12,6 @@ var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
 
 func _ready() -> void:
 	SelectManager.selection_changed.connect(_on_selection_changed)
-
-	# Population Params
-	p_params.mutate_functions = [GACallables.random_binary_mutation]
-	p_params.partner_choosers = [GACallables.random_partner]
-	p_params.crossover_functions = [GACallables.discrete_recombination]
-	p_params.genome_param_types = {"Ice": TYPE_FLOAT, "Fire": TYPE_FLOAT, "Radiation": TYPE_FLOAT}
-	population.params = p_params
-
-	# Start Population
 	for i in range(start_population_size):
 		population.create_random_organism()
 
@@ -41,7 +27,7 @@ func _on_selection_changed(selection: SelectableArea) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# organism deselection
+	# отменить выделение организма
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
@@ -51,7 +37,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if touch_event.pressed:
 			SelectManager.clear_selection()
 
-	# effect placement
+	# поставить эффект
 	if not _cur_effect:
 		return
 	if event is InputEventMouseButton:

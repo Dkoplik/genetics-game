@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="PopulationParams" load_steps=2 format=3 uid="uid://b1bnyvj8kbhyh"]
+
+[ext_resource type="Script" uid="uid://b8ykji0ne0p5y" path="res://population/population-params.gd" id="1_xmmwm"]
+
+[resource]
+script = ExtResource("1_xmmwm")
+mutate_function_names = ["random_binary_mutation"]
+partner_chooser_names = ["random_partner"]
+crossover_function_names = ["discrete_recombination"]
+genome_params = Dictionary[String, Variant]({
+"Fire": 0.0,
+"Ice": 0.0,
+"Radiation": 0.0
+})
+genome_param_ranges = Dictionary[String, Array]({
+"Fire": [0.0, 100.0],
+"Ice": [0.0, 100.0],
+"Radiation": [0.0, 100.0]
+})
+fitness_function_string = "0.0"
+fitness_function_vars = []
+metadata/_custom_type_script = "uid://b8ykji0ne0p5y"

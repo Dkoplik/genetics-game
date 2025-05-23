@@ -9,7 +9,7 @@ signal moved_to_point(point: Vector2)
 enum STATE {IDLE, MOVING_TO_POINT, MOVING_TO_ORGANISM, WANDERING}
 
 ## Основные параметры.
-var params: Organism2DParams = preload("./organism2d-default-params.tres")
+var params: Organism2DParams = preload("res://config/organism2d-default-params.tres")
 
 var _cur_state: STATE = STATE.IDLE
 var _target_organism: Organism2D = null
@@ -75,7 +75,7 @@ func get_current_target() -> Variant:
 
 
 ## Случайная точка в пределах границ мира, указанных в [member params].
-func _get_random_point() -> Vector2:
+func get_random_point() -> Vector2:
 	return Vector2(
 		randf_range(params.world_left_border, params.world_right_border),
 		randf_range(params.world_upper_border, params.world_lower_border)
@@ -135,10 +135,10 @@ func _resume_wandering() -> void:
 
 ## Назначить движение к случайной точке.
 func _move_to_random_point(_previous_point := Vector2.ZERO) -> void:
-	_target_point = _get_random_point()
+	_target_point = get_random_point()
 
 
-## Change state with all signals, when needed.
+## Сменить текущее состояние и запустить необходимые сигналы.
 func _change_state(new_state: STATE) -> void:
 	match _cur_state:
 		STATE.WANDERING:
