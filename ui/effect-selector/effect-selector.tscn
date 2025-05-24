@@ -20,16 +20,16 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -115.0
-offset_top = -40.0
-offset_right = 115.0
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 28
 allow_reselect = true
 allow_search = false
 auto_width = true
 auto_height = true
 same_column_width = true
-fixed_column_width = 80
 
 [connection signal="item_selected" from="ItemList" to="." method="_on_item_list_item_selected"]
