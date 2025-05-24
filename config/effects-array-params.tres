@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="EffectsArray" load_steps=6 format=3 uid="uid://c6k0g4u1g73qb"]
+
+[ext_resource type="Script" uid="uid://dye8b8m237jac" path="res://local-effect/effect-data.gd" id="1_q0hwe"]
+[ext_resource type="Script" uid="uid://driurln2cv0g6" path="res://local-effect/effects-array.gd" id="2_xsttj"]
+
+[sub_resource type="Resource" id="Resource_q0hwe"]
+script = ExtResource("1_q0hwe")
+name = "Fire"
+color = Color(0.85098, 0.192157, 0.101961, 0.470588)
+function = "100 - Fire"
+variables = ["Fire"]
+metadata/_custom_type_script = "uid://dye8b8m237jac"
+
+[sub_resource type="Resource" id="Resource_xsttj"]
+script = ExtResource("1_q0hwe")
+name = "Ice"
+color = Color(0.101961, 0.4, 0.85098, 0.470588)
+function = "100 - Ice"
+variables = ["Ice"]
+metadata/_custom_type_script = "uid://dye8b8m237jac"
+
+[sub_resource type="Resource" id="Resource_6rsbk"]
+script = ExtResource("1_q0hwe")
+name = "Radiation"
+color = Color(0.67451, 0.85098, 0.101961, 0.470588)
+function = "100 - Radiation"
+variables = ["Radiation"]
+metadata/_custom_type_script = "uid://dye8b8m237jac"
+
+[resource]
+script = ExtResource("2_xsttj")
+data = Array[ExtResource("1_q0hwe")]([SubResource("Resource_q0hwe"), SubResource("Resource_xsttj"), SubResource("Resource_6rsbk")])
+metadata/_custom_type_script = "uid://driurln2cv0g6"

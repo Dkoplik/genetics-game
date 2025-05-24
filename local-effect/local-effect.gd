@@ -1,15 +1,8 @@
 class_name LocalEffect extends Node2D
 ## Применяет эффект на [Organism] в пределах своей зоны действия.
 
-## Эффект.
-@export var summand: String
-## Переменные эффекта.
-@export var variables: PackedStringArray
-## Цвет эффекта.
-@export var color := Color("ffffff64")
-## Длительность эффекта.
-@export var duration: float = 15.0
-
+## Данные об эффекте. Необходимо назначить до добавления эффекта на сцену.
+var data: EffectData = null
 var organisms: Dictionary[Organism, Variant] = {} # Set
 
 @onready var sprite := $Sprite2D as Sprite2D
@@ -18,9 +11,9 @@ var organisms: Dictionary[Organism, Variant] = {} # Set
 
 
 func _ready() -> void:
-	sprite.modulate = color
-	progress_bar.max_value = duration
-	progress_bar.value = duration
+	sprite.modulate = data.color
+	progress_bar.max_value = data.duration
+	progress_bar.value = data.duration
 	detector.organism_entered.connect(_on_organism_detector_organism_entered)
 	detector.organism_exited.connect(_on_organism_detector_organism_exited)
 
@@ -33,17 +26,17 @@ func _physics_process(delta: float) -> void:
 	detector.organism_entered.disconnect(_on_organism_detector_organism_entered)
 	detector.organism_exited.disconnect(_on_organism_detector_organism_exited)
 	for organism: Organism in organisms.keys():
-		organism.fitness_function.remove_summand(summand, variables)
+		organism.fitness_function.remove_summand(data.function, data.variables)
 	organisms.clear()
 
 	queue_free()
 
 
 func _on_organism_detector_organism_entered(organism: Organism) -> void:
-	organism.fitness_function.add_summand(summand, variables)
+	organism.fitness_function.add_summand(data.function, data.variables)
 	organisms.set(organism, null)
 
 
 func _on_organism_detector_organism_exited(organism: Organism) -> void:
-	organism.fitness_function.remove_summand(summand, variables)
+	organism.fitness_function.remove_summand(data.function, data.variables)
 	organisms.erase(organism)

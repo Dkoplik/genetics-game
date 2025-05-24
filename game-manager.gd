@@ -2,8 +2,8 @@ extends Node
 
 @export var start_population_size: int = 4
 
-var _cur_effect: EffectData = null
 var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
+var _cur_effect: EffectData = null
 
 @onready var population := $Population as Population
 @onready var info_panel := $'Info-panel' as InfoPanel
@@ -44,8 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
 			var effect := _effect_scene.instantiate() as LocalEffect
-			effect.summand = _cur_effect.summand
-			effect.variables = _cur_effect.variables
+			effect.data = _cur_effect
 			effect.position = mouse_event.position
 			_effects_folder.add_child(effect)
 			get_viewport().set_input_as_handled()
