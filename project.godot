@@ -45,6 +45,7 @@ enabled=PackedStringArray("res://addons/gdLinter/plugin.cfg", "res://addons/gut/
 [layer_names]
 
 2d_physics/layer_1="OrganismBody"
+2d_physics/layer_2="SelectableArea"
 
 [rendering]
 

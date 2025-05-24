@@ -20,10 +20,15 @@ var _partner_choosers: Array[Callable]
 var _crossover_functions: Array[Callable]
 ## Глобальная [FitnessFunction] этой популяции.
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
+## Массив [Organism] этой популяции.
+var _organism_array: Dictionary[Organism, Variant] = {} # Вместо set
 
 
 func _ready() -> void:
 	_process_params()
+	for node: Node in get_children():
+		if node is Organism:
+			_organism_array.set(node as Organism, null)
 
 
 func _physics_process(_delta: float) -> void:
@@ -37,16 +42,15 @@ func set_params(value: PopulationParams) -> void:
 
 ## Получить массив всех организмов в этой популяции.
 func get_organisms() -> Array[Organism]:
-	var res: Array[Organism] = []
-	for node: Node in get_children():
-		if node is Organism:
-			res.append(node as Organism)
-	return res
+	return _organism_array.keys() as Array[Organism]
 
 
 ## Создать новый организм с геномом [param genome] в позиции [param position].
 func create_organism(genome: Genome, position: Vector2, random_pos := false) -> void:
 	var organism := _organism_scene.instantiate() as Organism
+	_organism_array.set(organism, null)
+	organism.died.connect(_on_organism_died, CONNECT_ONE_SHOT)
+
 	organism.genome = genome
 	organism.fitness_function = _fitness_function.duplicate()
 	organism.mutate_function = _mutate_functions.pick_random()
@@ -102,12 +106,16 @@ func deal_global_damage(damage: float) -> void:
 
 ## Рассчитать урон из-за размера популяции.
 func _calc_population_damage() -> float:
-	return 0.001 * get_population_size() ** 2
+	return 0.0 #0.001 * get_population_size() ** 2
 
 
 func _on_organism_reproduced(parent1: Organism, parent2: Organism, new_genome: Genome) -> void:
 	var position: Vector2 = (parent1.behaviour.position + parent2.behaviour.position) / 2
 	create_organism(new_genome, position)
+
+
+func _on_organism_died(organism: Organism) -> void:
+	_organism_array.erase(organism)
 
 
 ## Обработать [PopulationParams].
