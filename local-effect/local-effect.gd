@@ -38,5 +38,7 @@ func _on_organism_detector_organism_entered(organism: Organism) -> void:
 
 
 func _on_organism_detector_organism_exited(organism: Organism) -> void:
+	if not organism.fitness_function.contains(data.function):
+		await get_tree().create_timer(0.02).timeout # wait 1 frame
 	organism.fitness_function.remove_summand(data.function, data.variables)
 	organisms.erase(organism)
