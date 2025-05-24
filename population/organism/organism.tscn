@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://crsp6x20ucej0"]
+[gd_scene load_steps=6 format=3 uid="uid://crsp6x20ucej0"]
 
 [ext_resource type="Script" uid="uid://0qjyfy38g348" path="res://population/organism/organism.gd" id="1_f7sj4"]
 [ext_resource type="Script" uid="uid://cgujb86ocsr13" path="res://population/organism/organism2d/organism2d.gd" id="2_cvviw"]
 [ext_resource type="PackedScene" uid="uid://30p7o6ou8hk8" path="res://population/organism/selectable-area/organism-select-area.tscn" id="2_lm0e7"]
-[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="3_wpyi7"]
 [ext_resource type="PackedScene" uid="uid://fygovw58d0cy" path="res://population/organism/organism-sprite/organism-sprite.tscn" id="5_rk5fc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
@@ -20,21 +19,17 @@ metadata/_custom_type_script = "uid://cgujb86ocsr13"
 [node name="SelectableArea" parent="Organism2D" instance=ExtResource("2_lm0e7")]
 scale = Vector2(1.6, 1.6)
 
-[node name="Sprite2D" type="Sprite2D" parent="Organism2D"]
-visible = false
-scale = Vector2(0.048, 0.048)
-texture = ExtResource("3_wpyi7")
-
 [node name="OrganismSprite" parent="Organism2D" instance=ExtResource("5_rk5fc")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Organism2D"]
 shape = SubResource("CircleShape2D_cvviw")
 
 [node name="ProgressBar" type="ProgressBar" parent="Organism2D"]
-offset_left = -13.0
-offset_top = 16.0
-offset_right = 127.0
-offset_bottom = 43.0
-scale = Vector2(0.2, 0.2)
+offset_left = -21.0
+offset_top = 23.0
+offset_right = 179.0
+offset_bottom = 58.0
+scale = Vector2(0.22, 0.22)
+show_percentage = false
 
 [connection signal="hp_changed" from="." to="Organism2D/ProgressBar" method="set_value"]

@@ -4,14 +4,20 @@ class_name OrganismSprite extends Node2D
 @onready var ice := $Ice as Sprite2D
 @onready var radiation := $Radiation as Sprite2D
 
+var genome_ref: Genome = null
+
 
 func _ready() -> void:
-	fire.modulate.a = 0.5
-	ice.modulate.a = 0.5
-	radiation.modulate.a = 0.5
+	fire.modulate.a = 0.0
+	ice.modulate.a = 0.0
+	radiation.modulate.a = 0.0
 
 
-func update_data(genome: Genome) -> void:
+func _physics_process(_delta: float) -> void:
+	_update_data(genome_ref)
+
+
+func _update_data(genome: Genome) -> void:
 	if not genome:
 		return
 	var params: Dictionary[String, Variant] = genome.get_param_dict()

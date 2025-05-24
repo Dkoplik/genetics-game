@@ -23,6 +23,8 @@ var _shape: CircleShape2D
 
 func _ready() -> void:
 	_shape = ($CollisionShape2D as CollisionShape2D).shape as CircleShape2D
+	var organism := get_parent() as Organism
+	_sprite.genome_ref = organism.genome
 	start_wandering()
 
 
@@ -31,7 +33,6 @@ func _physics_process(delta: float) -> void:
 	_moving_to_organism()
 	_moving_to_point(delta)
 	move_and_slide()
-	_sprite.update_data((get_parent() as Organism).genome)
 
 
 ## Начать движение к случайным точкам.

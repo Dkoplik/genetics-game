@@ -6,20 +6,26 @@
 [node name="OrganismSprite" type="Node2D"]
 script = ExtResource("1_rt1l2")
 
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.235294)
+position = Vector2(0, 2.86102e-06)
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("1_47m42")
+
 [node name="Fire" type="Sprite2D" parent="."]
 modulate = Color(0.85098, 0.192157, 0.101961, 1)
-position = Vector2(-11, 4)
-scale = Vector2(0.045, 0.045)
+position = Vector2(-11, 7)
+scale = Vector2(0.044, 0.044)
 texture = ExtResource("1_47m42")
 
 [node name="Ice" type="Sprite2D" parent="."]
 modulate = Color(0.101961, 0.4, 0.85098, 1)
-position = Vector2(11, 4)
-scale = Vector2(0.045, 0.045)
+position = Vector2(11, 7)
+scale = Vector2(0.044, 0.044)
 texture = ExtResource("1_47m42")
 
 [node name="Radiation" type="Sprite2D" parent="."]
 modulate = Color(0.67451, 0.85098, 0.101961, 1)
-position = Vector2(0, -15)
-scale = Vector2(0.045, 0.045)
+position = Vector2(0, -12)
+scale = Vector2(0.044, 0.044)
 texture = ExtResource("1_47m42")
