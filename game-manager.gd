@@ -21,6 +21,7 @@ func _on_selection_changed(selection: SelectableArea) -> void:
 		info_panel.hide()
 		info_panel.target_organism = null
 		return
+	#print("show info")
 	info_panel.show()
 	var organism := selection.get_parent().get_parent() as Organism
 	info_panel.target_organism = organism
@@ -34,7 +35,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			SelectManager.clear_selection()
 	elif event is InputEventScreenTouch:
 		var touch_event := event as InputEventScreenTouch
-		if touch_event.pressed:
+		if touch_event.canceled:
+			return
+		if touch_event.is_released() and (not touch_event.double_tap):
 			SelectManager.clear_selection()
 
 	# поставить эффект

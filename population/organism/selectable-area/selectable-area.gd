@@ -22,7 +22,10 @@ func _input_event(viewport: Viewport, event: InputEvent, _shape_idx: int) -> voi
 			viewport.set_input_as_handled()
 	elif event is InputEventScreenTouch:
 		var touch_event := event as InputEventScreenTouch
-		if touch_event.pressed:
+		if touch_event.canceled:
+			return
+		if touch_event.is_released() and (not touch_event.double_tap):
+			#print("touch")
 			toggle_selection()
 			viewport.set_input_as_handled()
 
