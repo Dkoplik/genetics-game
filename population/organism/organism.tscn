@@ -13,6 +13,7 @@ script = ExtResource("1_f7sj4")
 
 [node name="Organism2D" type="CharacterBody2D" parent="."]
 collision_mask = 0
+safe_margin = 0.1
 script = ExtResource("2_cvviw")
 metadata/_custom_type_script = "uid://cgujb86ocsr13"
 

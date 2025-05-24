@@ -5,7 +5,7 @@ class_name Organism extends Node
 ## не затрагивает поведение и положение организма в мире. Где это необходимо,
 ## изменения в поведении передаются по ссылке классу, отвечающему за поведение.
 
-signal died
+signal died(this: Organism)
 signal mutated
 signal chose_partner(partner: Organism)
 signal ready_for_mating(parent1: Organism, parent2: Organism)
@@ -46,8 +46,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if _hp <= 0.0:
-		die()
 	try_mutate()
 	try_choose_partner()
 	_time_alive += delta
@@ -92,7 +90,7 @@ func try_choose_partner() -> void:
 ## Запустить вымирание особи. После вызова этого метода организм должен
 ## осободить все занимаемые ресурсы и исчезнуть.
 func die() -> void:
-	died.emit()
+	died.emit(self)
 	self.queue_free()
 
 
@@ -120,6 +118,8 @@ func heal(heal_amount: float) -> void:
 func set_hp(new_hp: float) -> void:
 	_hp = clampf(new_hp, 0.0, params.max_hp)
 	hp_changed.emit(_hp)
+	if _hp == 0.0:
+		die()
 
 
 func get_hp() -> float:
