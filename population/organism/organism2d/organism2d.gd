@@ -49,6 +49,7 @@ func stop_wandering() -> void:
 		return
 	moved_to_point.disconnect(_move_to_random_point)
 	_cur_state = STATE.IDLE
+	velocity = Vector2.ZERO
 
 
 ## Начать движение к организму [param organism]. Если до этого осуществлял

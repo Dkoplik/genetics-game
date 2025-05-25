@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_56j4e")
 speed = 120.0
-pause_chance = 0.2
-pause_duration = 1.5
+pause_chance = 0.001
+pause_duration = 0.7
 move_to_organism_dist_coef = 1.2
 world_upper_border = 580.0
 world_lower_border = 2250.0
