@@ -4,9 +4,6 @@
 
 [resource]
 script = ExtResource("1_xmmwm")
-mutate_function_names = ["random_binary_mutation"]
-partner_chooser_names = ["random_partner"]
-crossover_function_names = ["discrete_recombination"]
 genome_params = Dictionary[String, Variant]({
 "Fire": 0.0,
 "Ice": 0.0,

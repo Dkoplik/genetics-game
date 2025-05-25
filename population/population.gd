@@ -7,18 +7,24 @@ class_name Population extends Node
 ## Параметры популяции.
 var params: PopulationParams = preload("res://config/population-params.tres"):
 	set = set_params
+## Функции мутации для [Organism] из [GACallables].
+var mutate_functions: Array[Callable] = [
+	GACallables.random_binary_mutation
+]
+## Функции выбора партнёра для [Organism] из [GACallables].
+var partner_choosers: Array[Callable] = [
+	GACallables.random_partner
+]
+## Функции формирования нового [Genome] из [GACallables].
+var crossover_functions: Array[Callable] = [
+	GACallables.discrete_recombination
+]
 
 ## Структура [Genome] для всех [Organism] в этой популяции.
 var _genome: Genome
+## Глобальная [FitnessFunction] этой популяции.
 var _fitness_function: FitnessFunction
 ## Сцена с [Organism].
-## Доступные функции мутации для [Organism].
-var _mutate_functions: Array[Callable]
-## Доступные функции выбора партнёра для [Organism].
-var _partner_choosers: Array[Callable]
-## Доступные функции кроссовера для [Genome].
-var _crossover_functions: Array[Callable]
-## Глобальная [FitnessFunction] этой популяции.
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
 ## Массив [Organism] этой популяции.
 var _organism_array: Dictionary[Organism, Variant] = {} # Вместо set
@@ -53,9 +59,9 @@ func create_organism(genome: Genome, position: Vector2, random_pos := false) -> 
 
 	organism.genome = genome
 	organism.fitness_function = _fitness_function.duplicate()
-	organism.mutate_function = _mutate_functions.pick_random()
-	organism.partner_chooser = _partner_choosers.pick_random()
-	organism.crossover_function = _crossover_functions.pick_random()
+	organism.mutate_function = mutate_functions.pick_random()
+	organism.partner_chooser = partner_choosers.pick_random()
+	organism.crossover_function = crossover_functions.pick_random()
 	organism.reproduced.connect(_on_organism_reproduced)
 	add_child(organism)
 	if random_pos:
@@ -125,14 +131,3 @@ func _process_params() -> void:
 		params.fitness_function_string,
 		params.fitness_function_vars
 	)
-	_mutate_functions = _get_ga_callables(params.mutate_function_names)
-	_partner_choosers = _get_ga_callables(params.partner_chooser_names)
-	_crossover_functions = _get_ga_callables(params.crossover_function_names)
-
-
-func _get_ga_callables(names: PackedStringArray) -> Array[Callable]:
-	var res: Array[Callable] = []
-	res.resize(names.size())
-	for i in range(names.size()):
-		res[i] = Callable(GACallables, names[i])
-	return res

@@ -1,13 +1,5 @@
 class_name PopulationParams extends Resource
 
-@export_category("Функции ГА")
-## Названия функций мутации для [Organism] из [GACallables].
-@export var mutate_function_names: PackedStringArray = ["random_binary_mutation"]
-## Названия функций выбора партнёра для [Organism] из [GACallables].
-@export var partner_chooser_names: PackedStringArray = ["random_partner"]
-## Названия функций формирования нового [Genome] из [GACallables].
-@export var crossover_function_names: PackedStringArray = ["discrete_recombination"]
-
 @export_category("Genome")
 ## Параметры [Genome] и примеры их значений.
 @export var genome_params: Dictionary[String, Variant] = {"Ice": 0.0}
