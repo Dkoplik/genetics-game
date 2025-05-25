@@ -9,15 +9,24 @@ var params: PopulationParams = preload("res://config/population-params.tres"):
 	set = set_params
 ## Функции мутации для [Organism] из [GACallables].
 var mutate_functions: Array[Callable] = [
-	GACallables.random_binary_mutation
+	GACallables.real_value_mutation.bind(10),
+	GACallables.real_value_mutation.bind(20),
 ]
 ## Функции выбора партнёра для [Organism] из [GACallables].
 var partner_choosers: Array[Callable] = [
-	GACallables.random_partner
+	GACallables.random_partner,
+	GACallables.in_breeding.bind(GACallables.euclidean_2d_dist),
+	GACallables.in_breeding.bind(GACallables.fitness_dist),
+	GACallables.out_breeding.bind(GACallables.euclidean_2d_dist),
+	GACallables.out_breeding.bind(GACallables.fitness_dist),
 ]
 ## Функции формирования нового [Genome] из [GACallables].
 var crossover_functions: Array[Callable] = [
-	GACallables.discrete_recombination
+	GACallables.discrete_recombination,
+	GACallables.intermediate_recombination.bind(0.25),
+	GACallables.intermediate_recombination.bind(0.50),
+	GACallables.line_recombination.bind(0.25),
+	GACallables.line_recombination.bind(0.50),
 ]
 
 ## Структура [Genome] для всех [Organism] в этой популяции.
