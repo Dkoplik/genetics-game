@@ -163,9 +163,17 @@ func duplicate() -> Genome:
 func randomize_params() -> void:
 	for key: String in _params.keys():
 		if _params.get(key) is int:
-			set_param(key, randi())
+			if _ranges.has(key):
+				var pair := _ranges.get(key) as Array
+				set_param(key, randi_range(pair[0] as int, pair[1] as int))
+			else:
+				set_param(key, randi())
 		elif _params.get(key) is float:
-			set_param(key, randf() * (Numeric.FLOAT_MAX / 2))
+			if _ranges.has(key):
+				var pair := _ranges.get(key) as Array
+				set_param(key, randf_range(pair[0] as float, pair[1] as float))
+			else:
+				set_param(key, randf() * (Numeric.FLOAT_MAX / 2))
 		else:
 			assert(false)
 
