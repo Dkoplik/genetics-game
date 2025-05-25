@@ -121,7 +121,7 @@ func deal_global_damage(damage: float) -> void:
 
 ## Рассчитать урон из-за размера популяции.
 func _calc_population_damage() -> float:
-	return 0.05 * sqrt(get_population_size())
+	return 0.01 * sqrt(max(0, get_population_size() - 5) as float)
 
 
 func _on_organism_reproduced(parent1: Organism, parent2: Organism, new_genome: Genome) -> void:

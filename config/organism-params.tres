@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_d73f1")
 max_hp = 100.0
-mutate_function = null
-mutate_chance = 0.01
-partner_chooser = null
-reproduction_chance = 0.2
+max_damage = 10.0
+damage_coef = 0.3
+mutate_chance = 0.001
+reproduction_chance = 0.1
 metadata/_custom_type_script = "uid://dpij862v16l8q"
