@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EndOfWorldParams" load_steps=2 format=3 uid="uid://cjwqejl3345mt"]
+
+[ext_resource type="Script" uid="uid://x3pclrfnagyc" path="res://etc/end-of-world-params.gd" id="1_8ijcg"]
+
+[resource]
+script = ExtResource("1_8ijcg")
+function = ""
+variables = []
+duration = 300.0
+metadata/_custom_type_script = "uid://x3pclrfnagyc"

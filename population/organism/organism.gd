@@ -23,7 +23,7 @@ var partner_chooser: Callable
 ## Функция формирования нового [Genome].
 var crossover_function: Callable
 ## Остальные параметры особи.
-var params: OrganismParams = preload("res://config/organism-default-params.tres")
+var params: OrganismParams = preload("res://config/organism-params.tres")
 
 ## Время жизни организма.
 var _time_alive: float = 0.0

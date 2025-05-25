@@ -5,7 +5,7 @@ class_name Population extends Node
 ## эффектов или глобального урона.
 
 ## Параметры популяции.
-var params: PopulationParams = preload("res://config/population-default-params.tres"):
+var params: PopulationParams = preload("res://config/population-params.tres"):
 	set = set_params
 
 ## Структура [Genome] для всех [Organism] в этой популяции.

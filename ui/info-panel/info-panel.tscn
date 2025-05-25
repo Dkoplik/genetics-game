@@ -1,46 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccvwkpmg0u50s"]
+[gd_scene load_steps=3 format=3 uid="uid://ccvwkpmg0u50s"]
 
 [ext_resource type="Script" uid="uid://3wmmmk0071lm" path="res://ui/info-panel/info-panel.gd" id="1_wbh2n"]
 [ext_resource type="Script" uid="uid://dbe3gh7hlwyft" path="res://ui/info-panel/info-label.gd" id="2_tjae1"]
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_tjae1"]
-
-[node name="Info-panel" type="Control"]
-layout_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("1_wbh2n")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.243137, 0.282353, 0.282353, 1)
-position = Vector2(0, 194)
-scale = Vector2(1080, 388)
-texture = SubResource("CanvasTexture_tjae1")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="Info-panel" type="VBoxContainer"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = -502.0
-offset_top = 30.0
-offset_right = 502.0
-offset_bottom = 384.0
+offset_bottom = 354.0
 grow_horizontal = 2
+size_flags_horizontal = 4
+script = ExtResource("1_wbh2n")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 
-[node name="HP" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="HP" type="Label" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -50,7 +30,7 @@ script = ExtResource("2_tjae1")
 preffix = "HP: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
-[node name="TimeAlive" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="TimeAlive" type="Label" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -60,7 +40,7 @@ script = ExtResource("2_tjae1")
 preffix = "Time alive: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
-[node name="Mutations" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Mutations" type="Label" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -70,7 +50,7 @@ script = ExtResource("2_tjae1")
 preffix = "Mutations: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
-[node name="Children" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Children" type="Label" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -80,23 +60,27 @@ script = ExtResource("2_tjae1")
 preffix = "Children: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
-[node name="VBoxContainer_2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer_2" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 alignment = 2
 
-[node name="Genome" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer_2"]
+[node name="Genome" type="Label" parent="HBoxContainer/VBoxContainer_2"]
 custom_minimum_size = Vector2(100, 220)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Genome: "
 autowrap_mode = 3
 script = ExtResource("2_tjae1")
-preffix = "    Genome: "
+preffix = "Genome: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
-[node name="FitnessFunction" type="Label" parent="VBoxContainer"]
-custom_minimum_size = Vector2(100, 130)
+[node name="HBoxContainer_2" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="FitnessFunction" type="Label" parent="HBoxContainer_2"]
+custom_minimum_size = Vector2(1000, 130)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Fitness function: "

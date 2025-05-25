@@ -6,11 +6,14 @@ var _effect_scene: PackedScene = preload("res://local-effect/local-effect.tscn")
 var _cur_effect: EffectData = null
 
 @onready var population := $Population as Population
-@onready var info_panel := $'Info-panel' as InfoPanel
+@onready var info_panel := $"VBoxContainer/Info-panel" as InfoPanel
 @onready var _effects_folder := $LocalEffects as Node
+@onready var _eow_timer := $"VBoxContainer/Eow-timer" as EOWTimer
 
 
 func _ready() -> void:
+	_eow_timer.start()
+	_eow_timer.started_eow.connect(_start_end_of_world)
 	SelectManager.selection_changed.connect(_on_selection_changed)
 	for i in range(start_population_size):
 		population.create_random_organism()
@@ -18,11 +21,9 @@ func _ready() -> void:
 
 func _on_selection_changed(selection: SelectableArea) -> void:
 	if selection == null:
-		info_panel.hide()
-		info_panel.target_organism = null
+		info_panel.clear()
 		return
 	#print("show info")
-	info_panel.show()
 	var organism := selection.get_parent().get_parent() as Organism
 	info_panel.target_organism = organism
 
@@ -59,3 +60,7 @@ func _on_effect_selector_effect_selected(effect: EffectData) -> void:
 
 func _on_effect_selector_effect_deselected() -> void:
 	_cur_effect = null
+
+
+func _start_end_of_world() -> void:
+	population.add_global_summand(_eow_timer.params.function, _eow_timer.params.variables)
