@@ -6,7 +6,7 @@
 script = ExtResource("1_d73f1")
 max_hp = 100.0
 max_damage = 10.0
-damage_coef = 0.3
+damage_coef = 0.15
 mutate_chance = 0.001
 reproduction_chance = 0.1
 metadata/_custom_type_script = "uid://dpij862v16l8q"

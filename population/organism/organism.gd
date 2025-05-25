@@ -166,4 +166,4 @@ func _calc_damage() -> float:
 	if fitness < 0.0:
 		push_error("Отрицательная приспособленность")
 		fitness = 0.0
-	return min(params.damage_coef * fitness, params.max_damage)
+	return clampf(10.6 * sin(0.029 * fitness - 0.2), 0.0, 10.0)

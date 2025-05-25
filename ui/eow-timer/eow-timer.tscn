@@ -12,6 +12,7 @@ grow_horizontal = 2
 script = ExtResource("1_sm5f1")
 
 [node name="Timer" type="Timer" parent="."]
+one_shot = true
 
 [node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 50)
