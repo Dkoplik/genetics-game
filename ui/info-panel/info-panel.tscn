@@ -60,6 +60,16 @@ script = ExtResource("2_tjae1")
 preffix = "Children: "
 metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
 
+[node name="Fitness" type="Label" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Fitness: "
+autowrap_mode = 3
+script = ExtResource("2_tjae1")
+preffix = "Fitness: "
+metadata/_custom_type_script = "uid://dbe3gh7hlwyft"
+
 [node name="VBoxContainer_2" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2

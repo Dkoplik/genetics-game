@@ -117,6 +117,7 @@ static func real_value_mutation(genome: Genome, m: int) -> void:
 			alpha = 0.5 * (pair[1] - pair[0])
 		else:
 			alpha = 0.5 * Numeric.FLOAT_MAX
+		alpha *= [1, -1].pick_random()
 		var param := genome.get_param(param_name) as float
 		genome.set_param(param_name, param + alpha * _calc_delta(m))
 

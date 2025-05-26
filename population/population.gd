@@ -47,7 +47,9 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	deal_global_damage(_calc_population_damage())
+	var population_damage: float = _calc_population_damage()
+	if population_damage > 0.0:
+		deal_global_damage(population_damage)
 
 
 func set_params(value: PopulationParams) -> void:

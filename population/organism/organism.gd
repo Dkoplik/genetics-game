@@ -49,7 +49,9 @@ func _physics_process(delta: float) -> void:
 	try_mutate()
 	try_choose_partner()
 	_time_alive += delta
-	_hp -= _calc_damage()
+	var damage: float = _calc_damage()
+	if damage > 0.0:
+		deal_damage(damage)
 
 
 ## Получить текущее значение приспособленности организма.
@@ -84,6 +86,8 @@ func try_choose_partner() -> void:
 		return
 	var population := get_parent() as Population
 	var partner := partner_chooser.call(self, population.get_organisms()) as Organism
+	if not partner: # не найден
+		return
 	chose_partner.emit(partner)
 
 
@@ -166,4 +170,5 @@ func _calc_damage() -> float:
 	if fitness < 0.0:
 		push_error("Отрицательная приспособленность")
 		fitness = 0.0
-	return clampf(10.6 * sin(0.029 * fitness - 0.2), 0.0, 10.0)
+	var damage: float = clampf(5.3 * sin(0.03 * fitness - 1.34) + 5, 0.0, 10.0)
+	return damage

@@ -5,7 +5,7 @@ class_name FitnessFunction extends Expression
 ## какое-то конкретное выражение, но и менять его, добавляя/удаляя слагаемые.
 
 ## Текущие слагаемые в функции приспособленности.
-var _summands: Dictionary[String, bool] = {}  # Вместо Set
+var _summands: Dictionary[String, int] = {}  # Вместо MultiSet
 ## Количество вхождений каждой переменной в выражение.
 var _variables_uses: Dictionary[String, int] = {}
 ## Порядок указания переменных для дальнейшего использования в
@@ -44,7 +44,10 @@ func add_summand(summand: String, variables: PackedStringArray) -> Error:
 		push_error("Попытка добавить пустое слагаемое")
 		return Error.OK
 
-	_summands.set(summand, true)
+	if _summands.has(summand):
+		_summands.set(summand, _summands.get(summand) + 1)
+	else:
+		_summands.set(summand, 1)
 
 	for variable in variables:
 		if variable not in summand:
@@ -67,7 +70,10 @@ func add_summand(summand: String, variables: PackedStringArray) -> Error:
 ## удаления слагаемого [method Expression.parse] провалился.
 func remove_summand(summand: String, variables: PackedStringArray) -> Error:
 	assert(contains(summand))
-	_summands.erase(summand)
+
+	_summands.set(summand, _summands.get(summand) - 1)
+	if _summands.get(summand) == 0:
+		_summands.erase(summand)
 
 	# Удаление переменных
 	for variable in variables:
@@ -102,9 +108,9 @@ func calculate(params: Dictionary[String, Variant]) -> Variant:
 	for variable in _variables_order:
 		assert(variable in params)
 		inputs.append(params.get(variable))
-	var res: Variant = self.execute(inputs, null, true, true)
+	var res: Variant = self.execute(inputs)
 	if self.has_execute_failed():
-		return null
+		res = null
 	return res
 
 
@@ -119,7 +125,9 @@ func get_string_function() -> String:
 		return "null"
 
 	var summand_arr: PackedStringArray = _summands.keys()
-	var res: String = summand_arr[0]
-	for i in range(1, len(summand_arr)):
-		res += "+" + summand_arr[i]
-	return res
+	var res := ""
+	for i in range(0, len(summand_arr)):
+		var summand: String = summand_arr[i]
+		for j in range(_summands.get(summand)):
+			res += "+" + summand
+	return res.trim_prefix("+")

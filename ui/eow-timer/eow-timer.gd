@@ -24,4 +24,3 @@ func start() -> void:
 
 func _start_eow() -> void:
 	started_eow.emit()
-	_label.text = params.function

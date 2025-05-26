@@ -50,6 +50,17 @@ class TestAddSummand:
 		assert_true(ff.contains("y"))
 		assert_eq(ff.calculate({"x": 2, "y": 3}), 5)
 
+	func test_add_same_summand_several_times() -> void:
+		var ff := FitnessFunction.new()
+		var error: Error = ff.add_summand("x", ["x"])
+		assert_eq(error, Error.OK)
+		error = ff.add_summand("x", ["x"])
+		assert_eq(error, Error.OK)
+		error = ff.add_summand("x", ["x"])
+		assert_eq(error, Error.OK)
+		assert_true(ff.contains("x"))
+		assert_eq(ff.calculate({"x": 2}), 6)
+
 	func test_add_summand_invalid_syntax() -> void:
 		var ff := FitnessFunction.new()
 		var error: Error = ff.add_summand("x + ", ["x"])
@@ -96,6 +107,17 @@ class TestRemoveSummand:
 		assert_eq(ff.calculate({"x": 2, "y": 3}), 8)
 		ff.remove_summand("x", ["x"])
 		assert_eq(ff.calculate({"x": 2, "y": 3}), 6)
+
+	func test_remove_repeated_summands() -> void:
+		var ff := FitnessFunction.new()
+		ff.add_summand("x", ["x"])
+		ff.add_summand("x", ["x"])
+		ff.add_summand("x", ["x"])
+		assert_eq(ff.calculate({"x": 2}), 6)
+		ff.remove_summand("x", ["x"])
+		assert_eq(ff.calculate({"x": 2}), 4)
+		ff.remove_summand("x", ["x"])
+		assert_eq(ff.calculate({"x": 2}), 2)
 
 
 class TestContains:

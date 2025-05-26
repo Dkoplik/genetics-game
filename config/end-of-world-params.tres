@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_8ijcg")
-function = "31.6 - pow(Fire, 2.0/3) - pow(Fire, 0.5) + 5 * pow(Ice, 1.0/3) + 2.2 * pow(Radiation - 50, 2.0/3)"
+function = "30 - 0.9284 * pow(Fire, 2.0/3) - pow(Fire, 0.5) + 6.47 * pow(Ice, 1.0/3) + 2.21 * pow(pow(Radiation - 50, 2.0), 1.0/3)"
 variables = ["Ice", "Fire", "Radiation"]
-wait_time = 10.0
+wait_time = 300.0
 metadata/_custom_type_script = "uid://x3pclrfnagyc"

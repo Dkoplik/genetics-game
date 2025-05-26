@@ -28,8 +28,8 @@ size_flags_horizontal = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="VBoxContainer"]
 modulate = Color(0.243137, 0.282353, 0.282353, 1)
-position = Vector2(540, 242)
-scale = Vector2(1080, 486)
+position = Vector2(540, 264)
+scale = Vector2(1080, 530)
 texture = SubResource("CanvasTexture_7jktm")
 
 [node name="UpperMargin" type="Control" parent="VBoxContainer"]
