@@ -9,7 +9,7 @@ name = "Fire"
 color = Color(0.85098, 0.192157, 0.101961, 0.470588)
 function = "30 - 0.9284 * pow(Fire, 2.0/3) - pow(Fire, 0.5)"
 variables = ["Fire"]
-duration = 15.0
+duration = 7.0
 metadata/_custom_type_script = "uid://dye8b8m237jac"
 
 [sub_resource type="Resource" id="Resource_xsttj"]
@@ -18,7 +18,7 @@ name = "Ice"
 color = Color(0.101961, 0.4, 0.85098, 0.470588)
 function = "6.47 * pow(Ice, 1.0/3)"
 variables = ["Ice"]
-duration = 15.0
+duration = 7.0
 metadata/_custom_type_script = "uid://dye8b8m237jac"
 
 [sub_resource type="Resource" id="Resource_6rsbk"]
@@ -27,7 +27,7 @@ name = "Radiation"
 color = Color(0.67451, 0.85098, 0.101961, 0.470588)
 function = "2.21 * pow(pow(Radiation - 50, 2.0), 1.0/3)"
 variables = ["Radiation"]
-duration = 15.0
+duration = 7.0
 metadata/_custom_type_script = "uid://dye8b8m237jac"
 
 [resource]
