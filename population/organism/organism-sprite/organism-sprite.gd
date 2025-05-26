@@ -1,10 +1,10 @@
 class_name OrganismSprite extends Node2D
 
+var genome_ref: Genome = null
+
 @onready var fire := $Fire as Sprite2D
 @onready var ice := $Ice as Sprite2D
 @onready var radiation := $Radiation as Sprite2D
-
-var genome_ref: Genome = null
 
 
 func _ready() -> void:
@@ -27,9 +27,11 @@ func _update_data(genome: Genome) -> void:
 	if params.has("Fire"):
 		fire.modulate.a = _get_percentage(params.get("Fire"), ranges.get("Fire") as Array)
 	if params.has("Ice"):
-		ice.modulate.a = _get_percentage(params.get("Ice"), ranges.get("Ice")  as Array)
+		ice.modulate.a = _get_percentage(params.get("Ice"), ranges.get("Ice") as Array)
 	if params.has("Radiation"):
-		radiation.modulate.a = _get_percentage(params.get("Radiation"), ranges.get("Radiation")  as Array)
+		radiation.modulate.a = _get_percentage(
+			params.get("Radiation"), ranges.get("Radiation") as Array
+		)
 
 
 func _get_percentage(value: Variant, ranges: Array[Variant]) -> float:

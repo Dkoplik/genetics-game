@@ -3,7 +3,7 @@ class_name LocalEffect extends Node2D
 
 ## Данные об эффекте. Необходимо назначить до добавления эффекта на сцену.
 var data: EffectData = null
-var organisms: Dictionary[Organism, Variant] = {} # Set
+var organisms: Dictionary[Organism, Variant] = {}  # Set
 
 @onready var sprite := $Sprite2D as Sprite2D
 @onready var progress_bar := $ProgressBar as ProgressBar
@@ -40,8 +40,8 @@ func _on_organism_detector_organism_entered(organism: Organism) -> void:
 func _on_organism_detector_organism_exited(organism: Organism) -> void:
 	assert(organisms.has(organism))
 	if not organism.fitness_function.contains(data.function):
-		await get_tree().create_timer(0.04).timeout # костыль
-	if not organism: # особи больше нет
+		await get_tree().create_timer(0.04).timeout  # костыль
+	if not organism:  # особи больше нет
 		return
 	assert(organism.fitness_function.contains(data.function))
 	organism.fitness_function.remove_summand(data.function, data.variables)

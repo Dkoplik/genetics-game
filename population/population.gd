@@ -36,7 +36,7 @@ var _fitness_function: FitnessFunction
 ## Сцена с [Organism].
 var _organism_scene: PackedScene = preload("./organism/organism.tscn")
 ## Массив [Organism] этой популяции.
-var _organism_array: Dictionary[Organism, Variant] = {} # Вместо set
+var _organism_array: Dictionary[Organism, Variant] = {}  # Вместо set
 
 
 func _ready() -> void:
@@ -139,6 +139,5 @@ func _on_organism_died(organism: Organism) -> void:
 func _process_params() -> void:
 	_genome = Genome.new(params.genome_params, params.genome_param_ranges)
 	_fitness_function = FitnessFunction.new(
-		params.fitness_function_string,
-		params.fitness_function_vars
+		params.fitness_function_string, params.fitness_function_vars
 	)

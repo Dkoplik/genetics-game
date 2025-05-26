@@ -161,20 +161,14 @@ class TestParamRanges:
 	extends GutTest
 
 	func test_initialization_with_ranges_array() -> void:
-		var genome = Genome.new(
-			[50, 150.5],
-			[[0, 100], [100.0, 200.0]]
-		)
+		var genome = Genome.new([50, 150.5], [[0, 100], [100.0, 200.0]])
 		genome.set_param(0, 120)
 		genome.set_param(1, 250.5)
 		assert_eq(genome.get_param(0), 100)
 		assert_almost_eq(genome.get_param(1), 200.0, 0.001)
 
 	func test_initialization_with_ranges_dict() -> void:
-		var genome = Genome.new(
-			{"p1": 500, "p2": -5.0},
-			{"p1": [-100, 1000], "p2": [0.0, 10.0]}
-		)
+		var genome = Genome.new({"p1": 500, "p2": -5.0}, {"p1": [-100, 1000], "p2": [0.0, 10.0]})
 		genome.set_param("p1", 1500)
 		genome.set_param("p2", -1.0)
 		assert_eq(genome.get_param("p1"), 1000)
@@ -195,10 +189,7 @@ class TestParamRanges:
 		assert_almost_eq(genome.get_param(0), 0.0, 0.001)
 
 	func test_mixed_type_ranges() -> void:
-		var genome = Genome.new(
-			[100, 50.0],
-			{"param_0": [0, 200], "param_1": [0.0, 100.0]}
-		)
+		var genome = Genome.new([100, 50.0], {"param_0": [0, 200], "param_1": [0.0, 100.0]})
 
 		genome.set_param(0, 300.5)
 		assert_eq(genome.get_param(0), 200)
@@ -215,10 +206,7 @@ class TestDuplicateMethod:
 	extends GutTest
 
 	func test_deep_copy_of_params() -> void:
-		var original = Genome.new(
-			[3],
-			{"param_0": [0, 5]}
-		)
+		var original = Genome.new([3], {"param_0": [0, 5]})
 		var copy = original.duplicate()
 		copy.set_param(0, 6)
 		assert_eq(original.get_param(0), 3)

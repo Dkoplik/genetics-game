@@ -86,7 +86,7 @@ func try_choose_partner() -> void:
 		return
 	var population := get_parent() as Population
 	var partner := partner_chooser.call(self, population.get_organisms()) as Organism
-	if not partner: # не найден
+	if not partner:  # не найден
 		return
 	chose_partner.emit(partner)
 

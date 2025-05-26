@@ -2,6 +2,7 @@ class_name GACallables extends Object
 
 # ========== Функции расстояния для in(out) breeding ==========
 
+
 ## Расстояние в 2d пространстве.
 static func euclidean_2d_dist(org1: Organism, org2: Organism) -> float:
 	var org2d1 := org1.behaviour as Organism2D
@@ -16,9 +17,11 @@ static func fitness_dist(org1: Organism, org2: Organism) -> float:
 
 # ========== Выбор партнёра (2-ого родителя) ==========
 
+
 ## Панмиксия, просто случайный партнёр.
 static func random_partner(_this: Organism, organisms: Array[Organism]) -> Organism:
 	return organisms.pick_random()
+
 
 ## Ближайший организм по критерию [param dist]. [param dist] имеет вид
 ## ([Organism], [Organism]) -> [Variant].
@@ -45,6 +48,7 @@ static func out_breeding(this: Organism, organisms: Array[Organism], dist: Calla
 
 
 # ========== Рекомбинация (скрещивание) ==========
+
 
 ## Копирование параметров от случайного родителя.
 static func discrete_recombination(parent1: Genome, parent2: Genome) -> Genome:
@@ -96,6 +100,7 @@ static func _alpha_recombination(param1: Variant, param2: Variant, alpha: float)
 
 
 # ========== Мутация ==========
+
 
 ## Инвертирование случайного бита.
 static func random_binary_mutation(genome: Genome) -> void:

@@ -6,7 +6,7 @@ signal canceled_moving_to_point(point: Vector2)
 signal moved_to_organism2d(target: Organism2D)
 signal moved_to_point(point: Vector2)
 
-enum STATE {IDLE, MOVING_TO_POINT, MOVING_TO_ORGANISM, WANDERING}
+enum STATE { IDLE, MOVING_TO_POINT, MOVING_TO_ORGANISM, WANDERING }
 
 ## Основные параметры.
 var params: Organism2DParams = preload("res://config/organism2d-params.tres")
@@ -100,7 +100,7 @@ func _moving_to_organism() -> void:
 	var dist: float = global_position.distance_to(_target_point)
 	if dist <= params.move_to_organism_dist_coef * _shape.radius:
 		moved_to_organism2d.emit(_target_organism)
-		_cur_state = STATE.IDLE # dont trigger cancelation of target
+		_cur_state = STATE.IDLE  # dont trigger cancelation of target
 		start_wandering()
 
 
@@ -147,7 +147,7 @@ func _change_state(new_state: STATE) -> void:
 			stop_wandering()
 		STATE.MOVING_TO_ORGANISM:
 			if not _target_organism:
-				_target_organism = null # костыль для удалённых организмов
+				_target_organism = null  # костыль для удалённых организмов
 			canceled_moving_to_organism.emit(_target_organism)
 		STATE.MOVING_TO_POINT:
 			canceled_moving_to_point.emit(_target_point)
