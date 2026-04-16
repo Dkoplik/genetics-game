@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cklb7dbrrofqm"]
+
+[ext_resource type="Script" uid="uid://dsij243kew810" path="res://population/monster/monster.gd" id="1_ptfr5"]
+[ext_resource type="Script" uid="uid://f0hedy5nqy84" path="res://population/monster/monster2D/monster2d.gd" id="2_ptfr5"]
+[ext_resource type="PackedScene" uid="uid://30p7o6ou8hk8" path="res://population/organism/selectable-area/organism-select-area.tscn" id="3_hymfn"]
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="4_ptfr5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
+radius = 23.0
+
+[node name="Monster" type="Node" unique_id=1153570]
+script = ExtResource("1_ptfr5")
+metadata/_custom_type_script = "uid://dsij243kew810"
+
+[node name="Monster2D" type="CharacterBody2D" parent="." unique_id=1797692780]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("2_ptfr5")
+metadata/_custom_type_script = "uid://f0hedy5nqy84"
+
+[node name="SelectableArea" parent="Monster2D" unique_id=1856511018 instance=ExtResource("3_hymfn")]
+scale = Vector2(3.2, 3.2)
+collision_layer = 0
+
+[node name="MonsterSprite" type="Sprite2D" parent="Monster2D" unique_id=907589460]
+modulate = Color(1, 0, 0, 0.7411765)
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("4_ptfr5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Monster2D" unique_id=1113919377]
+scale = Vector2(2, 2)
+shape = SubResource("CircleShape2D_cvviw")
+
+[node name="ProgressBar" type="ProgressBar" parent="Monster2D" unique_id=1993342132]
+offset_left = -21.0
+offset_top = 47.0
+offset_right = 179.0
+offset_bottom = 82.0
+scale = Vector2(0.22, 0.22)
+show_percentage = false
+
+[connection signal="hp_changed" from="." to="Monster2D/ProgressBar" method="set_value"]

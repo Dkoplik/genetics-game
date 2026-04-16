@@ -2,10 +2,11 @@ class_name EOWTimer extends Control
 
 signal started_eow
 
-var params: EndOfWorldParams = preload("res://config/end-of-world-params.tres")
-
 @onready var _timer := $Timer as Timer
 @onready var _label := $Label as Label
+
+func _ready() -> void:
+	_timer.timeout.connect(_start_eow)
 
 
 func _physics_process(_delta: float) -> void:
@@ -17,9 +18,8 @@ func _physics_process(_delta: float) -> void:
 	_label.text = str(minutes) + ":" + str_seconds
 
 
-func start() -> void:
-	_timer.start(params.wait_time)
-	_timer.timeout.connect(_start_eow)
+func start(seconds: float) -> void:
+	_timer.start(seconds)
 
 
 func _start_eow() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://crsp6x20ucej0"]
+[gd_scene format=3 uid="uid://crsp6x20ucej0"]
 
 [ext_resource type="Script" uid="uid://0qjyfy38g348" path="res://population/organism/organism.gd" id="1_f7sj4"]
 [ext_resource type="Script" uid="uid://cgujb86ocsr13" path="res://population/organism/organism2d/organism2d.gd" id="2_cvviw"]
@@ -8,10 +8,10 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
 radius = 23.0
 
-[node name="Organism" type="Node"]
+[node name="Organism" type="Node" unique_id=907098542]
 script = ExtResource("1_f7sj4")
 
-[node name="Organism2D" type="CharacterBody2D" parent="."]
+[node name="Organism2D" type="CharacterBody2D" parent="." unique_id=1900338929]
 scale = Vector2(2, 2)
 collision_mask = 0
 motion_mode = 1
@@ -20,15 +20,15 @@ safe_margin = 0.1
 script = ExtResource("2_cvviw")
 metadata/_custom_type_script = "uid://cgujb86ocsr13"
 
-[node name="SelectableArea" parent="Organism2D" instance=ExtResource("2_lm0e7")]
+[node name="SelectableArea" parent="Organism2D" unique_id=1579712826 instance=ExtResource("2_lm0e7")]
 scale = Vector2(1.6, 1.6)
 
-[node name="OrganismSprite" parent="Organism2D" instance=ExtResource("5_rk5fc")]
+[node name="OrganismSprite" parent="Organism2D" unique_id=906110857 instance=ExtResource("5_rk5fc")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Organism2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Organism2D" unique_id=640257985]
 shape = SubResource("CircleShape2D_cvviw")
 
-[node name="ProgressBar" type="ProgressBar" parent="Organism2D"]
+[node name="ProgressBar" type="ProgressBar" parent="Organism2D" unique_id=870768979]
 offset_left = -21.0
 offset_top = 23.0
 offset_right = 179.0

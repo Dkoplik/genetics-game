@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://q6pd1ry2ex32"]
+[gd_scene format=3 uid="uid://q6pd1ry2ex32"]
 
 [ext_resource type="Script" uid="uid://b6q6r8sx83cxm" path="res://local-effect/local-effect.gd" id="1_54pwn"]
 [ext_resource type="Script" uid="uid://dmx6ns1nswspf" path="res://local-effect/organism-detector.gd" id="1_gkm6r"]
