@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bednsy7vyfm55"]
+
+[ext_resource type="Script" uid="uid://b6q6r8sx83cxm" path="res://local-effect/local-effect.gd" id="1_kvqfd"]
+[ext_resource type="Texture2D" uid="uid://dm3otgethkb7w" path="res://Circle.png" id="2_o6dyg"]
+[ext_resource type="Script" uid="uid://dmx6ns1nswspf" path="res://local-effect/organism-detector.gd" id="3_20ut1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_54pwn"]
+radius = 150.0
+
+[node name="MonsterEffect" type="Node2D" unique_id=1300118136]
+script = ExtResource("1_kvqfd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1489704385]
+modulate = Color(1, 1, 1, 0.392157)
+scale = Vector2(0.595, 0.595)
+texture = ExtResource("2_o6dyg")
+
+[node name="OrganismDetector" type="Area2D" parent="." unique_id=652422306]
+collision_layer = 0
+monitorable = false
+script = ExtResource("3_20ut1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrganismDetector" unique_id=328129814]
+shape = SubResource("CircleShape2D_54pwn")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=885002363]
+visible = false
+offset_left = -66.0
+offset_top = -10.0
+offset_right = 134.0
+offset_bottom = 17.0
+scale = Vector2(0.7, 0.7)

@@ -7,16 +7,15 @@ var _cur_effect: EffectData = null
 
 @onready var population := $Population as Population
 @onready var info_panel := $"VBoxContainer/Info-panel" as InfoPanel
+@onready var monsters := $Monsters as Monsters
+@onready var timer := $"VBoxContainer/Eow-timer" as EOWTimer
 @onready var _effects_folder := $LocalEffects as Node
-@onready var _eow_timer := $"VBoxContainer/Eow-timer" as EOWTimer
-
 
 func _ready() -> void:
-	_eow_timer.start()
-	_eow_timer.started_eow.connect(_start_end_of_world)
 	SelectManager.selection_changed.connect(_on_selection_changed)
 	for i in range(start_population_size):
 		population.create_random_organism()
+	monsters.start(timer)
 
 
 func _on_selection_changed(selection: SelectableArea) -> void:
@@ -60,7 +59,3 @@ func _on_effect_selector_effect_selected(effect: EffectData) -> void:
 
 func _on_effect_selector_effect_deselected() -> void:
 	_cur_effect = null
-
-
-func _start_end_of_world() -> void:
-	population.add_global_summand(_eow_timer.params.function, _eow_timer.params.variables)
