@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cvmmjkkmhro0t"]
+
+[ext_resource type="Script" uid="uid://db1dgdoku0idj" path="res://camera.gd" id="1_8uh7m"]
+[ext_resource type="PackedScene" uid="uid://cdeveb6ihwvvh" path="res://organism.tscn" id="1_37kl0"]
+
+[node name="Test" type="Node2D" unique_id=1376361876]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1143453413]
+script = ExtResource("1_8uh7m")
+
+[node name="Organism" parent="." unique_id=2051373735 instance=ExtResource("1_37kl0")]
+position = Vector2(-420, 142)
+
+[node name="Organism-2" parent="." unique_id=984224033 instance=ExtResource("1_37kl0")]
+position = Vector2(308, -227)
+
+[node name="Organism-3" parent="." unique_id=688542591 instance=ExtResource("1_37kl0")]
+position = Vector2(310, 179)
