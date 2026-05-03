@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://db1dgdoku0idj" path="res://camera.gd" id="1_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://cdeveb6ihwvvh" path="res://organism.tscn" id="1_37kl0"]
+[ext_resource type="PackedScene" uid="uid://ba65lipxa3sgr" path="res://food.tscn" id="3_6uqi0"]
 
 [node name="Test" type="Node2D" unique_id=1376361876]
 
@@ -9,10 +10,19 @@
 script = ExtResource("1_8uh7m")
 
 [node name="Organism" parent="." unique_id=2051373735 instance=ExtResource("1_37kl0")]
-position = Vector2(-420, 142)
+position = Vector2(-443, 218)
 
 [node name="Organism-2" parent="." unique_id=984224033 instance=ExtResource("1_37kl0")]
-position = Vector2(308, -227)
+position = Vector2(450, 222)
 
 [node name="Organism-3" parent="." unique_id=688542591 instance=ExtResource("1_37kl0")]
-position = Vector2(310, 179)
+position = Vector2(1, -401)
+
+[node name="Food" parent="." unique_id=1144040194 instance=ExtResource("3_6uqi0")]
+position = Vector2(499, -270)
+
+[node name="Food-2" parent="." unique_id=2084851905 instance=ExtResource("3_6uqi0")]
+position = Vector2(-426, -272)
+
+[node name="Food-3" parent="." unique_id=2000623026 instance=ExtResource("3_6uqi0")]
+position = Vector2(-2, 487)
