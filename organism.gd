@@ -1,21 +1,24 @@
+class_name Organism
 extends CharacterBody2D
 
-@export var size: float = 1.0
+@export var size: float = 1.0:
+	set = set_size
 var speed: float = 100.0
+var energy: float = 0.0
 
 var _visible_food: Dictionary[Area2D, bool] = { } # set
 var _target_point: Vector2
 
 
 func _ready() -> void:
-	_target_point = get_random_point()
+	_target_point = Utils.get_world_random_point()
 
 
 func _process(delta: float) -> void:
 	var vec_to_target: Vector2 = _target_point - position
 	if vec_to_target.length() < 1.0:
 		if _visible_food.is_empty():
-			_target_point = get_random_point()
+			_target_point = Utils.get_world_random_point()
 		else:
 			_target_point = get_closest_food(_visible_food).global_position
 
@@ -24,14 +27,10 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 
-func get_random_point() -> Vector2:
-	return Vector2(randf_range(-500.0, 500.0), randf_range(-500.0, 500.0))
-
-
 func set_size(new_size: float) -> void:
 	size = new_size
 	scale = Vector2(size, size)
-	speed = 100 * (2 - size)
+	speed = clampf(100 * (2 - size), 0.0, 1000.0)
 
 
 func get_closest_food(foods: Dictionary[Area2D, bool]) -> Area2D:

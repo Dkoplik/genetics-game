@@ -8,9 +8,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		Log.error("Food collided, but it is not CharacterBody2D:", body)
 		return
 
-	var organism: CharacterBody2D = body
-	if not organism.name.begins_with("Organism"):
-		Log.warn("Имя CharacterBody2D не начинается на Organism:", organism.name, "| это точно организм? :", organism)
+	if body is not Organism:
+		Log.warn("CharacterBody2D не является Organism, есть другой CharacterBody2D?", body)
+	var organism: Organism = body
 
-	# TODO organism += energy
+	organism.energy += energy
 	queue_free()
