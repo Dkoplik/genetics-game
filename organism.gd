@@ -4,17 +4,25 @@ extends CharacterBody2D
 @export var size: float = 1.0:
 	set = set_size
 var speed: float = 100.0
-var energy: float = 0.0
+var energy: float = 4.0
+var energy_consumption: float = 0.2 # per second
 
 var _visible_food: Dictionary[Area2D, bool] = { } # set
 var _target_point: Vector2
 
 
 func _ready() -> void:
+	set_size(size) # костыль
 	_target_point = Utils.get_world_random_point()
 
 
 func _process(delta: float) -> void:
+	# energy
+	energy -= delta * energy_consumption
+	if energy < 0.0:
+		queue_free()
+
+	# movement
 	var vec_to_target: Vector2 = _target_point - position
 	if vec_to_target.length() < 1.0:
 		if _visible_food.is_empty():
@@ -24,13 +32,14 @@ func _process(delta: float) -> void:
 
 	var direction_to_target: Vector2 = position.direction_to(_target_point)
 	velocity = speed * direction_to_target
-	move_and_slide()
+	var _collided: bool = move_and_slide()
 
 
 func set_size(new_size: float) -> void:
-	size = new_size
+	size = clampf(new_size, 1.0 / 4.0, 2.0)
 	scale = Vector2(size, size)
 	speed = clampf(100 * (2 - size), 0.0, 1000.0)
+	energy_consumption = 0.2 * size * size
 
 
 func get_closest_food(foods: Dictionary[Area2D, bool]) -> Area2D:
