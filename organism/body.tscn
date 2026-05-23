@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dts2f7j3gtahl"]
+
+[ext_resource type="Script" uid="uid://b7e81p0a6c65" path="res://organism/body.gd" id="1_m83er"]
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="2_en642"]
+[ext_resource type="Curve" uid="uid://bqfergibl4tkv" path="res://config/body_energy_consumption_vs_size.tres" id="2_n220x"]
+[ext_resource type="Curve" uid="uid://deepatmsg76rx" path="res://config/body_speed_vs_size.tres" id="3_en642"]
+
+[node name="Body" type="Node2D" unique_id=1984766586]
+script = ExtResource("1_m83er")
+energy_consumption_vs_size = ExtResource("2_n220x")
+speed_vs_size = ExtResource("3_en642")
+
+[node name="BodySprite2D" type="Sprite2D" parent="." unique_id=1381974339]
+modulate = Color(0.55, 0.55, 0.55, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_en642")

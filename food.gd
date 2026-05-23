@@ -8,9 +8,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		Log.error("Food collided, but it is not CharacterBody2D:", body)
 		return
 
-	if body is not Organism:
+	if body is not OrganismBody:
 		Log.warn("CharacterBody2D не является Organism, есть другой CharacterBody2D?", body)
-	var organism: Organism = body
-
+	var organism: Organism = body.get_parent()
 	organism.energy += energy
 	queue_free()

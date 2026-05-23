@@ -1,7 +1,7 @@
 extends Node
 
 const ga = preload("res://etc/genetic_functions.gd")
-const organism_scene: PackedScene = preload("res://organism.tscn")
+const organism_scene: PackedScene = preload("res://organism/organism.tscn")
 @onready var organism_container: Node = $Organisms
 
 func _on_crossover_timer_timeout() -> void:

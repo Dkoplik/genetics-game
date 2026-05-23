@@ -1,0 +1,6 @@
+[gd_resource type="Curve" format=3 uid="uid://deepatmsg76rx"]
+
+[resource]
+_limits = [20.0, 400.0, 0.25, 2.0]
+_data = [Vector2(0.25, 20), 0.0, 217.14287, 0, 1, Vector2(2, 400), 217.14287, 0.0, 1, 0]
+point_count = 2

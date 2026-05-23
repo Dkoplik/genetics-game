@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cdeveb6ihwvvh"]
+
+[ext_resource type="Script" uid="uid://cgc8sqwgt0gr2" path="res://organism/organs.gd" id="1_wpyi7"]
+[ext_resource type="PackedScene" uid="uid://dts2f7j3gtahl" path="res://organism/body.tscn" id="2_wpyi7"]
+[ext_resource type="PackedScene" uid="uid://c24mfjno6a38c" path="res://organism/eye.tscn" id="3_wpyi7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
+radius = 25.0
+
+[node name="Organism" type="Node2D" unique_id=471846868]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=965209733]
+
+[node name="OrgansManager" type="Node2D" parent="CharacterBody2D" unique_id=1135251674]
+script = ExtResource("1_wpyi7")
+
+[node name="Body" parent="CharacterBody2D/OrgansManager" unique_id=1720561014 node_paths=PackedStringArray("root") instance=ExtResource("2_wpyi7")]
+root = NodePath("../..")
+energy_consumption = 0.42857137
+speed = 182.85713
+
+[node name="Eye" parent="CharacterBody2D/OrgansManager" unique_id=1973503580 instance=ExtResource("3_wpyi7")]
+position = Vector2(0, -25)
+rotation = -1.5707964
+
+[node name="Eye-2" parent="CharacterBody2D/OrgansManager" unique_id=178685557 instance=ExtResource("3_wpyi7")]
+position = Vector2(25, 0)
+
+[node name="Eye-3" parent="CharacterBody2D/OrgansManager" unique_id=1440621839 instance=ExtResource("3_wpyi7")]
+position = Vector2(0, 25)
+rotation = 1.5707964
+
+[node name="Eye-4" parent="CharacterBody2D/OrgansManager" unique_id=1060073302 instance=ExtResource("3_wpyi7")]
+position = Vector2(-25, 0)
+rotation = -3.1415925
+
+[node name="CharacterShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1274028206]
+shape = SubResource("CircleShape2D_cvviw")

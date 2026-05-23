@@ -1,45 +1,30 @@
 class_name Organism
-extends CharacterBody2D
+extends Node
 
-@export var size: float = 1.0:
-	set = set_size
-var speed: float = 100.0
-var energy: float = 4.0
-var energy_consumption: float = 0.2 # per second
-
+@export var energy: float = 15.0
 var _visible_food: Dictionary[Area2D, bool] = { } # set
-var _target_point: Vector2
 
-
-func _ready() -> void:
-	set_size(size) # костыль
-	_target_point = Utils.get_world_random_point()
+@onready var _target_point: Vector2 = Utils.get_world_random_point()
+@onready var _body: OrganismBody = $Body
 
 
 func _process(delta: float) -> void:
 	# energy
-	energy -= delta * energy_consumption
+	energy -= _body.get_total_consumption() * delta
 	if energy < 0.0:
 		queue_free()
 
 	# movement
-	var vec_to_target: Vector2 = _target_point - position
+	var vec_to_target: Vector2 = _target_point - _body.position
 	if vec_to_target.length() < 1.0:
 		if _visible_food.is_empty():
 			_target_point = Utils.get_world_random_point()
 		else:
 			_target_point = get_closest_food(_visible_food).global_position
 
-	var direction_to_target: Vector2 = position.direction_to(_target_point)
-	velocity = speed * direction_to_target
-	var _collided: bool = move_and_slide()
-
-
-func set_size(new_size: float) -> void:
-	size = clampf(new_size, 1.0 / 4.0, 2.0)
-	scale = Vector2(size, size)
-	speed = clampf(100 * (2 - size), 0.0, 1000.0)
-	energy_consumption = 0.2 * size * size
+	var direction_to_target: Vector2 = _body.position.direction_to(_target_point)
+	_body.velocity = _body.speed * direction_to_target
+	var _collided: bool = _body.move_and_slide()
 
 
 func get_closest_food(foods: Dictionary[Area2D, bool]) -> Area2D:
@@ -48,13 +33,13 @@ func get_closest_food(foods: Dictionary[Area2D, bool]) -> Area2D:
 	for food: Area2D in foods:
 		if closest_food == null:
 			closest_food = food
-			dist_to_closest = global_position.distance_to(closest_food.global_position)
+			dist_to_closest = _body.global_position.distance_to(closest_food.global_position)
 			continue
 
-		var dist_to_food: float = global_position.distance_to(food.global_position)
+		var dist_to_food: float = _body.global_position.distance_to(food.global_position)
 		if dist_to_food < dist_to_closest:
 			closest_food = food
-			dist_to_closest = global_position.distance_to(closest_food.global_position)
+			dist_to_closest = _body.global_position.distance_to(closest_food.global_position)
 
 	return closest_food
 

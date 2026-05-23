@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cvmmjkkmhro0t"]
 
 [ext_resource type="Script" uid="uid://db1dgdoku0idj" path="res://camera.gd" id="1_8uh7m"]
-[ext_resource type="PackedScene" uid="uid://cdeveb6ihwvvh" path="res://organism.tscn" id="1_37kl0"]
+[ext_resource type="PackedScene" uid="uid://cdeveb6ihwvvh" path="res://organism/organism.tscn" id="1_37kl0"]
 [ext_resource type="Script" uid="uid://nfivhutcjg5n" path="res://food_spawner.gd" id="1_ppyta"]
 [ext_resource type="PackedScene" uid="uid://ba65lipxa3sgr" path="res://food.tscn" id="3_6uqi0"]
 [ext_resource type="Script" uid="uid://d20t37wy3ii1q" path="res://organism_manager.gd" id="4_ykrsh"]
@@ -41,15 +41,13 @@ autostart = true
 [node name="Organisms" type="Node" parent="OrganismManager" unique_id=857726875]
 
 [node name="Organism" parent="OrganismManager/Organisms" unique_id=2051373735 instance=ExtResource("1_37kl0")]
-position = Vector2(-443, 218)
+position = Vector2(-483, 190)
 
 [node name="Organism-2" parent="OrganismManager/Organisms" unique_id=984224033 instance=ExtResource("1_37kl0")]
-position = Vector2(450, 222)
-size = 0.5
+position = Vector2(467, 176)
 
 [node name="Organism-3" parent="OrganismManager/Organisms" unique_id=688542591 instance=ExtResource("1_37kl0")]
-position = Vector2(1, -401)
-size = 1.5
+position = Vector2(0, -346)
 
 [connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="OrganismManager/CrossoverTimer" to="OrganismManager" method="_on_crossover_timer_timeout"]

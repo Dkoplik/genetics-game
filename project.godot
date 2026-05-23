@@ -17,6 +17,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 Signal_Debugger="*uid://bip4tfemnsirc"
+BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
+BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 
 [debug]
 
@@ -41,7 +43,7 @@ naming/script_name_casing=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/SignalVisualizer/plugin.cfg", "res://addons/gdscript-linter/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/log/plugin.cfg")
+enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/SignalVisualizer/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/gdscript-linter/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/log/plugin.cfg")
 
 [input]
 

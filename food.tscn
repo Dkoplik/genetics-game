@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ba65lipxa3sgr"]
 
-[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://Circle.png" id="1_8txok"]
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_8txok"]
 [ext_resource type="Script" uid="uid://fmv157xeow4c" path="res://food.gd" id="1_pohk7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8txok"]
