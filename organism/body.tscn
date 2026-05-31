@@ -4,11 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="2_en642"]
 [ext_resource type="Curve" uid="uid://bqfergibl4tkv" path="res://config/body_energy_consumption_vs_size.tres" id="2_n220x"]
 [ext_resource type="Curve" uid="uid://deepatmsg76rx" path="res://config/body_speed_vs_size.tres" id="3_en642"]
+[ext_resource type="Curve" uid="uid://bkd1lkgigage0" path="res://config/body_rotaion_speed_vs_size.tres" id="4_p5dcn"]
 
 [node name="Body" type="Node2D" unique_id=1984766586]
 script = ExtResource("1_m83er")
 energy_consumption_vs_size = ExtResource("2_n220x")
 speed_vs_size = ExtResource("3_en642")
+rotation_speed_vs_size = ExtResource("4_p5dcn")
+energy_consumption = 0.42857137
+speed = 182.85713
+rotation_speed = 226.18074
 
 [node name="BodySprite2D" type="Sprite2D" parent="." unique_id=1381974339]
 modulate = Color(0.55, 0.55, 0.55, 1)

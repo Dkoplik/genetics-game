@@ -17,13 +17,21 @@ extends Node2D
 		_update_position()
 
 
+func _init() -> void:
+	var _err := child_entered_tree.connect(_update_child_node)
+
+
 func _update_position() -> void:
 	var x: float = cos(deg_to_rad(angle_degrees)) * radius
 	var y: float = sin(deg_to_rad(angle_degrees)) * radius
 	position = Vector2(x, y)
 
 	for child: Node in get_children():
-		if child is not Node2D:
-			continue
-		var child_2d: Node2D = child
-		child_2d.rotation_degrees = angle_degrees
+		_update_child_node(child)
+
+
+func _update_child_node(node: Node) -> void:
+	if node is not Node2D:
+		return
+	var node_2d: Node2D = node
+	node_2d.rotation_degrees = angle_degrees

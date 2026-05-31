@@ -1,10 +1,31 @@
 [gd_scene format=3 uid="uid://cvmmjkkmhro0t"]
 
-[ext_resource type="Script" uid="uid://db1dgdoku0idj" path="res://camera.gd" id="1_8uh7m"]
+[ext_resource type="Script" uid="uid://db1dgdoku0idj" path="res://etc/camera.gd" id="1_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://cdeveb6ihwvvh" path="res://organism/organism.tscn" id="1_37kl0"]
-[ext_resource type="Script" uid="uid://nfivhutcjg5n" path="res://food_spawner.gd" id="1_ppyta"]
-[ext_resource type="PackedScene" uid="uid://ba65lipxa3sgr" path="res://food.tscn" id="3_6uqi0"]
-[ext_resource type="Script" uid="uid://d20t37wy3ii1q" path="res://organism_manager.gd" id="4_ykrsh"]
+[ext_resource type="Script" uid="uid://nfivhutcjg5n" path="res://food/food_spawner.gd" id="1_ppyta"]
+[ext_resource type="PackedScene" uid="uid://ba65lipxa3sgr" path="res://food/food.tscn" id="3_6uqi0"]
+[ext_resource type="Script" uid="uid://d20t37wy3ii1q" path="res://organism/organism_manager.gd" id="4_ykrsh"]
+[ext_resource type="Script" uid="uid://c4cv84jx3f7sf" path="res://genetic/gene.gd" id="6_g14j6"]
+
+[sub_resource type="Resource" id="Resource_ks88c"]
+script = ExtResource("6_g14j6")
+type = &"body"
+name = &"size"
+value = 1.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_vbegm"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"angle"
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_ehkex"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"width_scale"
+value = 1.5
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
 
 [node name="Test" type="Node2D" unique_id=1376361876]
 
@@ -48,6 +69,7 @@ position = Vector2(467, 176)
 
 [node name="Organism-3" parent="OrganismManager/Organisms" unique_id=688542591 instance=ExtResource("1_37kl0")]
 position = Vector2(0, -346)
+genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_ks88c"), SubResource("Resource_vbegm"), SubResource("Resource_ehkex")])
 
 [connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="OrganismManager/CrossoverTimer" to="OrganismManager" method="_on_crossover_timer_timeout"]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://3u32wgot8ots" path="res://organism/eye.gd" id="1_dukfu"]
 [ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_iv5fs"]
-[ext_resource type="Script" uid="uid://b3rrpguxxe5bd" path="res://organism/trapeziod_collision_2d.gd" id="2_odnau"]
+[ext_resource type="Script" uid="uid://b3rrpguxxe5bd" path="res://etc/trapeziod_collision_2d.gd" id="2_odnau"]
 [ext_resource type="Curve" uid="uid://ca2joo25urf5h" path="res://config/eye_vision_length_vs_width.tres" id="2_s4nly"]
 
 [node name="Eye" type="Area2D" unique_id=764744509]
