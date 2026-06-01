@@ -2,7 +2,7 @@ class_name Utils
 
 
 static func get_world_border() -> Rect2:
-	return Rect2(-1000.0, -500.0, 2000.0, 1000.0)
+	return Rect2(-2000.0, -2000.0, 2000.0, 2000.0)
 
 
 static func get_world_random_point() -> Vector2:

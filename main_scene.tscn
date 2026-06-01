@@ -9,6 +9,53 @@
 [ext_resource type="Curve" uid="uid://d2eifn08rtfmw" path="res://config/probability_curve.tres" id="6_66tet"]
 [ext_resource type="Script" uid="uid://c4cv84jx3f7sf" path="res://genetic/gene.gd" id="6_g14j6"]
 
+[sub_resource type="Resource" id="Resource_a7wq1"]
+script = ExtResource("6_g14j6")
+type = &"body"
+name = &"size"
+value = 1.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_wr18j"]
+script = ExtResource("6_g14j6")
+type = &"spike"
+name = &"angle"
+value = 90.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_qwutr"]
+script = ExtResource("6_g14j6")
+type = &"spike"
+name = &"size"
+value = 0.5
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_66tet"]
+script = ExtResource("6_g14j6")
+type = &"mouth"
+name = &"angle"
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_7ycvg"]
+script = ExtResource("6_g14j6")
+type = &"mouth"
+name = &"size"
+value = 0.8
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_m35m6"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"angle"
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_u0ygc"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"width_scale"
+value = 0.5
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
 [sub_resource type="Resource" id="Resource_ks88c"]
 script = ExtResource("6_g14j6")
 type = &"body"
@@ -20,6 +67,7 @@ metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
 script = ExtResource("6_g14j6")
 type = &"eye"
 name = &"angle"
+value = 30.0
 metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
 
 [sub_resource type="Resource" id="Resource_ehkex"]
@@ -29,13 +77,41 @@ name = &"width_scale"
 value = 1.5
 metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
 
+[sub_resource type="Resource" id="Resource_671wp"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"angle"
+index = 1
+value = -30.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_mo76n"]
+script = ExtResource("6_g14j6")
+type = &"eye"
+name = &"width_scale"
+index = 1
+value = 1.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_42l1d"]
+script = ExtResource("6_g14j6")
+type = &"mouth"
+name = &"angle"
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="Resource" id="Resource_2jcla"]
+script = ExtResource("6_g14j6")
+type = &"mouth"
+name = &"size"
+value = 0.25
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
 [node name="Test" type="Node2D" unique_id=1376361876]
 
 [node name="FoodSpawner" type="Node" parent="." unique_id=483045289]
 script = ExtResource("1_ppyta")
 
 [node name="Timer" type="Timer" parent="FoodSpawner" unique_id=389397160]
-wait_time = 4.5
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1143453413]
@@ -62,20 +138,25 @@ wait_time = 10.0
 autostart = true
 
 [node name="MutationTimer" type="Timer" parent="OrganismManager" unique_id=4163299]
-wait_time = 4.0
 autostart = true
 
 [node name="Organisms" type="Node" parent="OrganismManager" unique_id=857726875]
 
 [node name="Organism" parent="OrganismManager/Organisms" unique_id=2051373735 instance=ExtResource("1_37kl0")]
 position = Vector2(-483, 190)
+genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_a7wq1"), SubResource("Resource_wr18j"), SubResource("Resource_qwutr")])
 
 [node name="Organism-2" parent="OrganismManager/Organisms" unique_id=984224033 instance=ExtResource("1_37kl0")]
 position = Vector2(467, 176)
+genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_a7wq1"), SubResource("Resource_66tet"), SubResource("Resource_7ycvg"), SubResource("Resource_m35m6"), SubResource("Resource_u0ygc")])
 
 [node name="Organism-3" parent="OrganismManager/Organisms" unique_id=688542591 instance=ExtResource("1_37kl0")]
 position = Vector2(328, -269)
-genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_ks88c"), SubResource("Resource_vbegm"), SubResource("Resource_ehkex")])
+genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_ks88c"), SubResource("Resource_vbegm"), SubResource("Resource_ehkex"), SubResource("Resource_671wp"), SubResource("Resource_mo76n")])
+
+[node name="Organism-4" parent="OrganismManager/Organisms" unique_id=471846868 instance=ExtResource("1_37kl0")]
+position = Vector2(-952, -426)
+genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_ks88c"), SubResource("Resource_vbegm"), SubResource("Resource_ehkex"), SubResource("Resource_671wp"), SubResource("Resource_mo76n"), SubResource("Resource_42l1d"), SubResource("Resource_2jcla")])
 
 [connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="OrganismManager/CrossoverTimer" to="OrganismManager" method="_on_crossover_timer_timeout"]

@@ -83,11 +83,11 @@ zoom_out={
 
 2d_physics/layer_1="organism"
 2d_physics/layer_2="food"
+2d_physics/layer_3="armor"
 
 [log_gd]
 
 config/color_resource_path="uid://biby87a3dypvn"
-config/log_level=0
 config/show_log_level_selector=true
 config/show_timestamps=true
 config/timestamp_type=4

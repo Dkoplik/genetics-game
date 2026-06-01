@@ -9,6 +9,15 @@ const ORGANISM_BODY = preload("res://organism/body.gd")
 const ORGANISM_EYE_SCENE: PackedScene = preload("res://organism/eye.tscn")
 const ORGANISM_EYE = preload("res://organism/eye.gd")
 
+const ORGANISM_MOUTH_SCENE: PackedScene = preload("res://organism/mouth.tscn")
+const ORGANISM_MOUTH := preload("res://organism/mouth.gd")
+
+const ORGANISM_SPIKE_SCENE: PackedScene = preload("res://organism/spike.tscn")
+const ORGANISM_SPIKE := preload("res://organism/spike.gd")
+
+const ORGANISM_ARMOR_SCENE: PackedScene = preload("res://organism/armor.tscn")
+const ORGANISM_ARMOR := preload("res://organism/armor.gd")
+
 @export var blackboard: OrganismBlackboard:
 	set(value):
 		blackboard = value
@@ -91,6 +100,9 @@ func parse_genome(genome: Array[Gene]) -> PackedStringArray:
 	var parsers: Dictionary[StringName, Callable] = {
 		&"body": _process_body.bind(parse_warnings),
 		&"eye": _process_eyes.bind(parse_warnings),
+		&"mouth": _process_mouth.bind(parse_warnings),
+		&"spike": _process_spike.bind(parse_warnings),
+		&"armor": _process_armor.bind(parse_warnings),
 	}
 	var warnings: PackedStringArray = GA.parse_genome(genome, parsers)
 	parse_warnings.append_array(warnings)
@@ -101,6 +113,18 @@ func parse_genome(genome: Array[Gene]) -> PackedStringArray:
 func get_total_energy_consumption() -> float:
 	const property_name: StringName = &"energy_consumption"
 	return _sum_property(self, property_name)
+
+
+## Есть ли рот/клещни у организма?
+func has_mouth() -> bool:
+	for child: Node in get_children():
+		if child is PolarContainer:
+			for inner_child: Node in child.get_children():
+				if inner_child is ORGANISM_MOUTH:
+					return true
+		if child is ORGANISM_MOUTH:
+			return true
+	return false
 
 
 ## Получить итоговую скорость движения организма.
@@ -180,6 +204,8 @@ func _process_eyes(eye_arr: GenesTable.TypeArr, out_warnings: PackedStringArray)
 		if blackboard != null:
 			var _err := eye.area_entered.connect(blackboard._on_vision_area_entered)
 			_err = eye.area_exited.connect(blackboard._on_vision_area_exited)
+			_err = eye.body_entered.connect(blackboard._on_vision_body_entered)
+			_err = eye.body_exited.connect(blackboard._on_vision_body_exited)
 
 		organs[&"eye"].append(eye)
 		eye_container.add_child(eye, true)
@@ -201,6 +227,108 @@ func _process_eyes(eye_arr: GenesTable.TypeArr, out_warnings: PackedStringArray)
 				Log.warn(msg, ":", eye_genome)
 
 		add_child(eye_container, true)
+
+
+func _process_mouth(mouth_arr: GenesTable.TypeArr, out_warnings: PackedStringArray) -> void:
+	organs[&"mouth"] = []
+	for i in range(mouth_arr.size()):
+		var mouth_genome: Dictionary[StringName, float] = mouth_arr.at(i)
+		if mouth_genome.is_empty(): # пропуск в индексации
+			continue
+
+		var mouth_container := PolarContainer.new()
+		mouth_container.radius = body.get_radius()
+
+		var mouth: ORGANISM_MOUTH = ORGANISM_MOUTH_SCENE.instantiate()
+
+		organs[&"mouth"].append(mouth)
+		mouth_container.add_child(mouth, true)
+
+		if mouth_genome.has(&"angle"):
+			mouth_container.angle_degrees = mouth_genome[&"angle"]
+		else:
+			var msg := "В геноме для рта отсутствует параметр угла &'angle'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", mouth_genome)
+
+		if mouth_genome.has(&"size"):
+			mouth.size = mouth_genome[&"size"]
+		else:
+			var msg := "В геноме для рта отсутствует параметр размера &'size'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", mouth_genome)
+
+		add_child(mouth_container, true)
+
+
+func _process_spike(spike_arr: GenesTable.TypeArr, out_warnings: PackedStringArray) -> void:
+	organs[&"spike"] = []
+	for i in range(spike_arr.size()):
+		var spike_genome: Dictionary[StringName, float] = spike_arr.at(i)
+		if spike_genome.is_empty(): # пропуск в индексации
+			continue
+
+		var spike_container := PolarContainer.new()
+		spike_container.radius = body.get_radius()
+
+		var spike: ORGANISM_SPIKE = ORGANISM_SPIKE_SCENE.instantiate()
+
+		organs[&"spike"].append(spike)
+		spike_container.add_child(spike, true)
+
+		if spike_genome.has(&"angle"):
+			spike_container.angle_degrees = spike_genome[&"angle"]
+		else:
+			var msg := "В геноме для шипа отсутствует параметр угла &'angle'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", spike_genome)
+
+		if spike_genome.has(&"size"):
+			spike.size = spike_genome[&"size"]
+		else:
+			var msg := "В геноме для шипа отсутствует параметр размера &'size'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", spike_genome)
+
+		add_child(spike_container, true)
+
+
+func _process_armor(armor_arr: GenesTable.TypeArr, out_warnings: PackedStringArray) -> void:
+	organs[&"armor"] = []
+	for i in range(armor_arr.size()):
+		var armor_genome: Dictionary[StringName, float] = armor_arr.at(i)
+		if armor_genome.is_empty(): # пропуск в индексации
+			continue
+
+		var armor_container := PolarContainer.new()
+		armor_container.radius = body.get_radius()
+
+		var armor: ORGANISM_ARMOR = ORGANISM_ARMOR_SCENE.instantiate()
+
+		organs[&"armor"].append(armor)
+		armor_container.add_child(armor, true)
+
+		if armor_genome.has(&"angle"):
+			armor_container.angle_degrees = armor_genome[&"angle"]
+		else:
+			var msg := "В геноме для брони отсутствует параметр угла &'angle'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", armor_genome)
+
+		if armor_genome.has(&"size"):
+			armor.size = armor_genome[&"size"]
+		else:
+			var msg := "В геноме для брони отсутствует параметр размера &'size'"
+			var _err := out_warnings.append(msg)
+			if not Engine.is_editor_hint():
+				Log.warn(msg, ":", armor_genome)
+
+		add_child(armor_container, true)
 
 
 func _get_configuration_warnings() -> PackedStringArray:

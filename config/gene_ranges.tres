@@ -37,10 +37,73 @@ ranges_for_type = Dictionary[StringName, ExtResource("2_j8h5x")]({
 })
 metadata/_custom_type_script = "uid://dnu40ruwot7wt"
 
+[sub_resource type="Resource" id="Resource_j8h5x"]
+script = ExtResource("2_j8h5x")
+min_value = -360.0
+max_value = 360.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_nibkp"]
+script = ExtResource("2_j8h5x")
+min_value = 0.25
+max_value = 2.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_ehaoa"]
+script = ExtResource("1_xqwef")
+ranges_for_type = Dictionary[StringName, ExtResource("2_j8h5x")]({
+&"angle": SubResource("Resource_j8h5x"),
+&"size": SubResource("Resource_nibkp")
+})
+metadata/_custom_type_script = "uid://dnu40ruwot7wt"
+
+[sub_resource type="Resource" id="Resource_0rf4s"]
+script = ExtResource("2_j8h5x")
+min_value = -360.0
+max_value = 360.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_60mwe"]
+script = ExtResource("2_j8h5x")
+min_value = 0.25
+max_value = 2.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_xwufp"]
+script = ExtResource("1_xqwef")
+ranges_for_type = Dictionary[StringName, ExtResource("2_j8h5x")]({
+&"angle": SubResource("Resource_0rf4s"),
+&"size": SubResource("Resource_60mwe")
+})
+metadata/_custom_type_script = "uid://dnu40ruwot7wt"
+
+[sub_resource type="Resource" id="Resource_ju08o"]
+script = ExtResource("2_j8h5x")
+min_value = -360.0
+max_value = 360.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_qldtm"]
+script = ExtResource("2_j8h5x")
+min_value = 0.25
+max_value = 2.0
+metadata/_custom_type_script = "uid://b2mbx77wj3jxm"
+
+[sub_resource type="Resource" id="Resource_wqmq8"]
+script = ExtResource("1_xqwef")
+ranges_for_type = Dictionary[StringName, ExtResource("2_j8h5x")]({
+&"angle": SubResource("Resource_ju08o"),
+&"size": SubResource("Resource_qldtm")
+})
+metadata/_custom_type_script = "uid://dnu40ruwot7wt"
+
 [resource]
 script = ExtResource("2_ilyll")
 gene_ranges = Dictionary[StringName, ExtResource("1_xqwef")]({
+&"armor": SubResource("Resource_wqmq8"),
 &"body": SubResource("Resource_3ii07"),
-&"eye": SubResource("Resource_nckto")
+&"eye": SubResource("Resource_nckto"),
+&"mouth": SubResource("Resource_ehaoa"),
+&"spike": SubResource("Resource_xwufp")
 })
 metadata/_custom_type_script = "uid://geb8ykp2usum"

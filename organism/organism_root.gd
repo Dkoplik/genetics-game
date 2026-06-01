@@ -2,8 +2,12 @@ extends Node2D
 
 const ORGANISM_PHYSICS := preload("res://organism/character_body_2d.gd")
 const ORGANS_MANAGER := preload("res://organism/organs_manager.gd")
+const FOOD_SCENE: PackedScene = preload("res://food/food.tscn")
+const FOOD_CLASS := preload("res://food/food.gd")
+const ORGANISM_BLACKBOARD := preload("res://organism/beehave_tree/blackboard.gd")
 
 @export var energy: float = 15.0
+@export var hp: float = 100.0
 
 @export var genome: Array[Gene]:
 	set(value):
@@ -16,6 +20,7 @@ const ORGANS_MANAGER := preload("res://organism/organs_manager.gd")
 
 @onready var character_body: ORGANISM_PHYSICS = $CharacterBody2D
 @onready var organs_manager: ORGANS_MANAGER = $CharacterBody2D/OrgansManager
+@onready var blackboard: ORGANISM_BLACKBOARD = $Blackboard
 
 
 func _ready() -> void:
@@ -33,6 +38,23 @@ func _process(delta: float) -> void:
 	energy -= delta * organs_manager.get_total_energy_consumption()
 	if energy < 0.0:
 		queue_free()
+
+	if hp < 0.0:
+		kill()
+
+
+## Убить организм и высвободить оставшуюся энергию.
+func kill() -> void:
+	while energy > 0.0:
+		var food: FOOD_CLASS = FOOD_SCENE.instantiate()
+		var food_energy: float = min(energy, food.energy)
+		energy -= food_energy
+		food.energy = food_energy
+		var food_spawner: Node = get_node(^"../../../FoodSpawner")
+		food_spawner.add_child(food)
+		food.global_position = character_body.global_position
+		food.set_random_velocity()
+	queue_free()
 
 
 ## [member genome] автоматически обрабатывается при изменении, но при этом

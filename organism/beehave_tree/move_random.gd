@@ -35,4 +35,5 @@ func tick(_actor: Node, _blackboard: Blackboard) -> int:
 
 
 func interrupt(_actor: Node, _blackboard: Blackboard) -> void:
-	target_point = Utils.get_world_random_point()
+	#target_point = Utils.get_world_random_point()
+	pass

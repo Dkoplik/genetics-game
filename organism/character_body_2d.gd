@@ -15,7 +15,8 @@ func _physics_process(delta: float) -> void:
 
 	if _has_target:
 		_has_target = false
-		velocity = Vector2.ZERO
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, 150.0)
 
 
 ## Выполнить движение к точке [param target] в этом кадре.
@@ -30,10 +31,12 @@ func move_to_point(target: Vector2, speed: float, rotation_speed: float) -> void
 	velocity = velocity.move_toward(desired_velocity, move_accel)
 
 	# rotate
-	var cur_direction: Vector2 = Vector2.RIGHT.rotated(rotation)
-	var desired_angle: float = rad_to_deg(cur_direction.angle_to(direction_to_target))
-	var desired_diff: float = desired_angle - rotation_degrees
+	var cur_angle: float = rotation
+	var desired_angle: float = direction_to_target.angle()
+	var desired_diff: float = angle_difference(cur_angle, desired_angle)
 
-	var max_angle_diff: float = rotation_speed * _physics_delta
-	var angle_diff: float = clampf(desired_diff, -max_angle_diff, max_angle_diff)
-	rotation_degrees += angle_diff
+	var max_rotation: float = deg_to_rad(rotation_speed * _physics_delta)
+	var angle_diff: float = clampf(desired_diff, -max_rotation, max_rotation)
+	rotation += angle_diff
+
+	_has_target = true

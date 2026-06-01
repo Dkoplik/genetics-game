@@ -1,6 +1,6 @@
 @tool
 extends Area2D
-## Рот/челюсть/клещни организма. Позволяют атаковать другие организмы.
+## Шип организма. Для защиты от других организмов.
 
 const ORGANISM_CLASS := preload("res://organism/organism_root.gd")
 const ORGANISM_PHYSICS := preload("res://organism/character_body_2d.gd")

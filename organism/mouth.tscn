@@ -15,7 +15,7 @@ monitorable = false
 script = ExtResource("1_e8vih")
 energy_consumption_vs_size = ExtResource("2_ia0i2")
 damage_vs_size = ExtResource("3_fp7ct")
-energy_consumption = 0.42390668
+energy_consumption = 0.43247813
 damage = 10.754094
 
 [node name="Sprite2D-2" type="Sprite2D" parent="." unique_id=653627010]

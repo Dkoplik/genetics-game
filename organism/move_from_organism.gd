@@ -26,34 +26,34 @@ func tick(_actor: Node, _blackboard: Blackboard) -> int:
 			or organism_blackboard == null:
 		return FAILURE
 
-	var food_pos: Vector2 = get_closest_food(organism_blackboard.visible_food)
-
-	if character_body.global_position.distance_to(food_pos) < 10.0:
-		var _err := organism_blackboard.visible_food.erase(food_pos)
-		return SUCCESS
-
+	var organism_pos: Vector2 = organism_blackboard.visible_organism.global_position
+	var direction: Vector2 = organism_pos - character_body.global_position
+	var target: Vector2 = -3.0 * direction
 	character_body.move_to_point(
-		food_pos,
+		target,
 		organs_manager.get_total_speed(),
 		organs_manager.get_total_rotation_speed(),
 	)
 	return SUCCESS
 
 
-func get_closest_food(foods: Dictionary[Vector2, int]) -> Vector2:
+func get_closest_organism(organisms: Dictionary[ORGANISM_PHYSICS, int]) -> Vector2:
 	var body_global_position: Vector2 = character_body.global_position
-	var closest_food_pos: Vector2 = Vector2.ZERO
+	var closest_organism_pos: Vector2 = Vector2.ZERO
 	var dist_to_closest: float
-	for food_pos: Vector2 in foods:
-		if closest_food_pos == Vector2.ZERO:
-			closest_food_pos = food_pos
-			dist_to_closest = body_global_position.distance_to(closest_food_pos)
+	for organism_body: ORGANISM_PHYSICS in organisms:
+		if organism_body == null or organism_body.is_queued_for_deletion():
 			continue
 
-		var dist_to_food: float = body_global_position.distance_to(food_pos)
-		if dist_to_food < dist_to_closest:
-			closest_food_pos = food_pos
-			dist_to_closest = body_global_position.distance_to(closest_food_pos)
+		var organism_pos: Vector2 = organism_body.global_position
+		if closest_organism_pos == Vector2.ZERO:
+			closest_organism_pos = organism_pos
+			dist_to_closest = body_global_position.distance_to(closest_organism_pos)
+			continue
 
-	foods[closest_food_pos] += int(get_physics_process_delta_time() * 1_000)
-	return closest_food_pos
+		var dist_to_food: float = body_global_position.distance_to(organism_pos)
+		if dist_to_food < dist_to_closest:
+			closest_organism_pos = organism_pos
+			dist_to_closest = body_global_position.distance_to(closest_organism_pos)
+
+	return closest_organism_pos
