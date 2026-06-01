@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://c2ry7hjukycnq"]
+
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_a62ho"]
+[ext_resource type="Script" uid="uid://dhr3u0gf336l6" path="res://organism/mouth.gd" id="1_e8vih"]
+[ext_resource type="Curve" uid="uid://c0n7dprns4n4q" path="res://config/mouth_energy_consumption_vs_size.tres" id="2_ia0i2"]
+[ext_resource type="Curve" uid="uid://bkbkhrq813r5" path="res://config/mouth_damage_vs_size.tres" id="3_fp7ct"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e8vih"]
+radius = 6.0
+height = 18.0
+
+[node name="Mouth" type="Area2D" unique_id=625067043]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_e8vih")
+energy_consumption_vs_size = ExtResource("2_ia0i2")
+damage_vs_size = ExtResource("3_fp7ct")
+energy_consumption = 0.43247813
+damage = 10.754094
+
+[node name="Sprite2D-2" type="Sprite2D" parent="." unique_id=653627010]
+modulate = Color(0.49163997, 0.24838391, 0.22218567, 1)
+position = Vector2(2, -3)
+rotation = -0.34906584
+scale = Vector2(0.018, 0.008)
+texture = ExtResource("1_a62ho")
+
+[node name="Sprite2D-4" type="Sprite2D" parent="." unique_id=1144861973]
+modulate = Color(0.49163997, 0.24838391, 0.22218567, 1)
+position = Vector2(8, -3)
+rotation = 0.34906584
+scale = Vector2(0.019999998, 0.008)
+texture = ExtResource("1_a62ho")
+
+[node name="Sprite2D-3" type="Sprite2D" parent="." unique_id=1306239251]
+modulate = Color(0.49163997, 0.24838391, 0.22218567, 1)
+position = Vector2(2, 3)
+rotation = 0.34906584
+scale = Vector2(0.018, 0.008)
+texture = ExtResource("1_a62ho")
+
+[node name="Sprite2D-5" type="Sprite2D" parent="." unique_id=355302268]
+modulate = Color(0.49163997, 0.24838391, 0.22218567, 1)
+position = Vector2(8, 3)
+rotation = -0.34906584
+scale = Vector2(0.019999998, 0.008)
+texture = ExtResource("1_a62ho")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=119886594]
+modulate = Color(0.37327006, 0.18045151, 0.15987816, 1)
+position = Vector2(-0.9999999, 0)
+scale = Vector2(0.01, 0.025)
+texture = ExtResource("1_a62ho")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1337788623]
+position = Vector2(5, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_e8vih")

@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="Monster2DParams" format=3 uid="uid://bjlti2bn5ucl6"]
-
-[ext_resource type="Script" uid="uid://6174eiiyarvm" path="res://population/monster/monster2D/monster2d-params.gd" id="1_0pdld"]
-
-[resource]
-script = ExtResource("1_0pdld")
-metadata/_custom_type_script = "uid://6174eiiyarvm"

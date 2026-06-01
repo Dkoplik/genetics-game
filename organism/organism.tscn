@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://cdeveb6ihwvvh"]
+
+[ext_resource type="Script" uid="uid://pst65yl63d6t" path="res://organism/organism_root.gd" id="1_hbm5i"]
+[ext_resource type="Script" uid="uid://cgc8sqwgt0gr2" path="res://organism/organs_manager.gd" id="1_wpyi7"]
+[ext_resource type="Script" uid="uid://bo8u2poehxtim" path="res://organism/character_body_2d.gd" id="2_ks88c"]
+[ext_resource type="Script" uid="uid://c4cv84jx3f7sf" path="res://genetic/gene.gd" id="2_r1boe"]
+[ext_resource type="PackedScene" uid="uid://dts2f7j3gtahl" path="res://organism/body.tscn" id="2_wpyi7"]
+[ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="5_p6k7e"]
+[ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="6_ra8n7"]
+[ext_resource type="Script" uid="uid://bl1w5ntgdso1b" path="res://organism/beehave_tree/move_random.gd" id="7_ra8n7"]
+[ext_resource type="Script" uid="uid://cg016dbe7gs1x" path="res://addons/beehave/nodes/composites/sequence.gd" id="8_a7wq1"]
+[ext_resource type="Script" uid="uid://cs1gulgyiphfi" path="res://organism/beehave_tree/move_to_food.gd" id="9_ks88c"]
+[ext_resource type="Script" uid="uid://dhkel0q8emu3f" path="res://organism/beehave_tree/has_mouth_condition.gd" id="10_adx2j"]
+[ext_resource type="Script" uid="uid://brr6bjxum7l20" path="res://organism/beehave_tree/blackboard.gd" id="10_ks88c"]
+[ext_resource type="Script" uid="uid://uoy6r3dbnq25" path="res://addons/beehave/nodes/leaves/blackboard_compare.gd" id="10_murc1"]
+[ext_resource type="Script" uid="uid://bmvk7xio37i32" path="res://organism/beehave_tree/move_to_organism.gd" id="11_adx2j"]
+[ext_resource type="Script" uid="uid://b0hi6alviw6mf" path="res://organism/move_from_organism.gd" id="12_ue1vs"]
+
+[sub_resource type="Resource" id="Resource_a7wq1"]
+script = ExtResource("2_r1boe")
+type = &"body"
+name = &"size"
+value = 1.0
+metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a7wq1"]
+radius = 32.01562
+
+[node name="Organism" type="Node2D" unique_id=471846868]
+script = ExtResource("1_hbm5i")
+genome = Array[ExtResource("2_r1boe")]([SubResource("Resource_a7wq1")])
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=965209733]
+script = ExtResource("2_ks88c")
+
+[node name="CharacterShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1274028206]
+shape = SubResource("CircleShape2D_cvviw")
+
+[node name="OrgansManager" type="Node2D" parent="CharacterBody2D" unique_id=1753346769 node_paths=PackedStringArray("blackboard", "body")]
+script = ExtResource("1_wpyi7")
+blackboard = NodePath("../../Blackboard")
+body = NodePath("Body")
+
+[node name="Body" parent="CharacterBody2D/OrgansManager" unique_id=1984766586 node_paths=PackedStringArray("root") instance=ExtResource("2_wpyi7")]
+root = NodePath("../..")
+rotation_speed = 461.9242
+
+[node name="CloseVision" type="Area2D" parent="CharacterBody2D/OrgansManager/Body" unique_id=1806137537]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/OrgansManager/Body/CloseVision" unique_id=1024445533]
+shape = SubResource("CircleShape2D_a7wq1")
+
+[node name="BeehaveTree" type="Node" parent="." unique_id=11679565 node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("5_p6k7e")
+actor_node_path = NodePath("..")
+blackboard = NodePath("../Blackboard")
+actor = NodePath("..")
+metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
+
+[node name="SelectorComposite" type="Node" parent="BeehaveTree" unique_id=684782488]
+script = ExtResource("6_ra8n7")
+metadata/_custom_type_script = "uid://8hn4kne15ac5"
+
+[node name="ProcessOrganisms" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=770963874]
+script = ExtResource("8_a7wq1")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="AreAnyOrganismNear" type="Node" parent="BeehaveTree/SelectorComposite/ProcessOrganisms" unique_id=78871598]
+script = ExtResource("10_murc1")
+left_operand = "visible_organism"
+operator = 1
+right_operand = "null"
+metadata/_custom_type_script = "uid://uoy6r3dbnq25"
+
+[node name="AttackOrganisms" type="Node" parent="BeehaveTree/SelectorComposite/ProcessOrganisms" unique_id=1675333115]
+script = ExtResource("8_a7wq1")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="HasMouthCondition" type="Node" parent="BeehaveTree/SelectorComposite/ProcessOrganisms/AttackOrganisms" unique_id=600949121]
+script = ExtResource("10_adx2j")
+metadata/_custom_type_script = "uid://cbnbvj8prv63i"
+
+[node name="MoveToOrganism" type="Node" parent="BeehaveTree/SelectorComposite/ProcessOrganisms/AttackOrganisms" unique_id=158251684]
+script = ExtResource("11_adx2j")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="MoveFromOrganism" type="Node" parent="BeehaveTree/SelectorComposite/ProcessOrganisms" unique_id=2061121689]
+script = ExtResource("12_ue1vs")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="ProcessFood" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1155545706]
+script = ExtResource("8_a7wq1")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="AreAnyFoodNear" type="Node" parent="BeehaveTree/SelectorComposite/ProcessFood" unique_id=1284873853]
+script = ExtResource("10_murc1")
+left_operand = "visible_food.size()"
+operator = 2
+right_operand = "0"
+metadata/_custom_type_script = "uid://uoy6r3dbnq25"
+
+[node name="MoveToFood" type="Node" parent="BeehaveTree/SelectorComposite/ProcessFood" unique_id=1344295319]
+script = ExtResource("9_ks88c")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="MoveRandom" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1087053808]
+script = ExtResource("7_ra8n7")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="Blackboard" type="Node" parent="." unique_id=1887874172]
+script = ExtResource("10_ks88c")
+metadata/_custom_type_script = "uid://dme5f24l0edsf"
+
+[connection signal="area_entered" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_area_entered"]
+[connection signal="area_exited" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_area_exited"]
+[connection signal="body_entered" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_body_entered"]
+[connection signal="body_exited" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_body_exited"]

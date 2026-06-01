@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dvih8qmd113qw"]
+
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_sssy6"]
+[ext_resource type="Script" uid="uid://bdpvcma6onrqo" path="res://organism/armor.gd" id="1_unbwh"]
+[ext_resource type="Curve" uid="uid://2y02h2px10u" path="res://config/armor_energy_consumption_size.tres" id="2_81evj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sssy6"]
+radius = 3.0
+height = 20.0
+
+[node name="Armor" type="Area2D" unique_id=941944057]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_unbwh")
+energy_consumption_vs_size = ExtResource("2_81evj")
+energy_consumption = 0.13020408
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=642124347]
+modulate = Color(0.8162891, 0.62366474, 0.50994444, 1)
+scale = Vector2(0.01, 0.04)
+texture = ExtResource("1_sssy6")
+
+[node name="Sprite2D-2" type="Sprite2D" parent="." unique_id=491053941]
+modulate = Color(0.8162891, 0.62366474, 0.50994444, 1)
+position = Vector2(2, -6.0000014)
+rotation = -0.2268928
+scale = Vector2(0.005, 0.013)
+texture = ExtResource("1_sssy6")
+
+[node name="Sprite2D-3" type="Sprite2D" parent="." unique_id=422360945]
+modulate = Color(0.8162891, 0.62366474, 0.50994444, 1)
+position = Vector2(3, -6.7762636e-21)
+scale = Vector2(0.005, 0.013)
+texture = ExtResource("1_sssy6")
+
+[node name="Sprite2D-4" type="Sprite2D" parent="." unique_id=1478329316]
+modulate = Color(0.8162891, 0.62366474, 0.50994444, 1)
+position = Vector2(2.0000005, 5.9999995)
+rotation = 0.2268928
+scale = Vector2(0.005, 0.013)
+texture = ExtResource("1_sssy6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1313299034]
+position = Vector2(1, 0)
+shape = SubResource("CapsuleShape2D_sssy6")

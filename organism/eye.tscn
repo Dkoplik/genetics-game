@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c24mfjno6a38c"]
+
+[ext_resource type="Script" uid="uid://3u32wgot8ots" path="res://organism/eye.gd" id="1_dukfu"]
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_iv5fs"]
+[ext_resource type="Script" uid="uid://b3rrpguxxe5bd" path="res://etc/trapeziod_collision_2d.gd" id="2_odnau"]
+[ext_resource type="Curve" uid="uid://ca2joo25urf5h" path="res://config/eye_vision_length_vs_width.tres" id="2_s4nly"]
+
+[node name="Eye" type="Area2D" unique_id=764744509]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+script = ExtResource("1_dukfu")
+length_scale = 1.0
+vision_length_vs_width = ExtResource("2_s4nly")
+
+[node name="ScleraSprite" type="Sprite2D" parent="." unique_id=1518066528]
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("1_iv5fs")
+
+[node name="PupilSprite" type="Sprite2D" parent="ScleraSprite" unique_id=692612687]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(39.999996, 0)
+scale = Vector2(0.7999999, 0.7999999)
+texture = ExtResource("1_iv5fs")
+
+[node name="TrapezoidCollision2D" type="CollisionPolygon2D" parent="." unique_id=1278520279]
+polygon = PackedVector2Array(0, -5, 300, -100, 300, 100, 0, 5)
+script = ExtResource("2_odnau")
+metadata/_custom_type_script = "uid://b3rrpguxxe5bd"

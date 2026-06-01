@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dki4gv85ppygr"]
+
+[ext_resource type="Script" uid="uid://3sg8tojnp5g" path="res://organism/spike.gd" id="1_1wnm7"]
+[ext_resource type="Texture2D" uid="uid://fhn34pihxj7k" path="res://organism/Circle.png" id="1_lfaxh"]
+[ext_resource type="Curve" uid="uid://5favqyabp205" path="res://config/spike_energy_consumption_vs_size.tres" id="2_fag55"]
+[ext_resource type="Curve" uid="uid://djrtnmhqmy84q" path="res://config/spike_damage_vs_size.tres" id="3_gclkp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1wnm7"]
+radius = 1.0
+height = 29.999996
+
+[node name="Spike" type="Area2D" unique_id=901049346]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_1wnm7")
+energy_consumption_vs_size = ExtResource("2_fag55")
+damage_vs_size = ExtResource("3_gclkp")
+energy_consumption = 0.18806122
+damage = 36.647224
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=537309321]
+modulate = Color(0.89492244, 0.89492244, 0.8949224, 1)
+position = Vector2(6, 0)
+scale = Vector2(0.027016802, 0.0009589793)
+texture = ExtResource("1_lfaxh")
+
+[node name="Sprite2D-2" type="Sprite2D" parent="." unique_id=2046082519]
+modulate = Color(0.66656864, 0.6665687, 0.66656864, 1)
+scale = Vector2(0.0032680912, -0.0050892537)
+texture = ExtResource("1_lfaxh")
+
+[node name="Sprite2D-3" type="Sprite2D" parent="." unique_id=1617169707]
+modulate = Color(0.66656864, 0.6665687, 0.66656864, 1)
+position = Vector2(1, 0)
+scale = Vector2(0.0054840315, -0.0035358802)
+texture = ExtResource("1_lfaxh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1626269534]
+position = Vector2(7, -1.06581326e-14)
+rotation = 1.5707964
+scale = Vector2(0.4, 0.4)
+shape = SubResource("CapsuleShape2D_1wnm7")
