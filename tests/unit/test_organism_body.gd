@@ -232,7 +232,7 @@ class TestCurveUpdates:
 		# Изменяем кривую
 		curve.set_point_value(1, 30.0)
 		# Нужно подождать сигнал
-		await wait_frames(1)
+		await wait_physics_frames(1)
 
 		var new_expected: float = curve.sample(1.0)
 		assert_eq(body.energy_consumption, new_expected, "Потребление должно обновиться при изменении кривой")
@@ -256,7 +256,7 @@ class TestCurveUpdates:
 		assert_eq(body.speed, expected, "Скорость должна обновиться по новой кривой")
 
 		curve.set_point_value(1, 400.0)
-		await wait_frames(1)
+		await wait_physics_frames(1)
 
 		var new_expected: float = curve.sample(1.0)
 		assert_eq(body.speed, new_expected, "Скорость должна обновиться при изменении кривой")
@@ -396,7 +396,9 @@ class TestConfigurationWarnings:
 
 
 	func test_no_root_warning_when_root_set() -> void:
-		body.root = Node2D.new()
+		var root := Node2D.new()
+		autoqfree(root)
+		body.root = root
 		var warnings := Array(body._get_configuration_warnings())
 		var has_root_warning: bool = warnings.any(
 			func(w: String) -> bool: return "root" in w and "отсутствует" in w

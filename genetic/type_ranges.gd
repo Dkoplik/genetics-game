@@ -3,7 +3,7 @@ class_name TypeRanges
 extends Resource
 ## Ограничения [GeneMinMax] для различных [Gene.name] в пределах одного [Gene.type].
 
-@export var ranges_for_type: Dictionary[StringName, GeneMinMax]
+@export var ranges_for_type: Dictionary[StringName, GeneMinMax] = {}
 
 
 ## Содержит ли поле [param name].

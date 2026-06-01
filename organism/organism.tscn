@@ -7,11 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://dts2f7j3gtahl" path="res://organism/body.tscn" id="2_wpyi7"]
 [ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="5_p6k7e"]
 [ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="6_ra8n7"]
-[ext_resource type="Script" uid="uid://bl1w5ntgdso1b" path="res://organism/move_random.gd" id="7_ra8n7"]
-[ext_resource type="Script" uid="uid://cs1gulgyiphfi" path="res://organism/move_to_food.gd" id="9_ks88c"]
-[ext_resource type="Script" uid="uid://brr6bjxum7l20" path="res://organism/organism_blackboard.gd" id="10_ks88c"]
+[ext_resource type="Script" uid="uid://bl1w5ntgdso1b" path="res://organism/beehave_tree/move_random.gd" id="7_ra8n7"]
+[ext_resource type="Script" uid="uid://cg016dbe7gs1x" path="res://addons/beehave/nodes/composites/sequence.gd" id="8_a7wq1"]
+[ext_resource type="Script" uid="uid://cs1gulgyiphfi" path="res://organism/beehave_tree/move_to_food.gd" id="9_ks88c"]
+[ext_resource type="Script" uid="uid://brr6bjxum7l20" path="res://organism/beehave_tree/blackboard.gd" id="10_ks88c"]
+[ext_resource type="Script" uid="uid://uoy6r3dbnq25" path="res://addons/beehave/nodes/leaves/blackboard_compare.gd" id="10_murc1"]
 
-[sub_resource type="Resource" id="Resource_ks88c"]
+[sub_resource type="Resource" id="Resource_a7wq1"]
 script = ExtResource("2_r1boe")
 type = &"body"
 name = &"size"
@@ -21,9 +23,12 @@ metadata/_custom_type_script = "uid://c4cv84jx3f7sf"
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvviw"]
 radius = 25.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_a7wq1"]
+radius = 32.01562
+
 [node name="Organism" type="Node2D" unique_id=471846868]
 script = ExtResource("1_hbm5i")
-genome = Array[ExtResource("2_r1boe")]([SubResource("Resource_ks88c")])
+genome = Array[ExtResource("2_r1boe")]([SubResource("Resource_a7wq1")])
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=965209733]
 script = ExtResource("2_ks88c")
@@ -39,17 +44,35 @@ body = NodePath("Body")
 [node name="Body" parent="CharacterBody2D/OrgansManager" unique_id=1984766586 node_paths=PackedStringArray("root") instance=ExtResource("2_wpyi7")]
 root = NodePath("../..")
 
+[node name="CloseVision" type="Area2D" parent="CharacterBody2D/OrgansManager/Body" unique_id=1806137537]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/OrgansManager/Body/CloseVision" unique_id=1024445533]
+shape = SubResource("CircleShape2D_a7wq1")
+
 [node name="BeehaveTree" type="Node" parent="." unique_id=11679565 node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("5_p6k7e")
+actor_node_path = NodePath("..")
 blackboard = NodePath("../Blackboard")
-actor = NodePath("../CharacterBody2D")
+actor = NodePath("..")
 metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
 
 [node name="SelectorComposite" type="Node" parent="BeehaveTree" unique_id=684782488]
 script = ExtResource("6_ra8n7")
 metadata/_custom_type_script = "uid://8hn4kne15ac5"
 
-[node name="MoveToFood" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1344295319]
+[node name="SequenceComposite" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1155545706]
+script = ExtResource("8_a7wq1")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="AreAnyFoodNear" type="Node" parent="BeehaveTree/SelectorComposite/SequenceComposite" unique_id=1284873853]
+script = ExtResource("10_murc1")
+left_operand = "visible_food.size()"
+operator = 2
+right_operand = "0"
+metadata/_custom_type_script = "uid://uoy6r3dbnq25"
+
+[node name="MoveToFood" type="Node" parent="BeehaveTree/SelectorComposite/SequenceComposite" unique_id=1344295319]
 script = ExtResource("9_ks88c")
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
@@ -60,3 +83,6 @@ metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 [node name="Blackboard" type="Node" parent="." unique_id=1887874172]
 script = ExtResource("10_ks88c")
 metadata/_custom_type_script = "uid://dme5f24l0edsf"
+
+[connection signal="area_entered" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_area_entered"]
+[connection signal="area_exited" from="CharacterBody2D/OrgansManager/Body/CloseVision" to="Blackboard" method="_on_vision_area_exited"]

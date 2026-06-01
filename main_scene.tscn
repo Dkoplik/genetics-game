@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://nfivhutcjg5n" path="res://food/food_spawner.gd" id="1_ppyta"]
 [ext_resource type="PackedScene" uid="uid://ba65lipxa3sgr" path="res://food/food.tscn" id="3_6uqi0"]
 [ext_resource type="Script" uid="uid://d20t37wy3ii1q" path="res://organism/organism_manager.gd" id="4_ykrsh"]
+[ext_resource type="Resource" uid="uid://ckswidjt7rr6n" path="res://config/gene_ranges.tres" id="5_nfk4m"]
+[ext_resource type="Curve" uid="uid://d2eifn08rtfmw" path="res://config/probability_curve.tres" id="6_66tet"]
 [ext_resource type="Script" uid="uid://c4cv84jx3f7sf" path="res://genetic/gene.gd" id="6_g14j6"]
 
 [sub_resource type="Resource" id="Resource_ks88c"]
@@ -50,13 +52,17 @@ position = Vector2(-2, 487)
 
 [node name="OrganismManager" type="Node" parent="." unique_id=1672236939]
 script = ExtResource("4_ykrsh")
+gene_ranges = ExtResource("5_nfk4m")
+singular_types = Array[StringName]([&"body"])
+exclude_types = Array[StringName]([&"body"])
+probability_curve = ExtResource("6_66tet")
 
 [node name="CrossoverTimer" type="Timer" parent="OrganismManager" unique_id=143154516]
-wait_time = 20.0
+wait_time = 10.0
 autostart = true
 
 [node name="MutationTimer" type="Timer" parent="OrganismManager" unique_id=4163299]
-wait_time = 10.0
+wait_time = 4.0
 autostart = true
 
 [node name="Organisms" type="Node" parent="OrganismManager" unique_id=857726875]
@@ -68,7 +74,7 @@ position = Vector2(-483, 190)
 position = Vector2(467, 176)
 
 [node name="Organism-3" parent="OrganismManager/Organisms" unique_id=688542591 instance=ExtResource("1_37kl0")]
-position = Vector2(0, -346)
+position = Vector2(328, -269)
 genome = Array[ExtResource("6_g14j6")]([SubResource("Resource_ks88c"), SubResource("Resource_vbegm"), SubResource("Resource_ehkex")])
 
 [connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]

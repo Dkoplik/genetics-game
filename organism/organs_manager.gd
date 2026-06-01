@@ -84,7 +84,9 @@ func parse_genome(genome: Array[Gene]) -> PackedStringArray:
 			has_body_type = true
 			break
 	if not has_body_type:
-		var _err := parse_warnings.append("Отсутствуют гены для тела организма")
+		var msg := "Отсутствуют гены для тела организма"
+		var _err := parse_warnings.append(msg)
+		Log.warn(msg)
 
 	var parsers: Dictionary[StringName, Callable] = {
 		&"body": _process_body.bind(parse_warnings),
@@ -167,6 +169,10 @@ func _process_body(body_arr: GenesTable.TypeArr, out_warnings: PackedStringArray
 func _process_eyes(eye_arr: GenesTable.TypeArr, out_warnings: PackedStringArray) -> void:
 	organs[&"eye"] = []
 	for i in range(eye_arr.size()):
+		var eye_genome: Dictionary[StringName, float] = eye_arr.at(i)
+		if eye_genome.is_empty(): # пропуск в индексации
+			continue
+
 		var eye_container := PolarContainer.new()
 		eye_container.radius = body.get_radius()
 
@@ -178,7 +184,6 @@ func _process_eyes(eye_arr: GenesTable.TypeArr, out_warnings: PackedStringArray)
 		organs[&"eye"].append(eye)
 		eye_container.add_child(eye, true)
 
-		var eye_genome: Dictionary[StringName, float] = eye_arr.at(i)
 		if eye_genome.has(&"angle"):
 			eye_container.angle_degrees = eye_genome[&"angle"]
 		else:

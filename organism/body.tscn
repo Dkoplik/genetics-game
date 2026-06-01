@@ -13,7 +13,7 @@ speed_vs_size = ExtResource("3_en642")
 rotation_speed_vs_size = ExtResource("4_p5dcn")
 energy_consumption = 0.42857137
 speed = 182.85713
-rotation_speed = 226.18074
+rotation_speed = 546.82214
 
 [node name="BodySprite2D" type="Sprite2D" parent="." unique_id=1381974339]
 modulate = Color(0.55, 0.55, 0.55, 1)

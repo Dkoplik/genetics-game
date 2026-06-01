@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 const ORGANISM_PHYSICS := preload("res://organism/character_body_2d.gd")
 const ORGANS_MANAGER := preload("res://organism/organs_manager.gd")
@@ -24,6 +24,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+
+	if organs_manager == null:
 		return
 
 	# energy

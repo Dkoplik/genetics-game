@@ -12,7 +12,7 @@ extends Resource
 		max_value = max(min_value, value)
 
 
-func _init(p_min: float = 1e-10, p_max: float = 1e10) -> void:
+func _init(p_min: float = -1e10, p_max: float = 1e10) -> void:
 	min_value = p_min
 	max_value = p_max
 

@@ -186,7 +186,7 @@ class TestCurveUpdates:
 
 		# Изменяем точку на кривой
 		curve.set_point_value(1, 500.0)
-		await wait_frames(1) # Ждём сигнал
+		await wait_physics_frames(1) # Ждём сигнал
 
 		var expected_length: float = curve.sample(1.0)
 		assert_eq(eye.length_scale, expected_length, "length_scale должен обновиться")
@@ -201,7 +201,7 @@ class TestCurveUpdates:
 
 		# Добавляем новую точку
 		var _err := curve.add_point(Vector2(1.5, 400.0))
-		await wait_frames(1)
+		await wait_physics_frames(1)
 
 		var expected_length: float = curve.sample(1.0)
 		assert_eq(
@@ -219,7 +219,7 @@ class TestCurveUpdates:
 
 		# Удаляем точку
 		curve.remove_point(1)
-		await wait_frames(1)
+		await wait_physics_frames(1)
 
 		var expected_length: float = curve.sample(1.0)
 		assert_eq(
